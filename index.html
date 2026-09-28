@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d1b2a" />
+    <title>2026 日本关西—北近畿—山阴旅行控制台</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <button class="mobile-menu-button" id="mobileMenuButton" aria-controls="sidebar" aria-expanded="false">☰ <span>菜单</span></button>
+    <div class="drawer-scrim" id="drawerScrim"></div>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="行程导航">
+        <div class="brand"><div class="brand-mark">🗺️</div><div><h1>关西—北近畿—山阴</h1><p>2026.12 · 14晚独旅</p></div></div>
+        <nav class="nav" id="sectionNav">
+          <a class="active" href="#overview">🏠 <span>总览</span></a><a href="#map-section">🗺️ <span>地图</span></a><a href="#days">📅 <span>行程</span></a><a href="#stays">🏨 <span>住宿</span></a><a href="#transport">🚆 <span>交通</span></a><a href="#experiences">♨️ <span>体验</span></a><a href="#checklist">✅ <span>待办</span></a><a href="#budget">💴 <span>预算</span></a><a href="#links">🔗 <span>官方入口</span></a>
+        </nav>
+        <div class="date-navigation"><p>日期联动</p><div id="dateNav" class="date-nav-list"></div></div>
+        <div class="sidebar-note">已购机票和住宿是硬约束。所有冬季班次仅在资料确认后才会更新；当前参考班次会在 11 月底复核。</div>
+      </aside>
+      <main class="main">
+        <header class="hero" id="overview"><div class="hero-top"><div><div class="eyebrow">TRAVEL CONTROL CENTER</div><h2 id="heroTitle"></h2><p id="heroSubtitle"></p><div class="pill-row" id="heroPills"></div></div><div class="hero-actions no-print"><button class="btn btn-primary" id="showAllRoute">显示全路线</button><button class="btn btn-light" id="printButton">打印 / 保存为 PDF</button></div></div></header>
+        <div class="luggage-banner" role="note">⚠️ 待办：确认 9C6987 与 9C6988 订单中的实际行李额度。返程额外 5kg 托运行李目前未确认，不能视为已购买。</div>
+        <section class="section dashboard-section" aria-labelledby="dashboardHeading"><div class="section-head"><div><h3 id="dashboardHeading">出发仪表盘</h3><p>已购项目固定，待办与冬季交通风险分开管理。</p></div></div><div class="stats-grid" id="statsGrid"></div><div class="dashboard-grid"><article class="card dashboard-card" id="nextTaskCard"></article><article class="card dashboard-card" id="alertCard"></article><article class="card dashboard-card" id="budgetMiniCard"></article><article class="card dashboard-card" id="countdownCard"></article><article class="card weather-placeholder"><div class="card-kicker">天气提醒</div><h4>出发前 24–48 小时再看</h4><p>日本海沿岸重点关注大雪、强风、JR 与巴士运行状态。这里不自动联网，避免把短期预报伪装成行程结论。</p></article></div></section>
+        <section class="section map-section" id="map-section" aria-labelledby="mapHeading"><div class="section-head"><div><h3 id="mapHeading">地图与真实旅行结构</h3><p>主环线与三条当天往返分层显示；不使用 OpenStreetMap 官方标准瓦片。</p></div></div><div class="card map-card"><div class="map-toolbar no-print"><div class="map-route-buttons" id="routeGroupButtons"></div><button class="btn btn-light" id="toggleSideTrips">隐藏一日往返</button><div class="map-legend"><span><i class="legend-line main"></i>主路线</span><span><i class="legend-line side"></i>当天往返</span><span><i class="legend-dot stay"></i>住宿</span><span><i class="legend-dot sight"></i>景点</span></div></div><div class="map-frame"><div class="map-provider" id="mapProvider">地图加载中</div><div id="map" aria-label="日本旅行路线地图"></div><div class="map-fallback-message" id="mapFallbackMessage" hidden></div></div></div><div class="route-summary card" id="routeSummary"></div></section>
+        <section class="section" id="stays"><div class="section-head"><div><h3>住宿</h3><p>全部已购；展示入住硬约束、到店提醒与外部地图入口。</p></div></div><div class="stay-grid" id="stayGrid"></div></section>
+        <section class="section" id="transport"><div class="section-head"><div><h3>交通购买表</h3><p>A=IC/现场 · B=普通列车 · C=指定席无需很早买 · D=建议提前 · E=必须预约 · F=特殊交通</p></div></div><div class="card transport-wrap"><table class="transport-table"><thead><tr><th>日期</th><th>区间</th><th>分类</th><th>可信状态</th><th>方式</th><th>耗时／参考</th><th>价格</th><th>购买</th><th>风险与备注</th></tr></thead><tbody id="transportBody"></tbody></table></div></section>
+        <section class="section" id="experiences"><div class="section-head"><div><h3>体验</h3><p>为慢旅行留出的重点体验；图片尚未放入时显示占位卡。</p></div></div><div class="experience-grid" id="experienceGrid"></div></section>
+        <section class="section" id="days"><div class="section-head"><div><h3>每日完整行程</h3><p>点击日期或卡片联动地图；每一日都带晴天、雨天、大雪／强风替代方案。</p></div></div><div class="timeline" id="timeline"></div></section>
+        <section class="section" id="checklist"><div class="section-head"><div><h3>出发前复核中心</h3><p>状态会保存在此浏览器；交通复核不等于自动变成最终班次。</p></div><button class="btn btn-danger no-print" id="resetProgress">重置进度</button></div><div class="checklist-grid" id="checklistGrid"></div></section>
+        <section class="section" id="budget"><div class="section-head"><div><h3>预算</h3><p>RMB 与 JPY 分开统计；汇率只用于你手动查看，不自动联网换汇。</p></div></div><div class="budget-grid" id="budgetGrid"></div></section>
+        <section class="section" id="links"><div class="section-head"><div><h3>官方入口</h3><p>用官方页面复核班次、票务、机场与场馆信息。</p></div></div><div class="links" id="officialLinks"></div></section>
+        <footer class="footer">本项目应从 localhost 运行。具体班次、价格、机场航站楼与天气均以临近出发时的官方信息为准。</footer>
+      </main>
+    </div>
+    <script type="module" src="/assets/app.js"></script>
+  </body>
+</html>
