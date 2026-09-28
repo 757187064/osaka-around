@@ -13,10 +13,10 @@ export const routeSegments = [
 ];
 
 export const routeGroups = [
-  { id: 'kansai', label: '关西段', segmentIds: ['kix-kyoto', 'kyoto-nara'], googlePoints: ['Kansai International Airport', 'Kyoto Station', 'Kintetsu Nara Station'] },
-  { id: 'north-kinki', label: '北近畿段', segmentIds: ['kyoto-miyama', 'miyama-maizuru', 'maizuru-amanohashidate', 'amanohashidate-ine', 'amanohashidate-toyooka'], googlePoints: ['Kyoto Station', 'Miyama Kayabuki no Sato', 'Higashi-Maizuru Station', 'Amanohashidate Station', 'Toyooka Station Hyogo'] },
-  { id: 'sanin', label: '山阴段', segmentIds: ['toyooka-kinosaki', 'toyooka-tottori'], googlePoints: ['Toyooka Station Hyogo', 'Kinosaki Onsen Station', 'Tottori Station'] },
-  { id: 'return', label: '返京段', segmentIds: ['tottori-kyoto', 'kyoto-kix'], googlePoints: ['Tottori Station', 'Kyoto Station', 'Kansai International Airport'] }
+  { id: 'kansai', label: '关西段', segmentIds: ['kix-kyoto', 'kyoto-nara'], googlePoints: ['Kansai International Airport', 'Osaka Station', 'Kyoto Station', 'Kintetsu Nara Station'] },
+  { id: 'north-kinki', label: '北近畿段', segmentIds: ['kyoto-miyama', 'miyama-maizuru', 'maizuru-amanohashidate', 'amanohashidate-ine', 'amanohashidate-toyooka'], googlePoints: ['Kyoto Station', 'Hiyoshi Station Kyoto', 'Miyama Kayabuki no Sato', 'Ayabe Station', 'Higashi-Maizuru Station', 'Nishi-Maizuru Station', 'Amanohashidate Station', 'Ine Funaya', 'Toyooka Station Hyogo'] },
+  { id: 'sanin', label: '山阴段', segmentIds: ['toyooka-kinosaki', 'toyooka-tottori'], googlePoints: ['Toyooka Station Hyogo', 'Kinosaki Onsen Station', 'Sanin Kaigan Geopark', 'Tottori Station'] },
+  { id: 'return', label: '返京段', segmentIds: ['tottori-kyoto', 'kyoto-kix'], googlePoints: ['Tottori Station', 'Chizu Station', 'Kamigori Station', 'Osaka Station', 'Kyoto Station', 'Kansai International Airport'] }
 ];
 
 export const dayRouteIds = {

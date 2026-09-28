@@ -4,10 +4,6 @@ set -euo pipefail
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$PROJECT_DIR"
 
-if [ ! -f config.local.js ]; then
-  cp config.example.js config.local.js
-fi
-
 open_local_url() {
   if command -v open >/dev/null 2>&1; then
     open "http://localhost:5173"

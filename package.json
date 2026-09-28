@@ -4,13 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "ensure:config": "node scripts/ensure-config.mjs",
-    "dev": "npm run ensure:config && vite --host localhost --port 5173 --strictPort",
-    "build": "npm run ensure:config && vite build",
+    "dev": "vite --host localhost --port 5173 --strictPort",
+    "build": "vite build",
     "preview": "vite preview --host localhost --port 5173 --strictPort"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "2.1.3",
     "maplibre-gl": "6.11.2"
   },
   "devDependencies": {

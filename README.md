@@ -1,17 +1,24 @@
 # 2026 日本关西—北近畿—山阴 14晚独旅行程控制台
 
-Vanilla HTML/CSS/JavaScript + Vite 的旅行控制台。日常使用请通过本地服务器或 GitHub Pages 打开，不以 `file://` 作为正常运行方式。
+Vanilla HTML/CSS/JavaScript + Vite 的旅行控制台。在线版本可直接访问：
 
-## 在线访问与自动发布
+<https://757187064.github.io/osaka-around/>
 
-公开网站：<https://757187064.github.io/osaka-around/>
+## 地图与 Google Maps 跳转
 
-推送到 `main` 会由 `.github/workflows/deploy-pages.yml` 自动构建并发布 GitHub Pages。工作流会使用 `/osaka-around/` 作为 Vite 资源前缀，因此不应手动把 `dist/` 提交进仓库。
+- 页面内的固定总览使用 MapLibre GL JS + OpenFreeMap，不使用 Google Maps API，也不会请求 `tile.openstreetmap.org`。
+- 关西段、北近畿段、山阴段、返京段各有一条固定路线按钮。点击后会在用户当前的 Google Maps 网页或 App 打开，可自行编辑起终点、途经点和交通方式。
+- 住宿、景点、车站的 Google Maps 按钮同样只打开普通 Google Maps 搜索页。
+- 项目不包含 Google Cloud Billing、API key、Google Maps JavaScript API、Routes API 或 Places API 配置，不会产生 Google Maps Platform 的 API 调用费用。
+
+## 在线发布
+
+推送到 `main` 会由 `.github/workflows/deploy-pages.yml` 自动构建并发布 GitHub Pages。工作流使用 `/osaka-around/` 作为 Vite 资源前缀，不应手动提交 `dist/`。
 
 ## macOS 启动
 
 1. 双击 `start.command`。
-2. 首次运行会安装依赖、生成被忽略的空白 `config.local.js`，并打开 <http://localhost:5173>。
+2. 首次运行会安装依赖，并打开 <http://localhost:5173>。
 3. 保持终端窗口开启；按 `Control + C` 停止服务。
 
 若 macOS 阻止双击，在 Terminal 执行：
@@ -22,7 +29,7 @@ chmod +x start.command start.sh
 ./start.command
 ```
 
-若没有 Node.js，`start.sh` 会尝试用 Python 提供已构建的 `dist/` 版本；首次构建仍需 Node.js。
+若没有 Node.js，`start.sh` 会尝试用 Python 提供已经构建好的 `dist/`；首次构建仍需要 Node.js。
 
 ## Windows 启动
 
@@ -36,38 +43,12 @@ npm run dev
 
 打开 <http://localhost:5173>。生产构建使用 `npm run build`，本地预览使用 `npm run preview`。
 
-## Google Maps（可选）
-
-没有 key 时，页面完整使用 MapLibre GL JS + OpenFreeMap；不会请求 `tile.openstreetmap.org`。Google Maps 搜索与分段导航按钮不需要 key。
-
-要启用页面内嵌 Google Maps：
-
-1. 在 Google Cloud 建立项目、关联 Billing，并只启用 **Maps JavaScript API**。
-2. 创建浏览器 key，并将 **API 限制**设为 `Maps JavaScript API`。
-3. 将 **网站来源限制**设为：
-   - `http://localhost:5173/*`
-   - `https://757187064.github.io/osaka-around/*`
-4. 在本机把 `config.example.js` 复制为 `config.local.js` 并填写 key；该文件已被 Git 忽略：
-
-   ```js
-   window.TRIP_CONFIG = {
-     googleMapsApiKey: "YOUR_KEY"
-   };
-   ```
-
-5. 对 GitHub Pages，在仓库 **Settings → Secrets and variables → Actions** 新建 Repository secret：
-   `VITE_GOOGLE_MAPS_API_KEY`。下次推送或手动运行 Deploy workflow 后生效。
-
-浏览器地图 key 必然可被客户端读到，因此必须使用来源与 API 限制；不能把 key 写进业务源码。key 缺失、认证失败、超时或不可用时，页面自动回退到 OpenFreeMap，并显示当前提供方。
-
-Google Maps JavaScript API 的正式使用需要 Billing。当前 Dynamic Maps 每月前 10,000 次地图加载免费，之后按用量计费；应在 Google Cloud 设置预算提醒与配额。以 [Google Maps 价格表](https://developers.google.com/maps/billing-and-pricing/pricing) 与 [官方 key 配置说明](https://developers.google.com/maps/documentation/javascript/get-api-key) 为准。本项目不调用 Routes 或 Places API。
-
 ## 行程数据在哪里改
 
 - `data/days.js`：每日时间轴、天气 Plan B、地图联动地点。
 - `data/stays.js`：已购住宿与入住硬约束。
 - `data/transport.js`：交通分类、当前参考状态、JPY 预算。
-- `data/routes.js`：主环线交通走廊、三条当天往返、Google Maps 分段路线。
+- `data/routes.js`：主环线交通走廊、三条当天往返、四个 Google Maps 固定路线。
 - `data/checklist.js`：复核中心与官方入口。
 - `data/places.js`：坐标、marker 类型与 Google Maps 搜索名称。
 

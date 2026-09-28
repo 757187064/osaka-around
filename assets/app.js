@@ -1,4 +1,3 @@
-import '../config.local.js';
 import {
   LngLatBounds,
   Map as MapLibreMap,
@@ -9,7 +8,6 @@ import {
 } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
-import { importLibrary, setOptions } from '@googlemaps/js-api-loader';
 import {
   checklistGroups,
   dayRouteIds,
@@ -33,18 +31,11 @@ const $ = (selector) => document.querySelector(selector);
 const progressKey = 'japan-trip-2026-progress-v1';
 const daysByDate = Object.fromEntries(days.map((day) => [day.date, day]));
 const segmentsById = Object.fromEntries(routeSegments.map((segment) => [segment.id, segment]));
-const localConfig = window.TRIP_CONFIG || {};
-const config = {
-  // config.local.js only exists on the developer's machine. The production
-  // value is injected by GitHub Actions from a repository secret at build time.
-  googleMapsApiKey: localConfig.googleMapsApiKey?.trim() || import.meta.env.VITE_GOOGLE_MAPS_API_KEY?.trim() || ''
-};
 let activeDate = days[0].date;
 let mapAdapter = null;
 let sideTripsVisible = true;
 let resetArmed = false;
 let progress = readProgress();
-let googleAuthenticationError = '';
 
 function readProgress() {
   try {
@@ -277,163 +268,17 @@ async function loadOpenFreeMapStyle() {
   return style;
 }
 
-function googleIcons(type, opacity) {
-  const google = window.google;
-  if (type === 'main') return [{ icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW, scale: 3.3, strokeColor: '#063a90', fillColor: '#063a90', fillOpacity: opacity }, offset: '45%', repeat: '82px' }];
-  return [
-    { icon: { path: 'M 0,-1 0,1', strokeOpacity: opacity, strokeColor: '#d97706', scale: 4 }, offset: '0', repeat: '14px' },
-    { icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW, scale: 2.8, strokeColor: '#a65b00', fillColor: '#a65b00', fillOpacity: opacity }, offset: '50%', repeat: '92px' }
-  ];
-}
-
-class GoogleAdapter {
-  constructor(container) {
-    this.container = container;
-    this.map = null;
-    this.infoWindow = null;
-    this.routes = new Map();
-    this.markers = new Map();
-  }
-
-  async init() {
-    setOptions({ key: config.googleMapsApiKey, v: 'weekly', language: 'zh-CN', region: 'JP' });
-    const mapsLibrary = await withTimeout(importLibrary('maps'), 12000, 'Google Maps loading timeout');
-    if (!window.google?.maps) throw new Error('Google Maps unavailable');
-    this.map = new mapsLibrary.Map(this.container, { center: { lat: 35.2, lng: 135.1 }, zoom: 7.2, fullscreenControl: false, streetViewControl: false, mapTypeControl: false });
-    this.infoWindow = new window.google.maps.InfoWindow();
-    this.addRoutes();
-    this.addMarkers();
-    await new Promise((resolve) => window.google.maps.event.addListenerOnce(this.map, 'idle', resolve));
-    this.fitAll();
-  }
-
-  addRoutes() {
-    routeSegments.forEach((segment) => {
-      const forwards = [false];
-      if (segment.type === 'side') forwards.push(true);
-      forwards.forEach((reverse) => {
-        const id = `${segment.id}-${reverse ? 'back' : 'out'}`;
-        const line = new window.google.maps.Polyline({
-          path: segmentCoordinates(segment, reverse).map(([lng, lat]) => ({ lng, lat })), map: this.map,
-          strokeColor: segment.type === 'main' ? '#0b57d0' : '#d97706', strokeOpacity: segment.type === 'main' ? 0.92 : 0,
-          strokeWeight: segment.type === 'main' ? 6 : 4, icons: googleIcons(segment.type, 0.92), zIndex: segment.type === 'main' ? 3 : 2
-        });
-        this.routes.set(id, { segment, line, reverse });
-      });
-    });
-  }
-
-  addMarkers() {
-    places.filter((place) => place.kind !== 'corridor').forEach((place) => {
-      const color = { airport: '#6d28d9', stay: '#15803d', sight: '#c3342e', onsen: '#b45309', rail: '#2563eb' }[place.kind];
-      const label = place.sequence?.length ? place.sequence.join('/') : markerEmoji(place).replace(/<[^>]*>/g, '');
-      const marker = new window.google.maps.Marker({
-        position: { lat: place.lat, lng: place.lng }, map: this.map, title: place.name,
-        icon: { path: window.google.maps.SymbolPath.CIRCLE, fillColor: color, fillOpacity: 1, strokeColor: '#fff', strokeWeight: 3, scale: 12 },
-        label: { text: label, color: '#fff', fontSize: place.sequence?.length ? '9px' : '14px', fontWeight: '700' }
-      });
-      marker.addListener('click', () => {
-        const day = getContextDay(place);
-        this.showPopup(place, marker);
-        activateDay(day.date, { open: true, skipFly: true });
-        document.getElementById(`day-${day.date}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      this.markers.set(place.id, marker);
-    });
-  }
-
-  showPopup(place, marker) {
-    this.infoWindow.setContent(popupHtml(place));
-    this.infoWindow.open({ map: this.map, anchor: marker });
-    window.setTimeout(bindPopupActions, 0);
-  }
-
-  setHighlighted(routeIds) {
-    this.routes.forEach(({ segment, line, reverse }) => {
-      const visibleOpacity = routeIds.size === 0 || routeIds.has(segment.id) ? 0.92 : 0.16;
-      line.setOptions({ strokeOpacity: segment.type === 'main' ? visibleOpacity : 0, icons: googleIcons(segment.type, visibleOpacity), visible: segment.type === 'main' || sideTripsVisible });
-      if (segment.type === 'side' && reverse) line.setOptions({ zIndex: 2 });
-    });
-  }
-
-  selectDay(day) {
-    const routeIds = idsForDay(day);
-    this.setHighlighted(new Set(routeIds));
-    const bounds = boundsForSegments(routeIds);
-    if (bounds) {
-      const googleBounds = new window.google.maps.LatLngBounds();
-      const southwest = bounds.getSouthWest();
-      const northeast = bounds.getNorthEast();
-      googleBounds.extend({ lng: southwest.lng, lat: southwest.lat });
-      googleBounds.extend({ lng: northeast.lng, lat: northeast.lat });
-      this.map.fitBounds(googleBounds, 70);
-    } else {
-      const place = placesById[day.placeIds[0]];
-      if (place) this.map.panTo({ lat: place.lat, lng: place.lng });
-      this.map.setZoom(10);
-    }
-  }
-
-  fitAll() {
-    this.setHighlighted(new Set());
-    const bounds = new window.google.maps.LatLngBounds();
-    routeSegments.flatMap((segment) => segmentCoordinates(segment)).forEach(([lng, lat]) => bounds.extend({ lng, lat }));
-    this.map.fitBounds(bounds, 70);
-  }
-
-  setSideVisible(visible) {
-    this.routes.forEach(({ segment, line }) => { if (segment.type === 'side') line.setVisible(visible); });
-  }
-
-  destroy() {
-    this.routes.forEach(({ line }) => line.setMap(null));
-    this.markers.forEach((marker) => marker.setMap(null));
-    this.container.replaceChildren();
-  }
-}
-
-function withTimeout(promise, milliseconds, message) {
-  return Promise.race([
-    promise,
-    new Promise((_, reject) => window.setTimeout(() => reject(new Error(message)), milliseconds))
-  ]);
-}
-
 async function initializeMap() {
-  hideMapMessage();
-  if (mapAdapter) {
-    mapAdapter.destroy();
-    mapAdapter = null;
-  }
-  $('#map').replaceChildren();
-  const hasGoogleKey = Boolean(config.googleMapsApiKey?.trim());
-  if (hasGoogleKey) {
-    googleAuthenticationError = '';
-    setProvider('Google Maps 加载中');
-    try {
-      const adapter = new GoogleAdapter($('#map'));
-      await adapter.init();
-      if (googleAuthenticationError) throw new Error(googleAuthenticationError);
-      mapAdapter = adapter;
-      setProvider('Google Maps');
-      adapter.setSideVisible(sideTripsVisible);
-      adapter.fitAll();
-      return;
-    } catch {
-      await initializeOpenFreeMap('Google Maps 无法使用，已自动切换至 OpenFreeMap。');
-      return;
-    }
-  }
   await initializeOpenFreeMap();
 }
 
-async function initializeOpenFreeMap(reason = '') {
+async function initializeOpenFreeMap() {
   if (mapAdapter) {
     mapAdapter.destroy();
     mapAdapter = null;
   }
   $('#map').replaceChildren();
-  setProvider('OpenFreeMap fallback');
+  setProvider('OpenFreeMap 行程总览');
   try {
     const style = await loadOpenFreeMapStyle();
     const adapter = new MapLibreAdapter($('#map'), style);
@@ -442,15 +287,10 @@ async function initializeOpenFreeMap(reason = '') {
     adapter.setSideVisible(sideTripsVisible);
     adapter.fitAll();
   } catch {
-    setProvider('OpenFreeMap fallback');
-    showMapMessage(reason || 'OpenFreeMap 底图没有响应。请检查网络后重试；行程、路线与外部 Google Maps 按钮仍可使用。');
+    setProvider('OpenFreeMap 行程总览');
+    showMapMessage('OpenFreeMap 底图没有响应。请检查网络后重试；固定路线与外部 Google Maps 编辑按钮仍可使用。');
   }
 }
-
-window.gm_authFailure = () => {
-  googleAuthenticationError = 'Google Maps 认证失败';
-  if (mapAdapter instanceof GoogleAdapter) void initializeOpenFreeMap('Google Maps 认证失败，已切换至 OpenFreeMap。');
-};
 
 function renderHeader() {
   $('#heroTitle').textContent = trip.meta.heading;
@@ -471,8 +311,13 @@ function renderDashboard() {
 }
 
 function renderRouteControls() {
-  $('#routeGroupButtons').innerHTML = routeGroups.map((group) => `<a class="map-route-button" href="${directionsUrl(group.googlePoints)}" target="_blank" rel="noreferrer">${group.label} Google Maps ↗</a>`).join('');
-  $('#routeSummary').innerHTML = `<span class="route-summary-title">主环线</span>${mainRouteSequence.map(([number, label], index) => `<span class="route-node"><span class="route-number">${number}</span>${label}</span>${index < mainRouteSequence.length - 1 ? '<span class="route-arrow">→</span>' : ''}`).join('')}`;
+  $('#routeGroupButtons').innerHTML = routeGroups.map((group) => `<a class="map-route-button" href="${directionsUrl(group.googlePoints)}" target="_blank" rel="noreferrer">${group.label}：编辑路线 ↗</a>`).join('');
+  const mainRoute = `<div class="route-summary-main"><span class="route-summary-title">主环线</span>${mainRouteSequence.map(([number, label], index) => `<span class="route-node"><span class="route-number">${number}</span>${label}</span>${index < mainRouteSequence.length - 1 ? '<span class="route-arrow">→</span>' : ''}`).join('')}</div>`;
+  const planners = routeGroups.map((group) => {
+    const legs = group.segmentIds.map((id) => segmentsById[id]?.label).filter(Boolean).join(' · ');
+    return `<article class="route-planner-card"><div class="card-kicker">固定路线图</div><h4>${group.label}</h4><p>${legs}</p><a class="btn btn-primary" href="${directionsUrl(group.googlePoints)}" target="_blank" rel="noreferrer">在 Google Maps 编辑路线 ↗</a></article>`;
+  }).join('');
+  $('#routeSummary').innerHTML = `${mainRoute}<div class="route-planner-note">固定路线会在 Google Maps 网页或 App 中打开；可自行改交通方式、起终点和途经点，无需 API key。</div><div class="route-planner-grid">${planners}</div>`;
 }
 
 function renderStays() {
@@ -602,6 +447,6 @@ async function bootstrap() {
 }
 
 bootstrap().catch(() => {
-  setProvider('OpenFreeMap fallback');
+  setProvider('OpenFreeMap 行程总览');
   showMapMessage('页面其余行程已载入，但地图初始化失败。请检查网络后重试。');
 });
