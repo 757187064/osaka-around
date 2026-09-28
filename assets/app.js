@@ -70,8 +70,8 @@ function statusBadge(status) {
 function markerEmoji(place) {
   if (place.kind === 'airport') return '✈';
   if (place.kind === 'onsen') return '♨';
-  if (place.kind === 'rail') return '🚆';
   if (place.sequence?.length) return `<span class="sequence">${place.sequence.join('/')}</span>`;
+  if (place.kind === 'rail') return '🚆';
   return place.kind === 'stay' ? '●' : '●';
 }
 
@@ -87,6 +87,7 @@ function nextTransportText(day) {
 function popupHtml(place) {
   const day = getContextDay(place);
   return `<div class="popup-title">${escapeHtml(place.name)}</div>
+    ${place.address ? `<div class="popup-line"><strong>地址：</strong>${escapeHtml(place.address)}</div>` : ''}
     <div class="popup-line"><strong>日期：</strong>${escapeHtml(day.displayDate)} ${escapeHtml(day.weekday)}</div>
     <div class="popup-line"><strong>住宿：</strong>${escapeHtml(day.sleep)}</div>
     <div class="popup-line"><strong>当天任务：</strong>${escapeHtml(day.title)}</div>
@@ -321,7 +322,10 @@ function renderRouteControls() {
 }
 
 function renderStays() {
-  $('#stayGrid').innerHTML = stays.map((stay) => `<article class="card stay-card"><div class="stay-top"><span class="stay-city">${stay.city} · ${stay.dates} · ${stay.nights}晚</span>${statusBadge(stay.status)}</div><h4>${stay.name}</h4><div class="stay-meta">${stay.type}</div><ul>${stay.notes.map((note) => `<li>${note}</li>`).join('')}</ul>${stay.arrivalNote ? `<p class="arrival-note">${stay.arrivalNote}</p>` : ''}<div class="card-actions"><a class="btn btn-light" target="_blank" rel="noreferrer" href="${mapsSearchUrl(placesById[stay.placeId].query)}">Google Maps ↗</a></div></article>`).join('');
+  $('#stayGrid').innerHTML = stays.map((stay) => {
+    const place = placesById[stay.placeId];
+    return `<article class="card stay-card"><div class="stay-top"><span class="stay-city">${stay.city} · ${stay.dates} · ${stay.nights}晚</span>${statusBadge(stay.status)}</div><h4>${stay.name}</h4><div class="stay-meta">${stay.type}</div><p class="stay-address">📍 ${escapeHtml(place.address)}</p><ul>${stay.notes.map((note) => `<li>${note}</li>`).join('')}</ul>${stay.arrivalNote ? `<p class="arrival-note">${stay.arrivalNote}</p>` : ''}<div class="card-actions"><a class="btn btn-light" target="_blank" rel="noreferrer" href="${mapsSearchUrl(place.query)}">Google Maps ↗</a></div></article>`;
+  }).join('');
 }
 
 function renderTransport() {
