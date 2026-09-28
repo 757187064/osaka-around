@@ -3,6 +3,7 @@ const item = (time, label, detail) => ({ time, label, detail });
 export const days = [
   {
     date: '2026-12-02', displayDate: '12/2', weekday: '周三', title: '抵达日本｜KIX → 京都', base: '京都 · Kyoto Guesthouse HIVE', sleep: 'Kyoto Guesthouse HIVE', theme: '抵达 / 适应', risk: 'medium', placeIds: ['kix', 'kyoto'],
+    mapLegs: [{ from: 'Kansai International Airport', to: 'Kyoto Station', label: 'KIX → 京都站' }],
     timeline: [
       item('11:40', '起床', '已在大连机场；春秋航空 9C6987 起飞。'), item('出发前', '离开住宿', '离开大连，确认护照、订单和手提行李。'), item('15:30 后', '交通', '入境、T2 接驳与铁路；约 17:00 开始前往京都，优先 HARUKA。'), item('19:00–20:00', '抵达', '目标抵达 HIVE；如航班延误，先与旅舍联系。'), item('抵达后', '上午', '不安排景点，保留给入境与转场。'), item('晚上前', '午餐区域', '机场或京都站按实际时间简单用餐。'), item('傍晚', '下午', '完成入住，要求前台关联两张订单并尽量四晚同一床位。'), item('日落前', '日落前', '便利店补给、确认次日奈良出发点。'), item('晚上', '晚上', '晚餐、洗澡、休息；当天不安排景点。'), item('夜间', '回住宿', '回 Kyoto Guesthouse HIVE。'), item('重点', '交通注意', 'Flight 9C6987 arrives at KIX at 15:30. Expected arrival approximately 19:00–20:00. Please keep the reservation in case of flight delay.')
     ],
@@ -10,6 +11,7 @@ export const days = [
   },
   {
     date: '2026-12-03', displayDate: '12/3', weekday: '周四', title: '奈良一日游', base: '京都 · Kyoto Guesthouse HIVE', sleep: 'Kyoto Guesthouse HIVE', theme: '古都 / 鹿 / 寺社', risk: 'low', placeIds: ['kyoto', 'nara'],
+    mapLegs: [{ from: 'Kyoto Station', to: 'Kintetsu Nara Station', label: '京都 → 近铁奈良' }, { from: 'Kintetsu Nara Station', to: 'Kyoto Station', label: '近铁奈良 → 京都' }],
     timeline: [
       item('07:00', '起床', '轻装出门。'), item('07:45', '离开住宿', '从 HIVE 出发前往近铁方向。'), item('07:45–09:00', '交通', '京都 → 近铁奈良，优先近铁奈良站。'), item('约09:00', '抵达', '抵达近铁奈良，步行进入奈良公园区域。'), item('09:00–12:00', '上午', '兴福寺 → 奈良公园 → 东大寺 → 二月堂。'), item('12:00–13:00', '午餐区域', '东向商店街／奈良町。'), item('13:00–16:30', '下午', '春日大社 → 春日原始林外围 → 奈良町。'), item('16:30–17:00', '日落前', '结束奈良町步行，回站前留出余量。'), item('17:00–18:30', '晚上', '返回京都后在河原町附近自由晚餐。'), item('晚间', '回住宿', '回 Kyoto Guesthouse HIVE。'), item('重点', '交通注意', '近铁奈良站位置更贴近奈良公园；当天 IC／现场即可。')
     ],
@@ -17,6 +19,7 @@ export const days = [
   },
   {
     date: '2026-12-04', displayDate: '12/4', weekday: '周五', title: '京都东部／东北部', base: '京都 · Kyoto Guesthouse HIVE', sleep: 'Kyoto Guesthouse HIVE', theme: '寺院 / 步行 / 初冬', risk: 'low', placeIds: ['kyoto'],
+    mapLegs: [{ from: 'Kyoto Station', to: 'Nanzen-ji Temple', label: '京都站 → 南禅寺' }, { from: 'Nanzen-ji Temple', to: 'Kawaramachi Station Kyoto', label: '南禅寺 → 河原町' }],
     timeline: [
       item('07:00', '起床', '早餐后准备东山步行。'), item('08:00', '离开住宿', '从 HIVE 出发前往南禅寺。'), item('08:00–08:30', '交通', '市内公共交通至南禅寺周边。'), item('08:30', '抵达', '抵达南禅寺入口。'), item('08:30–11:30', '上午', '南禅寺 → 水路阁 → 永观堂。'), item('11:30–13:00', '午餐区域', '哲学之道／冈崎周边。'), item('13:00–16:00', '下午', '哲学之道 → 法然院 → 真如堂。'), item('16:00–17:00', '日落前', '吉田山、出町柳、鸭川，随天色收束。'), item('晚上', '晚上', '河原町／先斗町晚饭。'), item('晚间', '回住宿', '回 Kyoto Guesthouse HIVE。'), item('重点', '交通注意', '路线不依赖红叶满开；按步行体力删减一处寺院即可。')
     ],
@@ -24,6 +27,7 @@ export const days = [
   },
   {
     date: '2026-12-05', displayDate: '12/5', weekday: '周六', title: '岚山深度游', base: '京都 · Kyoto Guesthouse HIVE', sleep: 'Kyoto Guesthouse HIVE', theme: '岚山 / 安静古街', risk: 'low', placeIds: ['kyoto'],
+    mapLegs: [{ from: 'Kyoto Station', to: 'Arashiyama Station', label: '京都站 → 岚山站' }, { from: 'Arashiyama Station', to: 'Kyoto Station', label: '岚山站 → 京都站' }],
     timeline: [
       item('06:45', '起床', '周六尽量早起。'), item('07:20', '离开住宿', '轻装前往岚山。'), item('07:20–08:00', '交通', '京都市内 → 岚山。'), item('08:00', '抵达', '抵达渡月桥区域。'), item('08:00–10:00', '上午', '渡月桥 → 天龙寺 → 竹林。'), item('10:00–11:00', '午餐区域', '岚山核心区提前简单用餐。'), item('11:00–15:30', '下午', '常寂光寺 → 祇王寺 → 嵯峨鸟居本。'), item('16:00 前', '日落前', '早点返回京都，不继续横跨全城。'), item('晚上', '晚上', '整理 12/6 轻装，早睡。'), item('晚间', '回住宿', '回 Kyoto Guesthouse HIVE。'), item('重点', '交通注意', '周六人流大；重点是嵯峨后半段，不是压缩打卡。')
     ],
@@ -31,6 +35,7 @@ export const days = [
   },
   {
     date: '2026-12-06', displayDate: '12/6', weekday: '周日', title: '重点交通日｜京都 → 美山 → 东舞鹤', base: '东舞鹤 · GATEWAY MAIZURU', sleep: 'GATEWAY MAIZURU', theme: '全程最大交通核查点', risk: 'high', placeIds: ['kyoto', 'hiyoshi', 'miyama', 'ayabe', 'maizuru'],
+    mapLegs: [{ from: 'Kyoto Station', to: 'Hiyoshi Station Kyoto', label: '京都 → 日吉' }, { from: 'Hiyoshi Station Kyoto', to: 'Miyama Kayabuki no Sato', label: '日吉 → 美山' }, { from: 'Miyama Kayabuki no Sato', to: 'Hiyoshi Station Kyoto', label: '美山 → 日吉' }, { from: 'Hiyoshi Station Kyoto', to: 'Ayabe Station', label: '日吉 → 绫部' }, { from: 'Ayabe Station', to: 'Higashi-Maizuru Station', label: '绫部 → 东舞鹤' }],
     timeline: [
       item('06:20–06:30', '起床', '早餐尽量简单，检查现金和充电。'), item('06:55', '离开住宿', '离开 HIVE，目标 07:25–07:35 到京都站。'), item('08:00 左右', '交通', '京都 → 日吉；当前参考，必须在 11 月底前复核。'), item('10:00', '抵达', '当前参考：日吉 09:10 巴士 → 美山，10:00 抵达。'), item('10:00–12:00', '上午', '茅葺村落、拍照与慢步行。'), item('12:00–13:00', '午餐区域', '美山茅葺之里内解决午餐。'), item('13:00–14:35', '下午', '继续村落散步；14:54 前回到巴士点。'), item('14:54–15:45', '日落前', '美山 → 日吉；冬季日落早，不延后。'), item('18:00 左右', '晚上', '日吉 → 绫部 → 东舞鹤后入住、晚饭、休息。'), item('夜间', '回住宿', '回 GATEWAY MAIZURU。'), item('重点', '交通注意', '南丹市营巴士不要依赖 ICOCA；准备现金／官方支持电子支付。现有班次仅供参考，11/20–11/25 与 11 月底均需复核。')
     ],
@@ -38,6 +43,7 @@ export const days = [
   },
   {
     date: '2026-12-07', displayDate: '12/7', weekday: '周一', title: '东舞鹤 → 天桥立', base: '天桥立 · Auberge Amanohashidate', sleep: 'Auberge Amanohashidate', theme: '红砖 / 海港 / 入住', risk: 'medium', placeIds: ['maizuru', 'nishi-maizuru', 'amanohashidate'],
+    mapLegs: [{ from: 'Higashi-Maizuru Station', to: 'Nishi-Maizuru Station', label: '东舞鹤 → 西舞鹤' }, { from: 'Nishi-Maizuru Station', to: 'Amanohashidate Station', label: '西舞鹤 → 天桥立' }],
     timeline: [
       item('07:30', '起床', '正常早餐，不必过早撤离。'), item('08:30', '离开住宿', '从 GATEWAY 出发步行至东舞鹤站／港区。'), item('上午', '交通', '以步行为主；下午搭 JR + 京都丹后铁道。'), item('09:00', '抵达', '抵达舞鹤红砖公园与港区。'), item('09:00–11:15', '上午', '舞鹤红砖公园、港区、海军相关区域。'), item('11:30–12:30', '午餐区域', '东舞鹤站／港区。'), item('13:00–14:30', '下午', '当前参考：东舞鹤 13:23 → 西舞鹤 13:29；13:37 → 天桥立 14:16。'), item('15:30–16:00', '日落前', '入住 Auberge，最晚不得超过 17:00。'), item('晚上', '晚上', '智恩寺、廻旋桥、沙洲南端初览；可使用旁边大浴场。'), item('晚间', '回住宿', '回 Auberge Amanohashidate。'), item('重点', '交通注意', '12 月时刻必须 11 月底复核；天气恶劣时提前一班离开东舞鹤。')
     ],
@@ -45,6 +51,7 @@ export const days = [
   },
   {
     date: '2026-12-08', displayDate: '12/8', weekday: '周二', title: '伊根一日游', base: '天桥立 · Auberge Amanohashidate', sleep: 'Auberge Amanohashidate', theme: '舟屋 / 海湾 / 慢旅行', risk: 'medium', placeIds: ['amanohashidate', 'ine'],
+    mapLegs: [{ from: 'Amanohashidate Station', to: 'Ine Funaya', label: '天桥立 → 伊根' }, { from: 'Ine Funaya', to: 'Amanohashidate Station', label: '伊根 → 天桥立' }],
     timeline: [
       item('07:30', '起床', '早餐后准备海边防风衣物。'), item('09:10', '离开住宿', '前往天桥立站／巴士上车点。'), item('09:25', '交通', '提前候车；当前参考 09:50 天桥立 → 伊根。'), item('10:33', '抵达', '抵达伊根。'), item('10:33–12:00', '上午', '舟屋街区与伊根湾步行。'), item('12:00–13:00', '午餐区域', '伊根当地。'), item('13:00–15:20', '下午', '伊根湾游船、舟屋、高处景观；海况不好就不强求游船。'), item('15:50–16:33', '日落前', '当前参考伊根 → 天桥立。'), item('晚上', '晚上', '大浴场、晚饭。'), item('晚间', '回住宿', '回 Auberge Amanohashidate。'), item('重点', '交通注意', '特殊巴士，目前不是必须预约；不依赖 IC 卡，11 月底复核运行。')
     ],
@@ -52,6 +59,7 @@ export const days = [
   },
   {
     date: '2026-12-09', displayDate: '12/9', weekday: '周三', title: '天桥立完整日', base: '天桥立 · Auberge Amanohashidate', sleep: 'Auberge Amanohashidate', theme: '双侧展望 / 沙洲 / 神社', risk: 'low', placeIds: ['amanohashidate'],
+    mapLegs: [{ from: 'Amanohashidate Station', to: 'Amanohashidate View Land', label: '天桥立站 → View Land' }, { from: 'Amanohashidate View Land', to: 'Motoise Kono Shrine', label: 'View Land → 笼神社' }],
     timeline: [
       item('08:00', '起床', '先看天气与能见度。'), item('08:30', '离开住宿', '步行前往南侧展望区域。'), item('上午', '交通', '步行／自行车／缆车，按当日风力选择。'), item('08:30', '抵达', '抵达 View Land。'), item('08:30–10:30', '上午', 'View Land、飞龙观、智恩寺。'), item('12:00', '午餐区域', '沙洲南端／车站附近。'), item('13:00–16:15', '下午', '租自行车穿越沙洲 → 元伊势笼神社 → 真名井神社 → 伞松公园。'), item('16:00 后', '日落前', '开始返回，不向更远地区扩展。'), item('晚上', '晚上', '大浴场与慢晚饭。'), item('晚间', '回住宿', '回 Auberge Amanohashidate。'), item('重点', '交通注意', '风大时改为单侧展望与神社，不强行骑行穿越。')
     ],
@@ -59,6 +67,7 @@ export const days = [
   },
   {
     date: '2026-12-10', displayDate: '12/10', weekday: '周四', title: '天桥立 → 丰冈 → 城崎温泉', base: '丰冈 · Hostel Act', sleep: 'Toyooka Guesthouse Hostel Act', theme: '转场 / 温泉街夜景', risk: 'medium', placeIds: ['amanohashidate', 'toyooka', 'kinosaki'],
+    mapLegs: [{ from: 'Amanohashidate Station', to: 'Toyooka Station Hyogo', label: '天桥立 → 丰冈' }, { from: 'Toyooka Station Hyogo', to: 'Kinosaki Onsen Station', label: '丰冈 → 城崎温泉' }, { from: 'Kinosaki Onsen Station', to: 'Toyooka Station Hyogo', label: '城崎温泉 → 丰冈' }],
     timeline: [
       item('08:00', '起床', '上午慢一点，收拾离开天桥立。'), item('11:30', '离开住宿', '退房后前往天桥立站。'), item('13:18', '交通', '当前参考：天桥立 → 丰冈，14:41 抵达；11 月底复核。'), item('15:00', '抵达', '抵达丰冈后入住／放行李。'), item('上午', '上午', '天桥立最后散步，不赶早班。'), item('11:30–12:30', '午餐区域', '天桥立站附近。'), item('15:45–18:30', '下午', '丰冈 → 城崎温泉普通 JR；温泉街、河边、第一批外汤。'), item('日落后', '日落前', '大谿川与温泉街夜景。'), item('晚上', '晚上', '晚餐后返回丰冈。'), item('20:30–21:00', '回住宿', '普通 JR 回 Toyooka Guesthouse Hostel Act，不赌最后一班。'), item('重点', '交通注意', '星期四当前参考御所之汤、柳汤可能固定休息，因此泡汤主力放 12/11。')
     ],
@@ -66,6 +75,7 @@ export const days = [
   },
   {
     date: '2026-12-11', displayDate: '12/11', weekday: '周五', title: '完整城崎温泉日', base: '丰冈 · Hostel Act', sleep: 'Toyooka Guesthouse Hostel Act', theme: '外汤 / 缆车 / 慢泡', risk: 'medium', placeIds: ['toyooka', 'kinosaki'],
+    mapLegs: [{ from: 'Toyooka Station Hyogo', to: 'Kinosaki Onsen Station', label: '丰冈 → 城崎温泉' }, { from: 'Kinosaki Onsen Station', to: 'Toyooka Station Hyogo', label: '城崎温泉 → 丰冈' }],
     timeline: [
       item('07:30', '起床', '早餐后前往城崎。'), item('08:30', '离开住宿', '从 Hostel Act 前往丰冈站。'), item('08:30–09:00', '交通', '普通 JR 丰冈 → 城崎温泉。'), item('09:00', '抵达', '抵达城崎温泉站。'), item('09:00–11:30', '上午', '城崎温泉寺、缆车；优先完成有营业时间的项目。'), item('11:30–13:00', '午餐区域', '温泉街。'), item('13:00–17:00', '下午', '可购买 Yumepa 外汤一日券（当前约 ¥1,500）；穿插咖啡甜品，不机械刷汤。'), item('17:00–19:30', '日落前', '黄昏以后的温泉街夜景与晚饭。'), item('晚上', '晚上', '再泡一汤，看体力决定。'), item('20:30–21:00', '回住宿', '普通 JR 回丰冈，勿把末班当计划。'), item('重点', '交通注意', '当前参考さとの湯处于重建休业；外汤开放与票价须出发前复核。')
     ],
@@ -73,6 +83,7 @@ export const days = [
   },
   {
     date: '2026-12-12', displayDate: '12/12', weekday: '周六', title: '丰冈 → 鸟取', base: '鸟取 · Drop Inn Tottori', sleep: 'Drop Inn Tottori', theme: '普通列车 / 海岸 / 鸟取初见', risk: 'medium', placeIds: ['toyooka', 'sanin-coast', 'tottori'],
+    mapLegs: [{ from: 'Toyooka Station Hyogo', to: 'Tottori Station', label: '丰冈 → 鸟取' }],
     timeline: [
       item('07:30', '起床', '早餐、收拾行李。'), item('10:00', '离开住宿', '退房后前往丰冈站。'), item('中午前后', '交通', '优先普通山阴本线省钱方案；不写死 12 月未核实班次。'), item('中午–下午早些', '抵达', '目标抵达鸟取，先放行李并尽量 20:00 前完成入住。'), item('上午', '上午', '丰冈站周边／收拾，为衔接留余量。'), item('中午', '午餐区域', '丰冈站或换乘站按实际班次。'), item('15:00–17:00', '下午', '天气好：白兔海岸／白兔神社；或鸟取城迹，二选一。'), item('日落前', '日落前', '回鸟取站附近，避免冬季海边拖晚。'), item('晚上', '晚上', '鸟取站附近晚饭。'), item('晚间', '回住宿', '回 Drop Inn Tottori。'), item('重点', '交通注意', '11 月底复核丰冈 → 鸟取；不要把其他日期的特急运行规则硬套。')
     ],
@@ -80,6 +91,7 @@ export const days = [
   },
   {
     date: '2026-12-13', displayDate: '12/13', weekday: '周日', title: '鸟取核心日', base: '鸟取 · Drop Inn Tottori', sleep: 'Drop Inn Tottori', theme: '砂丘 / 冬季日本海', risk: 'medium', placeIds: ['tottori'],
+    mapLegs: [{ from: 'Tottori Station', to: 'Tottori Sand Dunes', label: '鸟取站 → 鸟取砂丘' }, { from: 'Tottori Sand Dunes', to: 'The Sand Museum', label: '鸟取砂丘 → 砂之美术馆' }],
     timeline: [
       item('07:00', '起床', '天气好就早出门。'), item('08:00', '离开住宿', '从 Drop Inn 前往鸟取砂丘。'), item('08:00–08:30', '交通', '市内巴士前往砂丘，按当日班次确认。'), item('08:30', '抵达', '抵达鸟取砂丘。'), item('08:30–10:30', '上午', '鸟取砂丘。'), item('12:00', '午餐区域', '砂丘周边或回鸟取站方向。'), item('10:30–12:00 / 13:00 后', '下午', '砂之美术馆（2026 西班牙主题展期参考：4/24–2027/1/3）；天气好才考虑浦富海岸。'), item('16:00 前', '日落前', '浦富海岸仅作为天气加分项，不与白兔神社硬塞同日。'), item('晚上', '晚上', '鸟取最后一晚，整理次日指定席出发。'), item('晚间', '回住宿', '回 Drop Inn Tottori。'), item('重点', '交通注意', '冬季日本海风浪与公交间隔优先；砂丘、浦富、白兔不全塞一天。')
     ],
@@ -87,6 +99,7 @@ export const days = [
   },
   {
     date: '2026-12-14', displayDate: '12/14', weekday: '周一', title: '鸟取 → 京都', base: '京都 · Piece Hostel Sanjo', sleep: 'Piece Hostel Sanjo', theme: '指定席 / 京都收尾', risk: 'medium', placeIds: ['tottori', 'chizu', 'kamigori-himeji', 'kyoto'],
+    mapLegs: [{ from: 'Tottori Station', to: 'Osaka Station', label: '鸟取 → 大阪' }, { from: 'Osaka Station', to: 'Kyoto Station', label: '大阪 → 京都' }],
     timeline: [
       item('08:00', '起床', '早餐、整理与最后买伴手礼。'), item('11:30', '离开住宿', '退房并前往鸟取站。'), item('14:21 前', '交通', 'Super Hakuto → 大阪（当前参考约 16:48）→ JR 新快速 → 京都。'), item('17:20–17:40', '抵达', '目标到京都，前往 Piece Hostel Sanjo 入住。'), item('上午', '上午', '鸟取站周边轻松收尾，不安排远景点。'), item('11:30–13:20', '午餐区域', '鸟取站附近。'), item('下午', '下午', '以列车转场为主；全车指定席，提前处理购票。'), item('傍晚', '日落前', '京都入住后在三条／河原町散步。'), item('晚上', '晚上', '三条／河原町晚饭。'), item('晚间', '回住宿', '回 Piece Hostel Sanjo。'), item('重点', '交通注意', 'Super Hakuto 全车指定席，建议乘车前 7–21 天主动购买；最终时刻 11 月底复核。')
     ],
@@ -94,6 +107,7 @@ export const days = [
   },
   {
     date: '2026-12-15', displayDate: '12/15', weekday: '周二', title: '京都最后完整一天', base: '京都 · Piece Hostel Sanjo', sleep: 'Piece Hostel Sanjo', theme: '市中心 / 购物 / 弹性', risk: 'low', placeIds: ['kyoto'],
+    mapLegs: [{ from: 'Kyoto Sanjo Station', to: 'Nishiki Market', label: '三条 → 锦市场' }, { from: 'Nishiki Market', to: 'Kennin-ji Temple', label: '锦市场 → 建仁寺' }],
     timeline: [
       item('08:00', '起床', '不赶远景点。'), item('09:00', '离开住宿', '从 Piece Hostel Sanjo 步行前往市中心。'), item('全天', '交通', '市内步行与短程公共交通。'), item('09:00', '抵达', '抵达锦市场／寺町一带。'), item('09:00–11:30', '上午', '锦市场 → 寺町 → 新京极。'), item('11:30–13:00', '午餐区域', '河原町／三条。'), item('13:00–16:00', '下午', '晴天：建仁寺 + 祇园白川；雨雪：京都国际漫画博物馆 + 购物。'), item('16:00–19:30', '日落前', '河原町／三条最后购物。'), item('晚上', '晚上', '最后晚餐、整理行李。'), item('晚间', '回住宿', '回 Piece Hostel Sanjo，确认返程行李重量。'), item('重点', '交通注意', '返程可能额外购买 5kg 托运，但当前不能显示为已购买。')
     ],
@@ -101,6 +115,7 @@ export const days = [
   },
   {
     date: '2026-12-16', displayDate: '12/16', weekday: '周三', title: '京都 → KIX → 大连', base: '返程', sleep: '—', theme: '机场 / 离境', risk: 'medium', placeIds: ['kyoto', 'kix'],
+    mapLegs: [{ from: 'Kyoto Station', to: 'Kansai International Airport', label: '京都站 → KIX' }],
     timeline: [
       item('07:30', '起床', '早餐、最后收拾。'), item('09:45–10:00', '离开住宿', '离开 Piece Hostel Sanjo，前往京都站。'), item('11:00 左右', '交通', '当前参考 HARUKA 京都 → KIX；抵达铁路站后转 T2 免费接驳。'), item('约13:00', '抵达', '目标已抵达 KIX T2，办理值机、托运、安检与出境。'), item('上午', '上午', '预留给京都站、机场铁路和接驳。'), item('中午', '午餐区域', 'KIX T2 安检前后按实际时间。'), item('12:20–12:50', '下午', '当前参考：约 12:20 到机场铁路站，约 12:35–12:50 到 T2。'), item('13:00 前', '日落前', '已完成到达 T2 的目标，不做卡点计划。'), item('16:30', '晚上', '9C6988 起飞，18:15 抵达大连。'), item('返程后', '回住宿', '不适用。'), item('重点', '交通注意', 'KIX 春秋实际航站楼、航班状态与 HARUKA 必须在出发前 24–48 小时复核。')
     ],

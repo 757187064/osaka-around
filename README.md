@@ -7,7 +7,7 @@ Vanilla HTML/CSS/JavaScript + Vite 的旅行控制台。在线版本可直接访
 ## 地图与 Google Maps 跳转
 
 - 页面内的固定总览使用 MapLibre GL JS + OpenFreeMap，不使用 Google Maps API，也不会请求 `tile.openstreetmap.org`。
-- 关西段、北近畿段、山阴段、返京段各有一条固定路线按钮。点击后会在用户当前的 Google Maps 网页或 App 打开，可自行编辑起终点、途经点和交通方式。
+- 四个区域与每日行程均按真实交通段拆成独立的“起点 → 终点”按钮；每次只提交一段给 Google Maps，以便获得公共交通方案，并可在网页或 App 内继续编辑。
 - 住宿、景点、车站的 Google Maps 按钮同样只打开普通 Google Maps 搜索页。
 - 项目不包含 Google Cloud Billing、API key、Google Maps JavaScript API、Routes API 或 Places API 配置，不会产生 Google Maps Platform 的 API 调用费用。
 
@@ -45,10 +45,10 @@ npm run dev
 
 ## 行程数据在哪里改
 
-- `data/days.js`：每日时间轴、天气 Plan B、地图联动地点。
+- `data/days.js`：每日时间轴、天气 Plan B、地图联动地点，以及每天独立的 Google Maps 起点 → 终点链接。
 - `data/stays.js`：已购住宿与入住硬约束。
 - `data/transport.js`：交通分类、当前参考状态、JPY 预算。
-- `data/routes.js`：主环线交通走廊、三条当天往返、四个 Google Maps 固定路线。
+- `data/routes.js`：主环线交通走廊、三条当天往返与区域分段路线。
 - `data/checklist.js`：复核中心与官方入口。
 - `data/places.js`：坐标、marker 类型与 Google Maps 搜索名称。
 

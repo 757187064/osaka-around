@@ -57,12 +57,8 @@ function mapsSearchUrl(query) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
-function directionsUrl(points) {
-  const [origin, ...rest] = points;
-  const destination = rest.at(-1);
-  const waypoints = rest.slice(0, -1);
+function directionsUrl(origin, destination) {
   const params = new URLSearchParams({ api: '1', origin, destination, travelmode: 'transit' });
-  if (waypoints.length) params.set('waypoints', waypoints.join('|'));
   return `https://www.google.com/maps/dir/?${params}`;
 }
 
@@ -311,13 +307,17 @@ function renderDashboard() {
 }
 
 function renderRouteControls() {
-  $('#routeGroupButtons').innerHTML = routeGroups.map((group) => `<a class="map-route-button" href="${directionsUrl(group.googlePoints)}" target="_blank" rel="noreferrer">${group.label}：编辑路线 ↗</a>`).join('');
+  $('#routeGroupButtons').innerHTML = routeGroups.map((group) => `<a class="map-route-button" href="#planner-${group.id}">${group.label}：分段路线 ↓</a>`).join('');
   const mainRoute = `<div class="route-summary-main"><span class="route-summary-title">主环线</span>${mainRouteSequence.map(([number, label], index) => `<span class="route-node"><span class="route-number">${number}</span>${label}</span>${index < mainRouteSequence.length - 1 ? '<span class="route-arrow">→</span>' : ''}`).join('')}</div>`;
   const planners = routeGroups.map((group) => {
-    const legs = group.segmentIds.map((id) => segmentsById[id]?.label).filter(Boolean).join(' · ');
-    return `<article class="route-planner-card"><div class="card-kicker">固定路线图</div><h4>${group.label}</h4><p>${legs}</p><a class="btn btn-primary" href="${directionsUrl(group.googlePoints)}" target="_blank" rel="noreferrer">在 Google Maps 编辑路线 ↗</a></article>`;
+    const legs = group.segmentIds.map((id) => segmentsById[id]).filter(Boolean).map((segment) => {
+      const from = placesById[segment.points[0]];
+      const to = placesById[segment.points.at(-1)];
+      return `<div class="route-leg"><span>${escapeHtml(from.name)} → ${escapeHtml(to.name)}</span><a class="btn btn-light" href="${directionsUrl(from.query, to.query)}" target="_blank" rel="noreferrer">Google Maps 路线 ↗</a></div>`;
+    }).join('');
+    return `<article class="route-planner-card" id="planner-${group.id}"><div class="card-kicker">一点 → 另一点</div><h4>${group.label}</h4><p>每次仅把这一段的起点和终点交给 Google Maps，方便计算公共交通并自行调整。</p><div class="route-leg-list">${legs}</div></article>`;
   }).join('');
-  $('#routeSummary').innerHTML = `${mainRoute}<div class="route-planner-note">固定路线会在 Google Maps 网页或 App 中打开；可自行改交通方式、起终点和途经点，无需 API key。</div><div class="route-planner-grid">${planners}</div>`;
+  $('#routeSummary').innerHTML = `${mainRoute}<div class="route-planner-note">不再把多段交通塞进一个 Google Maps 请求。每个按钮只打开一段“起点 → 终点”的公共交通规划；在 Google Maps 网页或 App 中可继续编辑。</div><div class="route-planner-grid">${planners}</div>`;
 }
 
 function renderStays() {
@@ -336,9 +336,23 @@ function renderExperiences() {
   }).join('');
 }
 
+function dayGoogleMapsLinks(day) {
+  const legs = day.mapLegs?.length ? day.mapLegs : idsForDay(day).map((id) => {
+    const segment = segmentsById[id];
+    const from = placesById[segment.points[0]];
+    const to = placesById[segment.points.at(-1)];
+    return { from: from.query, to: to.query, label: `${from.name} → ${to.name}` };
+  });
+  if (!legs.length) {
+    const place = placesById[day.placeIds[0]];
+    return `<a class="btn btn-light" href="${mapsSearchUrl(place.query)}" target="_blank" rel="noreferrer">Google Maps 查看当天地点 ↗</a>`;
+  }
+  return legs.map((leg) => `<a class="btn btn-light" href="${directionsUrl(leg.from, leg.to)}" target="_blank" rel="noreferrer">${escapeHtml(leg.label)} ↗</a>`).join('');
+}
+
 function renderDays() {
   $('#dateNav').innerHTML = days.map((day) => `<button class="date-nav-button ${day.date === activeDate ? 'active' : ''}" data-day-nav="${day.date}">${day.displayDate}</button>`).join('');
-  $('#timeline').innerHTML = days.map((day, index) => `<article class="card day-card risk-${day.risk} ${index === 0 ? 'open' : ''}" id="day-${day.date}" data-day-card="${day.date}"><button class="day-toggle" aria-expanded="${index === 0}" data-day-toggle="${day.date}"><div><div class="day-date">${day.displayDate}</div><div class="weekday">${day.weekday}</div></div><div><div class="day-title">${day.title}</div><div class="day-base">住宿 / 基地：${day.base}</div></div><div class="theme-tag">${day.theme}</div></button><div class="day-body"><div class="schedule">${day.timeline.map((entry) => `<div class="slot"><div class="slot-time">${entry.time}</div><div class="slot-title">${entry.label}</div><div class="slot-detail">${entry.detail}</div></div>`).join('')}</div><div class="weather-plan"><div class="weather-item"><strong>☀️ 正常计划</strong>${day.weather.sun}</div><div class="weather-item"><strong>🌧 雨天</strong>${day.weather.rain}</div><div class="weather-item"><strong>❄️ 大雪／强风</strong>${day.weather.snow}</div></div><div class="day-map-action no-print"><button class="btn btn-light" data-day-map="${day.date}">在地图定位当天路线</button></div></div></article>`).join('');
+  $('#timeline').innerHTML = days.map((day, index) => `<article class="card day-card risk-${day.risk} ${index === 0 ? 'open' : ''}" id="day-${day.date}" data-day-card="${day.date}"><button class="day-toggle" aria-expanded="${index === 0}" data-day-toggle="${day.date}"><div><div class="day-date">${day.displayDate}</div><div class="weekday">${day.weekday}</div></div><div><div class="day-title">${day.title}</div><div class="day-base">住宿 / 基地：${day.base}</div></div><div class="theme-tag">${day.theme}</div></button><div class="day-body"><div class="schedule">${day.timeline.map((entry) => `<div class="slot"><div class="slot-time">${entry.time}</div><div class="slot-title">${entry.label}</div><div class="slot-detail">${entry.detail}</div></div>`).join('')}</div><div class="weather-plan"><div class="weather-item"><strong>☀️ 正常计划</strong>${day.weather.sun}</div><div class="weather-item"><strong>🌧 雨天</strong>${day.weather.rain}</div><div class="weather-item"><strong>❄️ 大雪／强风</strong>${day.weather.snow}</div></div><div class="day-map-action no-print"><button class="btn btn-light" data-day-map="${day.date}">在网页地图定位当天路线</button><div class="day-route-links"><span>Google Maps 当日交通（每次仅一段）：</span>${dayGoogleMapsLinks(day)}</div></div></div></article>`).join('');
   document.querySelectorAll('[data-day-nav]').forEach((button) => button.addEventListener('click', () => activateDay(button.dataset.dayNav, { scroll: true, open: true })));
   document.querySelectorAll('[data-day-toggle]').forEach((button) => button.addEventListener('click', () => {
     const card = document.getElementById(`day-${button.dataset.dayToggle}`);
