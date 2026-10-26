@@ -1,0 +1,577 @@
+{
+  "nara": {
+    "path": "assets/images/nara.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Nara_Todai-ji_Daibutsuden_Exterior_South_Side_12.jpg",
+    "author": "Zairon",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "description": "South Side of the Great Buddha Hall of the Todai Temple, Nara, Prefecture of Nara, Region of Kinki, Japan",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 450498
+  },
+  "nigatsudo": {
+    "path": "assets/images/nigatsudo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Nigatsu-d%C5%8D_at_Todaiji_1.jpg",
+    "author": "Christophe95",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Nigatsu-dō at Todaiji in Nara.",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 478086
+  },
+  "kasuga": {
+    "path": "assets/images/kasuga.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Stone_lanterns_in_Kasuga-taisha-1.jpg",
+    "author": "Immanuelle",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "description": "A photo I took at Kasuga Taisha",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 501213
+  },
+  "eikando": {
+    "path": "assets/images/eikando.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Eikan-do_Zenrin-ji,_November_2016_-03.jpg",
+    "author": "Martin Falbisoner",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Eikan-dō Zenrin-ji is the head temple for the Seizan branch of Japan's Jōdo-shū (Pure Land) Buddhist sect, located in Kyoto. It is famous for its fall foliage and for its prominence in the past as a center of learning.",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 499996
+  },
+  "philosopher": {
+    "path": "assets/images/philosopher.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tetsugaku_no_Michi_01.JPG",
+    "author": "Reggaeman",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "description": "The Philosopher's Walk(Tetsugaku no Michi),way to Ginkakuji",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 552343
+  },
+  "demachi": {
+    "path": "assets/images/demachi.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:RZ_Demachi_Masugata_shopping_street_A.jpg",
+    "author": "Razgrad",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "京都市上京区の出町枡形商店街。",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 261924
+  },
+  "shimogamo": {
+    "path": "assets/images/shimogamo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Bridge_and_stream_at_Shimogamo_Shrine.jpg",
+    "author": "Grendelkhan",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "A bridge over a small stream at Shimogamo Shrine in Kyoto.",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 1131255
+  },
+  "arashiyama": {
+    "path": "assets/images/arashiyama.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Togetsu-ky%C5%8D_bridge_at_golden_hour,_Kyoto,_Japan.jpg",
+    "author": "Basile Morin",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Togetsu-kyō bridge at golden hour, Kyoto, Japan.",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 289722
+  },
+  "tenryuji": {
+    "path": "assets/images/tenryuji.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tenry%C5%AB-ji_Garten.jpg",
+    "author": "Marco Almbauer",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Garden of the Tenryū-ji temple, Kyoto",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 426019
+  },
+  "bamboo": {
+    "path": "assets/images/bamboo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Bamboo_Forest,_Arashiyama,_Kyoto,_Japan.jpg",
+    "author": "Basile Morin",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Bamboo Forest, Arashiyama, Kyoto, Japan. Focus stacking from 6 pictures (long exposure photography).",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 447792
+  },
+  "gioji": {
+    "path": "assets/images/gioji.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Gi%C5%8D-ji_-_Kyoto_-_DSC06267.JPG",
+    "author": "Daderot",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "description": "Giō-ji (祇王寺), Kyoto, Japan.",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 592274
+  },
+  "miyama": {
+    "path": "assets/images/miyama.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kyoto_r38_miyama-kayabuki.gfdl.jpg",
+    "author": "pixan",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "description": "This photo is a view Japanese Kyoto prefecture route 38 (Kyoto-Hirogawara-Miyama line), near the village of Miyama thatched-roof houses. Many tourists come to feel Japanese old natural life style.",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 93207
+  },
+  "maizuru": {
+    "path": "assets/images/maizuru.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Maizuru_red_brick_warehouses08s3200.jpg",
+    "author": "663highland",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "description": "Maizuru Red Brick Warehouses in Maizuru, Kyoto prefecture, Japan",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 283234
+  },
+  "amanohashidate": {
+    "path": "assets/images/amanohashidate.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Amanohashidate_panorama_Wikivoyage_banner.jpg",
+    "author": "Chensiyuan",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "description": "Amanohashidate",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 61263
+  },
+  "chionji": {
+    "path": "assets/images/chionji.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Chionji_Monjud%C5%8D,_Miyazu,_Kyoto_pref.,_20211008163415_(51812017278).jpg",
+    "author": "inunami",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "description": "amanohashidate_20211008163415",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 380167
+  },
+  "ine": {
+    "path": "assets/images/ine.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Funaya_in_Ine_Town,_Yosa_District,_Kyoto_Prefecture_003.jpg",
+    "author": "Naokijp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Funaya is a traditional architectural structure unique to the Ine Bay (Ineura) area in Ine Town, Yoza District, Kyoto Prefecture. These Funaya line up along the water's edge, featuring boat storage on the first floor and living quarters on the upper floor.",
+    "modified": "原图缩放展示",
+    "bytes": 484252
+  },
+  "kono": {
+    "path": "assets/images/kono.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kono-jinja_(Miyazu)_haiden.JPG",
+    "author": "Saigen Jiro",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "description": "籠神社 拝殿",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 472025
+  },
+  "kasamatsu": {
+    "path": "assets/images/kasamatsu.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Amanohashidate_view_from_Kasamatsu_Park01s3s4410.jpg",
+    "author": "663highland",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "description": "Amanohashidate is one of the Japan's Three Scenic Views in Miyazu, Kyoto prefecture, Japan. This photograph is a view from Kasamatsu Park.",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 314076
+  },
+  "toyooka": {
+    "path": "assets/images/toyooka.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Toyooka_city_office_and_Toyooka_city_council.jpg",
+    "author": "Phronimoi",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Toyooka city council hall (near) and city office main building (back)",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 254485
+  },
+  "kinosaki": {
+    "path": "assets/images/kinosaki.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kinosaki_Onsen_Otani_River_2026-02_ac_(2).jpg",
+    "author": "Asturio Cantabrio",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "兵庫県豊岡市城崎町の城崎温泉を流れる大谿川。",
+    "modified": "原图缩放展示",
+    "bytes": 437974
+  },
+  "tottori": {
+    "path": "assets/images/tottori.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tottori-Sakyu_Tottori_Japan.JPG",
+    "author": "Hashi photo",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "description": "Tottori Sakyu ( Tottori Sand Dune ) in Tottori Prefecture, Japan",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 386930
+  },
+  "sandmuseum": {
+    "path": "assets/images/sandmuseum.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sand_sculpture_%E2%80%9CEmperor_Alchemist_Rudolf_II%E2%80%9D_by_Dmitrii_Klimenko,_The_Sand_Museum,_Tottori_2020.jpg",
+    "author": "WikiArtResearcher",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Sand sculpture “Emperor Alchemist Rudolf II” by Dmitrii Klimenko, The Sand Museum, Tottori 2020",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 192833
+  },
+  "hakuto": {
+    "path": "assets/images/hakuto.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:HakutoJinjya_Haiden.jpg",
+    "author": "By me.",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Licensing",
+    "description": "Front Shrine of Hakuto.",
+    "modified": "原图缩放展示",
+    "bytes": 248137
+  },
+  "iwami": {
+    "path": "assets/images/iwami.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Iwami_station_20191101.jpg",
+    "author": "切干大根",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "山陰本線 岩美駅",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 250151
+  },
+  "uradome": {
+    "path": "assets/images/uradome.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Uradome_Coast_Sengan-Matsushima.JPG",
+    "author": "Hashi photo",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "description": "Uradome Coast Sengan-Matsushima  in Iwami, Tottori prefecture, Japan.",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 432701
+  },
+  "nishiki": {
+    "path": "assets/images/nishiki.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Nishiki_ichiba_kyoto.jpg",
+    "author": "Pitan",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "description": "錦市場",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 631603
+  },
+  "kenninji": {
+    "path": "assets/images/kenninji.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kennin-ji_chokushimon_ac.jpg",
+    "author": "Asturio Cantabrio",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "京都府京都市東山区にある建仁寺。勅使門。",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 377130
+  },
+  "gion": {
+    "path": "assets/images/gion.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kyoto,_Gion_-_panoramio_(1).jpg",
+    "author": "josef knecht",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "description": "Kyoto, Gion",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 789070
+  },
+  "manga": {
+    "path": "assets/images/manga.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kyoto_International_Manga_Museum_exterior.jpg",
+    "author": "Kento Ikeda",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "description": "Kyoto International Manga Museum",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 337542
+  },
+  "yura": {
+    "path": "assets/images/yura.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Yura_River_Bridge-01.jpg",
+    "author": "Gohachiyasu1214",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Yura River Bridge-01",
+    "modified": "缩放展示，未修改原图",
+    "bytes": 251402
+  },
+  "nanzenji": {
+    "path": "assets/images/nanzenji.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Suirokaku.JPG",
+    "author": "作者见原图",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "description": "",
+    "modified": "原图缩放展示",
+    "bytes": 324742
+  },
+  "sarusawa": {
+    "path": "assets/images/sarusawa.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sarusawa-ike_in_Nara.jpg",
+    "author": "Cun Cun",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Sarusawa ike pond in Nara City, Japan",
+    "modified": "原图缩放展示",
+    "bytes": 347689
+  },
+  "uji-bridge": {
+    "path": "assets/images/uji-bridge.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Uji-Bridge.jpg",
+    "author": "京都東",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "宇治橋を宇治川左岸から写した写真",
+    "bytes": 302709
+  },
+  "uji-asagiri": {
+    "path": "assets/images/uji-asagiri.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Asagiri_Bashi%26Hikaru_Genji_statue.jpg",
+    "author": "御影守駒氏",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "朝霧橋と光源氏像",
+    "modified": "原图缩放展示",
+    "bytes": 388813
+  },
+  "uji-shrine": {
+    "path": "assets/images/uji-shrine.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Ujigami_Haiden.jpg",
+    "author": "UjigamiJinja-M1370.jpg: Fg2\nderivative work: bamse (talk)",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Licensing",
+    "description": "Haiden of Ujigami Shrine",
+    "modified": "原图缩放展示",
+    "bytes": 164759
+  },
+  "uji-agata": {
+    "path": "assets/images/uji-agata.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Agata_Shrine,_Uji,_Kyoto_-_Apr_8,_2017.jpg",
+    "author": "ddio",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "description": "Agata Shrine, Uji, Kyoto prefecture, Japan",
+    "modified": "原图缩放展示",
+    "bytes": 185393
+  },
+  "toyosato-stairs": {
+    "path": "assets/images/toyosato-stairs.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Toyosato_Elementary_School_old_building_stairs._May,_2015.JPG",
+    "author": "Sakaori (talk)",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "description": "Toyosato Elementary School old building stairs. May, 2015.",
+    "modified": "原图缩放展示",
+    "bytes": 116588
+  },
+  "kamo-delta": {
+    "path": "assets/images/kamo-delta.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Demachi_stepping_stones,_Kamo_river,_Kyoto_-_Jun_24,_2006.jpg",
+    "author": "masatsu",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "description": "Demachi stepping stones, Kamo river, Kyoto, Japan",
+    "modified": "原图缩放展示",
+    "bytes": 404901
+  },
+  "shugakuin": {
+    "path": "assets/images/shugakuin.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform_of_Sh%C5%ABgakuin_Station.JPG",
+    "author": "Bineapple",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "description": "Shūgakuin Station of Eizan Electric Railway in Kyoto. The platform in the right hand is bound for Kurama and Yase-Hieizanguchi.",
+    "bytes": 195281
+  },
+  "warabekan": {
+    "path": "assets/images/warabekan.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Warabekan_Toy_Museum_Tottori03s5s2250.jpg",
+    "author": "663highland",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "description": "Warabekan Toy Museum in Tottori, Tottori prefecture, Japan",
+    "modified": "原图缩放展示",
+    "bytes": 215193
+  },
+  "tottori-castle": {
+    "path": "assets/images/tottori-castle.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sphere_stone_wall(Tenkyumaru,Tottori-castle_ruins).jpg",
+    "author": "Heartoftheworld",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "巻石垣（鳥取城の天球丸）",
+    "modified": "原图缩放展示",
+    "bytes": 306585
+  },
+  "toyosato": {
+    "path": "assets/images/toyosato.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Toyosato_Municipal_Toyosato_Elementary_School_2nd_building.jpg",
+    "author": "Tokumeigakarinoaoshima",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "豊郷町立豊郷小学校2代目校舎を撮影。",
+    "bytes": 138721
+  },
+  "jeugia": {
+    "path": "assets/images/jeugia.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:JEUGIA_Kyoto_Sanjo_honten.jpg",
+    "author": "Haruno Akiha",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "description": "JEUGIA Main Store, Teramachi Sanjo, Nakagyo Ward, Kyoto City, Japan.",
+    "modified": "原图缩放展示",
+    "bytes": 229437
+  },
+  "pine": {
+    "path": "assets/images/pine.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Amanohashidate_-_Amanohashidate7577.jpg",
+    "author": "lumoplank",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "description": "Amanohashidate is a pine-covered sand bar separating Miyazu Bay from the Aso Sea lagoon, seen from Kasamatsu Park.",
+    "bytes": 177838
+  },
+  "ine-hill": {
+    "path": "assets/images/ine-hill.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Panoramic_view_of_Ine_Bay_001.jpg",
+    "author": "Naokijp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "京都府与謝郡伊根町にある伊根湾全景。伊根湾（伊根浦）沿いに舟屋が立ち並ぶ。",
+    "modified": "原图缩放展示",
+    "bytes": 81002
+  },
+  "gosho": {
+    "path": "assets/images/gosho.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kinosaki-Onsen_Gosho-no-yu.jpg",
+    "author": "MaedaAkihiko",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "description": "Exterior view of the hot spring facility “Gosho-no-Yu” located in Kinosaki-cho, Toyooka City, Hyogo Prefecture",
+    "modified": "原图缩放展示",
+    "bytes": 279164
+  },
+  "izushi": {
+    "path": "assets/images/izushi.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shinkoro_Izushi.JPG",
+    "author": "by Reggaeman",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "description": "Shinkoro in Izushi",
+    "modified": "原图缩放展示",
+    "bytes": 437638
+  },
+  "conan-airport": {
+    "path": "assets/images/conan-airport.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tottori_Airport_DSCN0064.JPG",
+    "author": "Okia at Japanese Wikipedia",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "description": "鳥取空港\n撮影日　2007年8月23日\n撮影場所　空港前広場の展望台\n撮影者　投稿者と同じ（Okia）\n撮影者によるGFDLリリース",
+    "modified": "原图缩放展示",
+    "bytes": 217380
+  },
+  "uji-river": {
+    "path": "assets/images/uji-river.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E4%BA%AC%E9%83%BD%E5%BA%9C%E7%AB%8B%E5%AE%87%E6%B2%BB%E5%85%AC%E5%9C%92.jpg",
+    "author": "オクノサンライズ",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "宇治橋から見た中の島",
+    "bytes": 331589
+  },
+  "uji-daikichi": {
+    "path": "assets/images/uji-daikichi.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E5%90%89%E5%B1%B1%E5%B1%95%E6%9C%9B.jpg",
+    "author": "オクノサンライズ",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "大吉山展望2",
+    "bytes": 283552
+  },
+  "ine-boat": {
+    "path": "assets/images/ine-boat.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Funaya_in_Ine_Town,_Yosa_District,_Kyoto_Prefecture_002.jpg",
+    "author": "Naokijp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Funaya is a traditional architectural structure unique to the Ine Bay (Ineura) area in Ine Town, Yoza District, Kyoto Prefecture. These Funaya line up along the water's edge, featuring boat storage on the first floor and living quarters on the upper floor.",
+    "bytes": 240469
+  },
+  "genbudo": {
+    "path": "assets/images/genbudo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Genbudo_cave.JPG",
+    "author": "Samchan91",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Genbudo cave, Toyooka",
+    "bytes": 305923
+  },
+  "tanabe-castle": {
+    "path": "assets/images/tanabe-castle.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Maizuru_city_Tanabe_Castle_ac_(1).jpg",
+    "author": "Asturio Cantabrio",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "京都府舞鶴市にある田辺城址（舞鶴公園）。",
+    "bytes": 110950
+  },
+  "toretore": {
+    "path": "assets/images/toretore.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresh_fish_at_a_stall_in_Maizuru_Port_Toretore_Center,_Maizuru,_April_2015.jpg",
+    "author": "NevinThompson",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "description": "Fresh fish at a stall in Maizuru Port Toretore Center, Maizuru, Kyoto Prefecture, Japan.",
+    "bytes": 323288
+  },
+  "sanjo-river": {
+    "path": "assets/images/sanjo-river.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kamogawa_River_from_Sanjo-Ohashi_Bridge_(South).JPG",
+    "author": "そらみみ",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "description": "三条大橋より望む鴨川(下流側)",
+    "bytes": 160803
+  },
+  "willowbath": {
+    "path": "assets/images/willowbath.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E6%9F%B3%E6%B9%AF_%E5%9F%8E%E5%B4%8E%E6%B8%A9%E6%B3%89_%E8%B1%8A%E5%B2%A1%E5%B8%82_Dec_26,_2015.jpg",
+    "author": "Kentaro Ohno",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "description": "Yanagi-yu, Kinosaki Onsen, Toyooka, Hyogo prefecture, Japan",
+    "bytes": 94757
+  },
+  "onsenji": {
+    "path": "assets/images/onsenji.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E5%85%B5%E5%BA%AB%E7%9C%8C%E8%B1%8A%E5%B2%A1%E5%B8%82%E5%9F%8E%E5%B4%8E%E7%94%BA%E6%B9%AF%E5%B3%B6%E3%81%AE%E6%B8%A9%E6%B3%89%E5%AF%BA%E6%9C%AC%E5%A0%82.jpg",
+    "author": "Hidaka-Nyo",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "description": "温泉寺の本尊が納められている建物で、国指定文化財である。",
+    "bytes": 222582
+  },
+  "pine-walk": {
+    "path": "assets/images/pine-walk.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Amanohashidate_-_Amanohashidate7592.jpg",
+    "author": "lumoplank",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "description": "The sandbar of Amanohashidate, lined with pine trees, separating Miyazu Bay from the Asо lagoon.",
+    "bytes": 222134
+  },
+  "canal-night": {
+    "path": "assets/images/canal-night.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:161029_Kinosaki_Onsen_Toyooka_Hyogo_pref_Japan01s.jpg",
+    "author": "663highland",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "description": "At Kinosaki Onsen in Toyooka, Hyogo prefecture, Japan.",
+    "bytes": 201990
+  }
+}

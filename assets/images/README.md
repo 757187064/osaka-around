@@ -1,5 +1,9 @@
-# 图片预留目录
+# 实景照片与授权
 
-可选图片文件名：`kyoto.jpg`、`nara.jpg`、`miyama.jpg`、`maizuru.jpg`、`amanohashidate.jpg`、`ine.jpg`、`kinosaki.jpg`、`tottori.jpg`。
+照片清单在 `data/photos.json`，逐文件记录来源、作者、授权链接与内容说明。
+页面使用 Vite URL 导入，兼容 GitHub Pages 的 `/osaka-around/` 前缀。
+照片是历史实地摄影，不保证12月的天气、植被或展品与图片一致。
+砂之美术馆图片来自2020年展览，不代表2026西班牙展品。
 
-页面只会加载数据中明确填写的图片路径；未填写时使用 CSS 占位卡，因此不会请求不存在的文件或显示破图。
+下载候选照片后人工检查了画面及说明，排除了猿泽池版画、八头町同名白兔神社、下吕同名温泉寺等误匹配。
+不使用生成图片冒充实景。重下载已审核照片：`python3 scripts/fetch-photos.py`。

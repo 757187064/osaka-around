@@ -1,3 +1,4 @@
+import { renderDayGuide, renderResearch } from './guide.js';
 import {
   LngLatBounds,
   Map as MapLibreMap,
@@ -299,7 +300,7 @@ function renderDashboard() {
   $('#statsGrid').innerHTML = trip.stats.map(([value, label]) => `<div class="stat-card"><div class="stat-value">${value}</div><div class="stat-label">${label}</div></div>`).join('');
   const firstOpen = checklistGroups.flatMap((group) => group.items).find((item) => !['completed', 'confirmed', 'rechecked', 'ticketed'].includes(progress[item.id]));
   $('#nextTaskCard').innerHTML = `<div class="card-kicker">下一项待办</div><h4>${firstOpen ? escapeHtml(firstOpen.text) : '复核中心已清空'}</h4><p>${firstOpen ? '在复核中心标记处理状态，刷新后仍会保存。' : '出发前仍请按天气与运行状态复核。'}</p>`;
-  $('#alertCard').innerHTML = '<div class="card-kicker">重点提醒</div><h4>12/6 美山是重点交通风险日</h4><p>南丹市营巴士与 JR 衔接不可依赖 ICOCA，冬季周日時刻必须在 11 月底复核。</p>';
+  $('#alertCard').innerHTML = '<div class="card-kicker">重点提醒</div><h4>美山已替换，岩美保留天气条件</h4><p>12/6直接铁路去舞鹤；12/13先核岩美回程公交，强风雨雪改室内。12/7仍须17:00前入住天桥立。</p>';
   const jpy = transport.reduce((sum, item) => sum + item.budgetJPY, 0);
   $('#budgetMiniCard').innerHTML = `<div class="card-kicker">预算摘要</div><h4>机票 ¥${trip.budget.airfareRmb.toLocaleString()} RMB</h4><p>交通参考合计约 ¥${jpy.toLocaleString()} JPY；住宿金额待手动填写。</p>`;
   const remaining = Math.ceil((new Date(trip.meta.departureDate) - new Date()) / 86400000);
@@ -334,9 +335,7 @@ function renderTransport() {
 
 function renderExperiences() {
   $('#experienceGrid').innerHTML = trip.experiences.map((experience) => {
-    const imagePath = experience.imagePath;
-    const visual = imagePath ? `<img src="${imagePath}" alt="${experience.title}">` : `<div class="experience-image" aria-label="${experience.title} 图片占位">${experience.icon}</div>`;
-    return `<article class="card experience-card">${visual}<div class="experience-content"><h4>${experience.title}</h4><p>${experience.text}</p><div class="card-actions"><a class="btn btn-light" href="${mapsSearchUrl(placesById[experience.placeId].query)}" target="_blank" rel="noreferrer">Google Maps ↗</a></div></div></article>`;
+    return `<article class="card experience-card"><div class="experience-content"><span class="experience-icon">${experience.icon}</span><h4>${experience.title}</h4><p>${experience.text}</p><div class="card-actions"><a class="btn btn-light" href="${mapsSearchUrl(placesById[experience.placeId].query)}" target="_blank" rel="noreferrer">目的地地图 ↗</a></div></div></article>`;
   }).join('');
 }
 
@@ -356,7 +355,7 @@ function dayGoogleMapsLinks(day) {
 
 function renderDays() {
   $('#dateNav').innerHTML = days.map((day) => `<button class="date-nav-button ${day.date === activeDate ? 'active' : ''}" data-day-nav="${day.date}">${day.displayDate}</button>`).join('');
-  $('#timeline').innerHTML = days.map((day, index) => `<article class="card day-card risk-${day.risk} ${index === 0 ? 'open' : ''}" id="day-${day.date}" data-day-card="${day.date}"><button class="day-toggle" aria-expanded="${index === 0}" data-day-toggle="${day.date}"><div><div class="day-date">${day.displayDate}</div><div class="weekday">${day.weekday}</div></div><div><div class="day-title">${day.title}</div><div class="day-base">住宿 / 基地：${day.base}</div></div><div class="theme-tag">${day.theme}</div></button><div class="day-body"><div class="day-intro"><div class="day-intro-icon" aria-hidden="true">${day.intro.icon}</div><div><div class="card-kicker">今日看点</div><h4>${escapeHtml(day.intro.title)}</h4><p>${escapeHtml(day.intro.text)}</p></div></div><div class="schedule">${day.timeline.map((entry) => `<div class="slot"><div class="slot-time">${entry.time}</div><div class="slot-title">${entry.label}</div><div class="slot-detail">${entry.detail}</div></div>`).join('')}</div><div class="weather-plan"><div class="weather-item"><strong>☀️ 正常计划</strong>${day.weather.sun}</div><div class="weather-item"><strong>🌧 雨天</strong>${day.weather.rain}</div><div class="weather-item"><strong>❄️ 大雪／强风</strong>${day.weather.snow}</div></div><div class="day-map-action no-print"><button class="btn btn-light" data-day-map="${day.date}">在网页地图定位当天路线</button><div class="day-route-links"><span>Google Maps 当日交通（每次仅一段）：</span>${dayGoogleMapsLinks(day)}</div></div></div></article>`).join('');
+  $('#timeline').innerHTML = days.map((day, index) => `<article class="card day-card risk-${day.risk} ${index === 0 ? 'open' : ''}" id="day-${day.date}" data-day-card="${day.date}"><button class="day-toggle" aria-expanded="${index === 0}" data-day-toggle="${day.date}"><div><div class="day-date">${day.displayDate}</div><div class="weekday">${day.weekday}</div></div><div><div class="day-title">${day.title}</div><div class="day-base">住宿 / 基地：${day.base}</div></div><div class="theme-tag">${day.theme}</div></button><div class="day-body"><div class="day-intro"><div class="day-intro-icon" aria-hidden="true">${day.intro.icon}</div><div><div class="card-kicker">今日看点</div><h4>${escapeHtml(day.intro.title)}</h4><p>${escapeHtml(day.intro.text)}</p></div></div><div class="schedule">${day.timeline.map((entry) => `<div class="slot"><div class="slot-time">${entry.time}</div><div class="slot-title">${entry.label}</div><div class="slot-detail">${entry.detail}</div></div>`).join('')}</div>${renderDayGuide(day)}<div class="weather-plan"><div class="weather-item"><strong>☀️ 正常计划</strong>${day.weather.sun}</div><div class="weather-item"><strong>🌧 雨天</strong>${day.weather.rain}</div><div class="weather-item"><strong>❄️ 大雪／强风</strong>${day.weather.snow}</div></div><div class="day-map-action no-print"><button class="btn btn-light" data-day-map="${day.date}">在网页地图定位当天路线</button><div class="day-route-links"><span>Google Maps 当日交通（每次仅一段）：</span>${dayGoogleMapsLinks(day)}</div></div></div></article>`).join('');
   document.querySelectorAll('[data-day-nav]').forEach((button) => button.addEventListener('click', () => activateDay(button.dataset.dayNav, { scroll: true, open: true })));
   document.querySelectorAll('[data-day-toggle]').forEach((button) => button.addEventListener('click', () => {
     const card = document.getElementById(`day-${button.dataset.dayToggle}`);
@@ -385,7 +384,7 @@ function renderBudget() {
   const transportJpy = transport.reduce((sum, item) => sum + item.budgetJPY, 0);
   const rateRaw = window.localStorage.getItem(trip.budget.exchangeRateStorageKey) || '';
   const converted = Number(rateRaw) > 0 ? `按手填汇率约 ¥${(transportJpy * Number(rateRaw)).toFixed(2)} RMB` : '尚未填写 JPY/CNY 汇率，不自动换汇。';
-  $('#budgetGrid').innerHTML = `<article class="card budget-card"><h4>已购机票</h4><div class="budget-amount">¥${airfare.toLocaleString()} RMB</div><p>去程 ¥963 + 返程 ¥1314，状态：已付款。</p></article><article class="card budget-card"><h4>交通参考</h4><div class="budget-amount">¥${transportJpy.toLocaleString()} JPY</div><p>按每日交通参考金额汇总；实际票价与冬季班次须复核。</p></article><article class="card budget-card"><h4>手动汇率</h4><p>填写 1 JPY = ? CNY，仅作本地预算换算。</p><input class="rate-input" id="exchangeRate" type="number" min="0" step="0.0001" placeholder="例如 0.047" value="${rateRaw}"><p id="convertedBudget">${converted}</p></article><article class="card budget-card"><h4>住宿</h4><div class="budget-amount">待填写</div><p>${trip.budget.lodgingPriceState}。不根据网络数据自动估价。</p></article>`;
+  $('#budgetGrid').innerHTML = `<article class="card budget-card"><h4>已购机票</h4><div class="budget-amount">¥${airfare.toLocaleString()} RMB</div><p>去程 ¥963 + 返程 ¥1314，状态：已付款。</p></article><article class="card budget-card"><h4>交通参考</h4><div class="budget-amount">¥${transportJpy.toLocaleString()} JPY</div><p>按交通表参考金额汇总；不含全部市内交通、景点巴士、门票与餐饮，实际票价须复核。</p></article><article class="card budget-card"><h4>手动汇率</h4><p>填写 1 JPY = ? CNY，仅作本地预算换算。</p><input class="rate-input" id="exchangeRate" type="number" min="0" step="0.0001" placeholder="例如 0.047" value="${rateRaw}"><p id="convertedBudget">${converted}</p></article><article class="card budget-card"><h4>住宿</h4><div class="budget-amount">待填写</div><p>${trip.budget.lodgingPriceState}。不根据网络数据自动估价。</p></article>`;
   $('#exchangeRate').addEventListener('input', (event) => {
     window.localStorage.setItem(trip.budget.exchangeRateStorageKey, event.target.value);
     const text = Number(event.target.value) > 0 ? `按手填汇率约 ¥${(transportJpy * Number(event.target.value)).toFixed(2)} RMB` : '尚未填写 JPY/CNY 汇率，不自动换汇。';
@@ -456,6 +455,12 @@ async function bootstrap() {
   renderTransport();
   renderExperiences();
   renderDays();
+  renderResearch();
+  document.addEventListener('click', event => {
+    const button=event.target.closest('[data-sight-date]'); if(!button)return;
+    activateDay(button.dataset.sightDate,{open:true,scroll:false});
+    document.getElementById('sight-'+button.dataset.sightId)?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
   renderChecklist();
   renderBudget();
   renderLinks();

@@ -3,14 +3,15 @@ export const checklistGroups = [
     { id: 'bag-9c6987', action: 'confirm', text: '确认 9C6987 订单中的实际行李额度' },
     { id: 'bag-9c6988', action: 'confirm', text: '确认 9C6988 订单中的实际行李额度' }
   ] },
-  { when: '11/14 以后', items: [
-    { id: 'hakuto-buy', action: 'ticket', text: '查看／购买 12/14 Super Hakuto 指定席' }
+  { when: '11/14 日本10:00（北京09:00）', items: [
+    { id: 'hakuto-buy', action: 'ticket', text: '比较并预约12/14鸟取返程；Super Hakuto指定席开售' }
   ] },
+  { when: '11/17 北京时间09:50提醒 / 10:00起售参考', items: [{ id: 'k681-buy', action: 'ticket', text: '12306购买12/1北京站→大连站K681硬卧，核实次日07:51到站及机场衔接' }] },
   { when: '11/20–11/25', items: [
-    { id: 'miyama-kyoto-hiyoshi', action: 'recheck', text: '重新核实 12/6 京都 → 日吉' },
-    { id: 'miyama-bus-out', action: 'recheck', text: '重新核实南丹巴士：日吉 → 美山' },
-    { id: 'miyama-bus-return', action: 'recheck', text: '重新核实美山 → 日吉' },
-    { id: 'miyama-maizuru', action: 'recheck', text: '重新核实日吉 → 绫部 → 东舞鹤' }
+    {id:'kyoto-maizuru-rail',action:'recheck',text:'核实12/6京都→东舞鹤铁路，已取消美山串联'},
+    {id:'toyosato-calendar',action:'recheck',text:'12/3丰乡旧校舍借馆日历、近江铁道班次'},
+    {id:'izushi-bus',action:'recheck',text:'出石往返全但巴士；13点后抵丰冈则取消'},
+    {id:'iwami-bus',action:'recheck',text:'12/13岩美/浦富往返常规巴士，与JR逐段匹配'}
   ] },
   { when: '11 月底', items: [
     { id: 'maizuru-amanohashidate', action: 'recheck', text: '12/7 东舞鹤 → 天桥立' },
