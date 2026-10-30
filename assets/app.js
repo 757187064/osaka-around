@@ -409,6 +409,9 @@ function activateDay(date, { scroll = false, open = false, skipFly = false } = {
 function bindUi() {
   document.querySelector('#showAllRoute')?.addEventListener('click', () => mapAdapter?.fitAll());
   document.querySelectorAll('[data-jump-day]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();activateDay(link.dataset.jumpDay,{open:true,scroll:true});}));
+  let printClosedDetails=[];
+  window.addEventListener('beforeprint',()=>{printClosedDetails=[...document.querySelectorAll('details:not([open])')];printClosedDetails.forEach(detail=>{detail.open=true;});});
+  window.addEventListener('afterprint',()=>{printClosedDetails.forEach(detail=>{detail.open=false;});printClosedDetails=[];});
   $('#printButton').addEventListener('click', () => window.print());
   $('#toggleSideTrips').addEventListener('click', (event) => {
     sideTripsVisible = !sideTripsVisible;
