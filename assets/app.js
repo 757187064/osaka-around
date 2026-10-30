@@ -1,4 +1,4 @@
-import { renderDayGuide, renderResearch } from './guide.js';
+import { renderDayGuide, renderResearch, photoHtml } from './guide.js';
 import {
   LngLatBounds,
   Map as MapLibreMap,
@@ -65,7 +65,7 @@ function directionsUrl(origin, destination) {
 
 function statusBadge(status) {
   const definition = transportStatus[status];
-  return `<span class="status-badge ${status}">${definition.icon} ${definition.label}</span>`;
+  return `<span class="status-badge ${status}">${definition.label}</span>`;
 }
 
 function markerEmoji(place) {
@@ -291,21 +291,19 @@ async function initializeOpenFreeMap() {
 }
 
 function renderHeader() {
-  $('#heroTitle').textContent = trip.meta.heading;
-  $('#heroSubtitle').textContent = trip.meta.subtitle;
-  $('#heroPills').innerHTML = [trip.meta.dates, '1人独旅', '✈️ 往返机票已购', '🛏️ 住宿全部已购', '🎒 轻装旅行'].map((item) => `<span class="pill">${item}</span>`).join('');
+  $('#heroTitle').textContent = '在京都停留，\n向山阴出发。';
+  $('#heroSubtitle').textContent = '京都 · 丰乡 · 宇治 · 天桥立 · 伊根 · 城崎 · 鸟取';
+  $('#heroPills').innerHTML = '<span><b>12.02 — 12.16</b><small>2026 / 15天14晚</small></span><span><b>一个人</b><small>5座住宿城市</small></span><span><b>机票 · 酒店已订</b><small>公共交通环线</small></span>';
+  $('#heroVisual').innerHTML = photoHtml('gion','京都 · 祇园白川夜景（春季历史影像，非12月景色）').replace('loading="lazy"','loading="eager" fetchpriority="high"');
+  $('#flightGrid').innerHTML = trip.flights.map(f=>`<article class="flight-ticket"><span class="card-kicker">${f.date.slice(5).replace('-','/')} · ${f.flight} · 已购</span><h4>${escapeHtml(f.route)}</h4><strong>${f.time}</strong><p>${escapeHtml(f.note)}</p></article>`).join('');
 }
 
 function renderDashboard() {
-  $('#statsGrid').innerHTML = trip.stats.map(([value, label]) => `<div class="stat-card"><div class="stat-value">${value}</div><div class="stat-label">${label}</div></div>`).join('');
-  const firstOpen = checklistGroups.flatMap((group) => group.items).find((item) => !['completed', 'confirmed', 'rechecked', 'ticketed'].includes(progress[item.id]));
-  $('#nextTaskCard').innerHTML = `<div class="card-kicker">下一项待办</div><h4>${firstOpen ? escapeHtml(firstOpen.text) : '复核中心已清空'}</h4><p>${firstOpen ? '在复核中心标记处理状态，刷新后仍会保存。' : '出发前仍请按天气与运行状态复核。'}</p>`;
-  $('#alertCard').innerHTML = '<div class="card-kicker">重点提醒</div><h4>美山已替换，岩美保留天气条件</h4><p>12/6直接铁路去舞鹤；12/13先核岩美回程公交，强风雨雪改室内。12/7仍须17:00前入住天桥立。</p>';
-  const jpy = transport.reduce((sum, item) => sum + item.budgetJPY, 0);
-  $('#budgetMiniCard').innerHTML = `<div class="card-kicker">预算摘要</div><h4>机票 ¥${trip.budget.airfareRmb.toLocaleString()} RMB</h4><p>交通参考合计约 ¥${jpy.toLocaleString()} JPY；住宿金额待手动填写。</p>`;
-  const remaining = Math.ceil((new Date(trip.meta.departureDate) - new Date()) / 86400000);
-  const countdownText = remaining >= 0 ? `还有 ${remaining} 天` : '行程已开始或已结束';
-  $('#countdownCard').innerHTML = `<div class="card-kicker">出发倒计时</div><h4>${countdownText}</h4><p>去程：12/2 11:40，大连 → KIX。</p>`;
+  const firstOpen = checklistGroups.flatMap(group=>group.items).find(item=>!['completed','confirmed','rechecked','ticketed'].includes(progress[item.id]));
+  $('#nextTaskCard').innerHTML = `<div class="card-kicker">出发前 / NEXT STEP</div><h4>${firstOpen?escapeHtml(firstOpen.text):'待办已完成'}</h4><a href="#checklist" class="quiet-link">${firstOpen?'去处理待办':'查看复核记录'} ↗</a>`;
+  $('#alertCard').innerHTML = '<div class="card-kicker">行程底线 / KEEP IN MIND</div><h4>12/7，17:00前入住天桥立</h4><a class="quiet-link" href="#booking">查看前序航班衔接与购票提醒 ↗</a>';
+  const remaining=Math.ceil((new Date(trip.meta.departureDate)-new Date())/86400000);
+  $('#countdownCard').innerHTML=`<div class="card-kicker">距出发 / COUNTDOWN</div><h4 class="countdown-number">${remaining>=0?remaining:'—'}<small>天</small></h4><a class="quiet-link" href="#days">${remaining>=0?'还有时间，慢慢准备。':'翻开这段旅程。'} ↗</a>`;
 }
 
 function renderRouteControls() {
@@ -317,9 +315,9 @@ function renderRouteControls() {
       const to = placesById[segment.points.at(-1)];
       return `<div class="route-leg"><span>${escapeHtml(from.name)} → ${escapeHtml(to.name)}</span><a class="btn btn-light" href="${directionsUrl(from.query, to.query)}" target="_blank" rel="noreferrer">Google Maps 路线 ↗</a></div>`;
     }).join('');
-    return `<article class="route-planner-card" id="planner-${group.id}"><div class="card-kicker">一点 → 另一点</div><h4>${group.label}</h4><p>每次仅把这一段的起点和终点交给 Google Maps，方便计算公共交通并自行调整。</p><div class="route-leg-list">${legs}</div></article>`;
+    return `<article class="route-planner-card" id="planner-${group.id}"><div class="card-kicker">分段导航</div><h4>${group.label}</h4><div class="route-leg-list">${legs}</div></article>`;
   }).join('');
-  $('#routeSummary').innerHTML = `${mainRoute}<div class="route-planner-note">不再把多段交通塞进一个 Google Maps 请求。每个按钮只打开一段“起点 → 终点”的公共交通规划；在 Google Maps 网页或 App 中可继续编辑。</div><div class="route-planner-grid">${planners}</div>`;
+  $('#routeSummary').innerHTML = `${mainRoute}<div class="route-planner-note">选择一段路线，在 Google Maps 查看当前公共交通。</div><div class="route-planner-grid">${planners}</div>`;
 }
 
 function renderStays() {
@@ -331,12 +329,6 @@ function renderStays() {
 
 function renderTransport() {
   $('#transportBody').innerHTML = transport.map((item) => `<tr><td><strong>${item.date}</strong></td><td>${item.segment}</td><td><span class="class-badge">${item.class}</span><span class="class-note">${transportClasses[item.class]}</span></td><td>${statusBadge(item.status)}</td><td>${item.method}</td><td>${item.time}</td><td>${item.price}</td><td>${item.buy}</td><td><span class="risk-${item.risk === '高' ? 'high' : item.risk === '中' ? 'medium' : 'low'}">${item.risk}风险</span><div class="transport-note">${item.note}</div></td></tr>`).join('');
-}
-
-function renderExperiences() {
-  $('#experienceGrid').innerHTML = trip.experiences.map((experience) => {
-    return `<article class="card experience-card"><div class="experience-content"><span class="experience-icon">${experience.icon}</span><h4>${experience.title}</h4><p>${experience.text}</p><div class="card-actions"><a class="btn btn-light" href="${mapsSearchUrl(placesById[experience.placeId].query)}" target="_blank" rel="noreferrer">目的地地图 ↗</a></div></div></article>`;
-  }).join('');
 }
 
 function dayGoogleMapsLinks(day) {
@@ -354,17 +346,20 @@ function dayGoogleMapsLinks(day) {
 }
 
 function renderDays() {
-  $('#dateNav').innerHTML = days.map((day) => `<button class="date-nav-button ${day.date === activeDate ? 'active' : ''}" data-day-nav="${day.date}">${day.displayDate}</button>`).join('');
-  $('#timeline').innerHTML = days.map((day, index) => `<article class="card day-card risk-${day.risk} ${index === 0 ? 'open' : ''}" id="day-${day.date}" data-day-card="${day.date}"><button class="day-toggle" aria-expanded="${index === 0}" data-day-toggle="${day.date}"><div><div class="day-date">${day.displayDate}</div><div class="weekday">${day.weekday}</div></div><div><div class="day-title">${day.title}</div><div class="day-base">住宿 / 基地：${day.base}</div></div><div class="theme-tag">${day.theme}</div></button><div class="day-body"><div class="day-intro"><div class="day-intro-icon" aria-hidden="true">${day.intro.icon}</div><div><div class="card-kicker">今日看点</div><h4>${escapeHtml(day.intro.title)}</h4><p>${escapeHtml(day.intro.text)}</p></div></div><div class="schedule">${day.timeline.map((entry) => `<div class="slot"><div class="slot-time">${entry.time}</div><div class="slot-title">${entry.label}</div><div class="slot-detail">${entry.detail}</div></div>`).join('')}</div>${renderDayGuide(day)}<div class="weather-plan"><div class="weather-item"><strong>☀️ 正常计划</strong>${day.weather.sun}</div><div class="weather-item"><strong>🌧 雨天</strong>${day.weather.rain}</div><div class="weather-item"><strong>❄️ 大雪／强风</strong>${day.weather.snow}</div></div><div class="day-map-action no-print"><button class="btn btn-light" data-day-map="${day.date}">在网页地图定位当天路线</button><div class="day-route-links"><span>Google Maps 当日交通（每次仅一段）：</span>${dayGoogleMapsLinks(day)}</div></div></div></article>`).join('');
-  document.querySelectorAll('[data-day-nav]').forEach((button) => button.addEventListener('click', () => activateDay(button.dataset.dayNav, { scroll: true, open: true })));
-  document.querySelectorAll('[data-day-toggle]').forEach((button) => button.addEventListener('click', () => {
-    const card = document.getElementById(`day-${button.dataset.dayToggle}`);
-    const open = !card.classList.contains('open');
-    card.classList.toggle('open', open);
-    button.setAttribute('aria-expanded', String(open));
-    activateDay(button.dataset.dayToggle, { open, skipFly: false });
+  $('#dateNav').innerHTML=days.map(day=>`<button class="date-nav-button ${day.date===activeDate?'active':''}" data-day-nav="${day.date}">${day.displayDate}</button>`).join('');
+  $('#timeline').innerHTML=days.map((day,index)=>{
+    const transfers=day.timeline.filter(e=>/交通|机场|航班|入住|退房|行李|候车|值机/.test(e.label));
+    const slots=entries=>entries.map(e=>`<div class="slot"><div class="slot-time">${escapeHtml(e.time)}</div><div class="slot-title">${escapeHtml(e.label)}</div><div class="slot-detail">${escapeHtml(e.detail)}</div></div>`).join('');
+    return `<article class="day-card risk-${day.risk} ${index===0?'open':''}" id="day-${day.date}" data-day-card="${day.date}"><button class="day-toggle" aria-expanded="${index===0}" data-day-toggle="${day.date}"><div><div class="day-date">${day.displayDate}</div><div class="weekday">${day.weekday}</div></div><div><div class="day-title">${escapeHtml(day.title)}</div><div class="day-base">${escapeHtml(day.sleep)}</div></div><span class="day-expand" aria-hidden="true">＋</span></button><div class="day-body"><p class="day-lede">${escapeHtml(day.intro.text)}</p>${transfers.length?`<div class="transfer-summary"><div class="card-kicker">当日转场</div><div class="schedule">${slots(transfers)}</div></div>`:''}${renderDayGuide(day)}<details class="day-schedule-fold"><summary>完整时间表 <span>含用餐、休息与所有规划窗口</span><b aria-hidden="true">＋</b></summary><div class="schedule">${slots(day.timeline)}</div></details><details class="day-weather-fold"><summary>天气变化时怎么调整 <b aria-hidden="true">＋</b></summary><div class="weather-plan"><div class="weather-item"><strong>正常天气</strong>${escapeHtml(day.weather.sun)}</div><div class="weather-item"><strong>雨天</strong>${escapeHtml(day.weather.rain)}</div><div class="weather-item"><strong>大雪 / 强风</strong>${escapeHtml(day.weather.snow)}</div></div></details><div class="day-map-action no-print"><button class="btn btn-light" data-day-map="${day.date}">在行程地图定位 ↗</button><div class="day-route-links"><span>当天交通</span>${dayGoogleMapsLinks(day)}</div></div></div></article>`;
+  }).join('');
+  document.querySelectorAll('[data-day-nav]').forEach(button=>button.addEventListener('click',()=>activateDay(button.dataset.dayNav,{scroll:true,open:true})));
+  document.querySelectorAll('[data-day-toggle]').forEach(button=>button.addEventListener('click',()=>{
+    const card=document.getElementById(`day-${button.dataset.dayToggle}`),open=!card.classList.contains('open');
+    card.classList.toggle('open',open);button.setAttribute('aria-expanded',String(open));activateDay(button.dataset.dayToggle,{open,skipFly:false});
   }));
-  document.querySelectorAll('[data-day-map]').forEach((button) => button.addEventListener('click', () => activateDay(button.dataset.dayMap, { open: true })));
+  document.querySelectorAll('[data-day-map]').forEach(button=>button.addEventListener('click',()=>{
+    activateDay(button.dataset.dayMap,{open:true});document.getElementById('map-section').scrollIntoView({behavior:'smooth'});
+  }));
 }
 
 function renderChecklist() {
@@ -412,7 +407,8 @@ function activateDay(date, { scroll = false, open = false, skipFly = false } = {
 }
 
 function bindUi() {
-  $('#showAllRoute').addEventListener('click', () => mapAdapter?.fitAll());
+  document.querySelector('#showAllRoute')?.addEventListener('click', () => mapAdapter?.fitAll());
+  document.querySelectorAll('[data-jump-day]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();activateDay(link.dataset.jumpDay,{open:true,scroll:true});}));
   $('#printButton').addEventListener('click', () => window.print());
   $('#toggleSideTrips').addEventListener('click', (event) => {
     sideTripsVisible = !sideTripsVisible;
@@ -439,10 +435,12 @@ function bindUi() {
   const closeMenu = () => { sidebar.classList.remove('open'); scrim.classList.remove('show'); document.body.classList.remove('menu-open'); menuButton.setAttribute('aria-expanded', 'false'); };
   menuButton.addEventListener('click', () => { const isOpen = sidebar.classList.toggle('open'); scrim.classList.toggle('show', isOpen); document.body.classList.toggle('menu-open', isOpen); menuButton.setAttribute('aria-expanded', String(isOpen)); });
   scrim.addEventListener('click', closeMenu);
-  document.querySelectorAll('.nav a').forEach((link) => link.addEventListener('click', closeMenu));
+  document.querySelectorAll('.nav a, [data-day-nav]').forEach((link) => link.addEventListener('click', closeMenu));
+  const revealHash=()=>{const id=decodeURIComponent(location.hash.slice(1));const target=document.getElementById(id);if(target?.matches('details'))target.open=true;if(id.startsWith('day-')&&daysByDate[id.slice(4)])activateDay(id.slice(4),{open:true,skipFly:true});};
+  window.addEventListener('hashchange',revealHash);revealHash();
   const links = [...document.querySelectorAll('.nav a')];
   const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
-    if (entry.isIntersecting) links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`));
+    if (entry.isIntersecting) links.forEach((link) => { const id=['booking','stays','transport','budget'].includes(entry.target.id)?'logistics':entry.target.id; link.classList.toggle('active',link.getAttribute('href')===`#${id}`); });
   }), { rootMargin: '-30% 0px -60% 0px' });
   document.querySelectorAll('main section[id], header[id]').forEach((section) => observer.observe(section));
 }
@@ -453,7 +451,6 @@ async function bootstrap() {
   renderRouteControls();
   renderStays();
   renderTransport();
-  renderExperiences();
   renderDays();
   renderResearch();
   document.addEventListener('click', event => {
