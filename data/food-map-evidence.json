@@ -1,0 +1,130 @@
+[
+  {
+    "id": "hashidate",
+    "name": "はしだて茶屋",
+    "rating": 3.9,
+    "reviews": 383,
+    "checkedOn": "2026-10-30",
+    "url": "https://www.google.com/maps/place/Hashidate+Chaya/@35.5594592,135.1868907,17z/data=!3m1!4b1!4m6!3m5!1s0x5fff91293938d33d:0x922ace8d1e33eff0!8m2!3d35.5594592!4d135.1868907!16s%2Fg%2F1tfxxx1b"
+  },
+  {
+    "id": "asahi",
+    "name": "本家 第一旭 本店",
+    "rating": 4.0,
+    "reviews": 9417,
+    "checkedOn": "2026-10-30",
+    "url": "https://www.google.com/maps/place/Honke+Daiichi+Asahi+Honten/@34.986696,135.7599271,17z/data=!3m1!4b1!4m6!3m5!1s0x600108b1f3db0001:0xa5ed2c875338968b!8m2!3d34.986696!4d135.762502!16s%2Fg%2F1tywxvxz"
+  },
+  {
+    "id": "shinodaya",
+    "url": "https://www.google.com/maps/place/Shinodaya/@35.0092789,135.7704578,17z/data=!3m1!4b1!4m6!3m5!1s0x600108ec85b4d9a1:0x90bc00c709a882b0!8m2!3d35.0092789!4d135.7730327!16s%2Fg%2F1hcb0gxs2?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Shinodaya",
+    "checkedOn": "2026-10-30",
+    "rating": 4.1,
+    "reviews": 837
+  },
+  {
+    "id": "saizeriya",
+    "url": "https://www.google.com/maps/place/Saizeriya+-+Uji+Satojiri/@34.892537,135.8024781,17z/data=!3m1!4b1!4m6!3m5!1s0x6001110a2e1cd045:0x17f6acc40956c3a7!8m2!3d34.892537!4d135.805053!16s%2Fg%2F1tdqtfmp?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Saizeriya - Uji Satojiri",
+    "rating": 3.8,
+    "reviews": 1033,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "tamaya",
+    "url": "https://www.google.com/maps/place/%E7%8E%89%E5%B1%8B/@35.1978763,136.2246447,17z/data=!3m1!4b1!4m6!3m5!1s0x6003d5e74853337b:0xd90dfe96138b0a14!8m2!3d35.1978763!4d136.2272196!16s%2Fg%2F1v27vflp?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "玉屋",
+    "rating": 4.0,
+    "reviews": 223,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "himiko",
+    "url": "https://www.google.com/maps/place/Himiko/@35.4756339,135.3923443,17z/data=!3m1!4b1!4m6!3m5!1s0x5fff884549842995:0xf160534de9672e53!8m2!3d35.4756339!4d135.3949192!16s%2Fg%2F1tscnw5y?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Himiko",
+    "rating": 4.0,
+    "reviews": 919,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "funaya",
+    "url": "https://www.google.com/maps/place/Funaya+Shokudo/@35.675892,135.2853813,17z/data=!3m2!4b1!5s0x5fff9f8d034414c1:0x8bd78dd36bcdb189!4m6!3m5!1s0x5fff9f8d034b9739:0x71d8f3605f7813af!8m2!3d35.675892!4d135.2879562!16s%2Fg%2F11f5hldkdf?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Funaya Shokudo",
+    "rating": 3.2,
+    "reviews": 355,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "kinmata",
+    "url": "https://www.google.com/maps/place/%E8%BF%91%E5%8F%88/@35.4632686,134.8716461,17z/data=!3m1!4b1!4m6!3m5!1s0x5fffe7d8f67d612f:0x6abfd046d2867813!8m2!3d35.4632686!4d134.874221!16s%2Fg%2F1tlbtl9h?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "近又",
+    "rating": 4.3,
+    "reviews": 1342,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "okesho",
+    "url": "https://www.google.com/maps/place/Okesho+sengyo+%26+Dining+room+Kaichuen/@35.6251304,134.8100815,17z/data=!3m2!4b1!5s0x5fffc83ba77c82fb:0x6eb5e1be0f7f784e!4m6!3m5!1s0x5fffc83ae27b3d5f:0xc168c64b1fbaa342!8m2!3d35.6251304!4d134.8126564!16s%2Fg%2F1tjkfnn8?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Okesho sengyo & Dining room Kaichuen",
+    "rating": 4.0,
+    "reviews": 1457,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "beniya",
+    "url": "https://www.google.com/maps/place/Beniya+Cafe/@35.4966882,134.2265692,17z/data=!3m1!4b1!4m6!3m5!1s0x35558fc1e280da2f:0x8072dbb57d207240!8m2!3d35.4966882!4d134.2291441!16s%2Fg%2F1tgp82_q?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Beniya Cafe",
+    "rating": 3.7,
+    "reviews": 483,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "kujikara",
+    "url": "https://www.google.com/maps/place/Kujikara+Ramen/@35.5575892,135.1809054,17z/data=!3m1!4b1!4m6!3m5!1s0x5fff9131fc8d1cd1:0x2551c3a5613c283a!8m2!3d35.5575892!4d135.1834803!16s%2Fg%2F11b7hql774?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Kujikara Ramen",
+    "rating": 4.0,
+    "reviews": 634,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "takumi",
+    "url": "https://www.google.com/maps/place/Takumi+Kappo/@35.4961778,134.2244445,17z/data=!3m1!4b1!4m6!3m5!1s0x35558fc22ef5d723:0x946b78cad463eed3!8m2!3d35.4961778!4d134.2270194!16s%2Fg%2F1tjyrfwf?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Takumi Kappo",
+    "rating": 4.5,
+    "reviews": 736,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "okuda",
+    "url": "https://www.google.com/maps/place/Okuda/@35.033455,135.7782503,17z/data=!3m1!4b1!4m6!3m5!1s0x60010850747a8785:0x105c44892894abb8!8m2!3d35.033455!4d135.7808252!16s%2Fg%2F1tgpmy5s?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Okuda",
+    "rating": 4.2,
+    "reviews": 402,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "oishiya",
+    "url": "https://www.google.com/maps/place/%E5%A4%A7%E7%9F%B3%E5%B1%8B%E9%A3%9F%E5%A0%82/@35.5439079,134.8120896,17z/data=!3m1!4b1!4m6!3m5!1s0x5fffc46b7bfc13ad:0xcafbf55bda20e865!8m2!3d35.5439079!4d134.8146645!16s%2Fg%2F1tg7rwn9?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "大石屋食堂",
+    "rating": 3.8,
+    "reviews": 193,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "kawasaki",
+    "url": "https://www.google.com/maps/place/Seafood+Kawasaki/@35.5423641,135.1885437,17z/data=!3m1!4b1!4m6!3m5!1s0x5fff916c4f140001:0xc5926639db3b55da!8m2!3d35.5423641!4d135.1911186!16s%2Fg%2F11fxz7gpqn?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Seafood Kawasaki",
+    "rating": 4.3,
+    "reviews": 606,
+    "checkedOn": "2026-10-30"
+  },
+  {
+    "id": "wadatsumi",
+    "url": "https://www.google.com/maps/place/Wadatsumi+Sushi+Restaurant/@35.6739245,135.2880941,17z/data=!3m1!4b1!4m6!3m5!1s0x5fff9f925929a36d:0xc5ceecc70c99e912!8m2!3d35.6739245!4d135.290669!16s%2Fg%2F11f55jkvtg?entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+    "name": "Wadatsumi Sushi Restaurant",
+    "rating": 4.4,
+    "reviews": 586,
+    "checkedOn": "2026-10-30"
+  }
+]

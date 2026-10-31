@@ -1,3 +1,4 @@
+import { renderFood, renderMealNote, renderOutingCard, renderPacking, updateFoodBudget } from './food.js';
 import { renderDayGuide, renderResearch, photoHtml } from './guide.js';
 import {
   LngLatBounds,
@@ -350,7 +351,7 @@ function renderDays() {
   $('#timeline').innerHTML=days.map((day,index)=>{
     const transfers=day.timeline.filter(e=>/交通|机场|航班|入住|退房|行李|候车|值机/.test(e.label));
     const slots=entries=>entries.map(e=>`<div class="slot"><div class="slot-time">${escapeHtml(e.time)}</div><div class="slot-title">${escapeHtml(e.label)}</div><div class="slot-detail">${escapeHtml(e.detail)}</div></div>`).join('');
-    return `<article class="day-card risk-${day.risk} ${index===0?'open':''}" id="day-${day.date}" data-day-card="${day.date}"><button class="day-toggle" aria-expanded="${index===0}" data-day-toggle="${day.date}"><div><div class="day-date">${day.displayDate}</div><div class="weekday">${day.weekday}</div></div><div><div class="day-title">${escapeHtml(day.title)}</div><div class="day-base">${escapeHtml(day.sleep)}</div></div><span class="day-expand" aria-hidden="true">＋</span></button><div class="day-body"><p class="day-lede">${escapeHtml(day.intro.text)}</p>${transfers.length?`<div class="transfer-summary"><div class="card-kicker">当日转场</div><div class="schedule">${slots(transfers)}</div></div>`:''}${renderDayGuide(day)}<details class="day-schedule-fold"><summary>完整时间表 <span>含用餐、休息与所有规划窗口</span><b aria-hidden="true">＋</b></summary><div class="schedule">${slots(day.timeline)}</div></details><details class="day-weather-fold"><summary>天气变化时怎么调整 <b aria-hidden="true">＋</b></summary><div class="weather-plan"><div class="weather-item"><strong>正常天气</strong>${escapeHtml(day.weather.sun)}</div><div class="weather-item"><strong>雨天</strong>${escapeHtml(day.weather.rain)}</div><div class="weather-item"><strong>大雪 / 强风</strong>${escapeHtml(day.weather.snow)}</div></div></details><div class="day-map-action no-print"><button class="btn btn-light" data-day-map="${day.date}">在行程地图定位 ↗</button><div class="day-route-links"><span>当天交通</span>${dayGoogleMapsLinks(day)}</div></div></div></article>`;
+    return `<article class="day-card risk-${day.risk} ${index===0?'open':''}" id="day-${day.date}" data-day-card="${day.date}"><button class="day-toggle" aria-expanded="${index===0}" data-day-toggle="${day.date}"><div><div class="day-date">${day.displayDate}</div><div class="weekday">${day.weekday}</div></div><div><div class="day-title">${escapeHtml(day.title)}</div><div class="day-base">${escapeHtml(day.sleep)}</div></div><span class="day-expand" aria-hidden="true">＋</span></button><div class="day-body"><p class="day-lede">${escapeHtml(day.intro.text)}</p>${transfers.length?`<div class="transfer-summary"><div class="card-kicker">当日转场</div><div class="schedule">${slots(transfers)}</div></div>`:''}${renderOutingCard(day)}${renderDayGuide(day)}${renderMealNote(day)}<details class="day-schedule-fold"><summary>完整时间表 <span>含用餐、休息与所有规划窗口</span><b aria-hidden="true">＋</b></summary><div class="schedule">${slots(day.timeline)}</div></details><details class="day-weather-fold"><summary>天气变化时怎么调整 <b aria-hidden="true">＋</b></summary><div class="weather-plan"><div class="weather-item"><strong>正常天气</strong>${escapeHtml(day.weather.sun)}</div><div class="weather-item"><strong>雨天</strong>${escapeHtml(day.weather.rain)}</div><div class="weather-item"><strong>大雪 / 强风</strong>${escapeHtml(day.weather.snow)}</div></div></details><div class="day-map-action no-print"><button class="btn btn-light" data-day-map="${day.date}">在行程地图定位 ↗</button><div class="day-route-links"><span>当天交通</span>${dayGoogleMapsLinks(day)}</div></div></div></article>`;
   }).join('');
   document.querySelectorAll('[data-day-nav]').forEach(button=>button.addEventListener('click',()=>activateDay(button.dataset.dayNav,{scroll:true,open:true})));
   document.querySelectorAll('[data-day-toggle]').forEach(button=>button.addEventListener('click',()=>{
@@ -384,6 +385,7 @@ function renderBudget() {
     window.localStorage.setItem(trip.budget.exchangeRateStorageKey, event.target.value);
     const text = Number(event.target.value) > 0 ? `按手填汇率约 ¥${(transportJpy * Number(event.target.value)).toFixed(2)} RMB` : '尚未填写 JPY/CNY 汇率，不自动换汇。';
     $('#convertedBudget').textContent = text;
+    updateFoodBudget();
   });
 }
 
@@ -410,9 +412,14 @@ function bindUi() {
   document.querySelector('#showAllRoute')?.addEventListener('click', () => mapAdapter?.fitAll());
   document.querySelectorAll('[data-jump-day]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();activateDay(link.dataset.jumpDay,{open:true,scroll:true});}));
   let printClosedDetails=[];
-  window.addEventListener('beforeprint',()=>{printClosedDetails=[...document.querySelectorAll('details:not([open])')];printClosedDetails.forEach(detail=>{detail.open=true;});});
+  window.addEventListener('beforeprint',()=>{if(document.body.classList.contains('print-outing'))return;printClosedDetails=[...document.querySelectorAll('details:not([open])')];printClosedDetails.forEach(detail=>{detail.open=true;});});
   window.addEventListener('afterprint',()=>{printClosedDetails.forEach(detail=>{detail.open=false;});printClosedDetails=[];});
   $('#printButton').addEventListener('click', () => window.print());
+  document.querySelectorAll('[data-print-outing]').forEach(button=>button.addEventListener('click',()=>{
+    const card=document.getElementById('day-'+button.dataset.printOuting);
+    document.body.classList.add('print-outing');card.classList.add('print-selected');
+    try { window.print(); } finally { document.body.classList.remove('print-outing');card.classList.remove('print-selected'); }
+  }));
   $('#toggleSideTrips').addEventListener('click', (event) => {
     sideTripsVisible = !sideTripsVisible;
     mapAdapter?.setSideVisible(sideTripsVisible);
@@ -430,6 +437,7 @@ function bindUi() {
     resetArmed = false;
     event.currentTarget.textContent = '重置进度';
     renderChecklist();
+    renderPacking(progress, saveProgress);
     renderDashboard();
   });
   const menuButton = $('#mobileMenuButton');
@@ -456,12 +464,14 @@ async function bootstrap() {
   renderTransport();
   renderDays();
   renderResearch();
+  renderFood();
   document.addEventListener('click', event => {
     const button=event.target.closest('[data-sight-date]'); if(!button)return;
     activateDay(button.dataset.sightDate,{open:true,scroll:false});
     document.getElementById('sight-'+button.dataset.sightId)?.scrollIntoView({behavior:'smooth',block:'start'});
   });
   renderChecklist();
+  renderPacking(progress, saveProgress);
   renderBudget();
   renderLinks();
   bindUi();
