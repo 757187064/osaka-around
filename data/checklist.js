@@ -1,19 +1,20 @@
 export const checklistGroups = [
-  { when: '现在', items: [
+  { when: '现在 · 确认与预约准备', items: [
     { id: 'bag-9c6987', action: 'confirm', text: '确认 9C6987 订单中的实际行李额度' },
-    { id: 'bag-9c6988', action: 'confirm', text: '确认 9C6988 订单中的实际行李额度' }
+    { id: 'bag-9c6988', action: 'confirm', text: '确认 9C6988 订单中的实际行李额度' },
+    { id: 'booking-contacts', action: 'confirm', text: '确认12/7酒店17:00入住限制，保存酒店与航司的订单联系方式' }
   ] },
   { when: '11/14 日本10:00（北京09:00）', items: [
     { id: 'hakuto-buy', action: 'ticket', text: '比较并预约12/14鸟取返程；Super Hakuto指定席开售' }
   ] },
   { when: '11/17 北京时间09:50提醒 / 10:00起售参考', items: [{ id: 'k681-buy', action: 'ticket', text: '12306购买12/1北京站→大连站K681硬卧，核实次日07:51到站及机场衔接' }] },
-  { when: '11/20–11/25', items: [
+  { when: '临行复核 · 11/20–11/25', items: [
     {id:'kyoto-maizuru-rail',action:'recheck',text:'核实12/6京都→东舞鹤铁路，已取消美山串联'},
     {id:'toyosato-calendar',action:'recheck',text:'12/3丰乡旧校舍借馆日历、近江铁道班次'},
     {id:'izushi-bus',action:'recheck',text:'出石往返全但巴士；13点后抵丰冈则取消'},
     {id:'iwami-bus',action:'recheck',text:'12/13岩美/浦富往返常规巴士，与JR逐段匹配'}
   ] },
-  { when: '11 月底', items: [
+  { when: '临行复核 · 11 月底', items: [
     { id: 'maizuru-amanohashidate', action: 'recheck', text: '12/7 东舞鹤 → 天桥立' },
     { id: 'ine-bus', action: 'recheck', text: '12/8 伊根快速巴士' },
     { id: 'amanohashidate-toyooka', action: 'recheck', text: '12/10 天桥立 → 丰冈' },
@@ -24,9 +25,18 @@ export const checklistGroups = [
   ] },
   { when: '出发前 24–48 小时', items: [
     { id: 'kix-terminal', action: 'confirm', text: '确认 KIX 春秋实际航站楼' },
+    { id: 'k681-airport-buffer', action: 'recheck', text: '用K681实际到站时间与春秋值机截止重算大连机场余量，保存转场路线' },
     { id: 'flight-status', action: 'confirm', text: '确认航班状态' },
     { id: 'coast-weather', action: 'confirm', text: '确认日本海沿岸天气：大雪／强风' },
-    { id: 'jr-status', action: 'confirm', text: '确认 JR 与巴士运行状态' }
+    { id: 'jr-status', action: 'confirm', text: '确认 JR 与巴士运行状态' },
+    { id: 'offline-kit-ready', action: 'confirm', text: '下载离线急用页，断网试开。保存已核主班、备选班与订单截图' }
+  ] },
+  { when: '当天早上 · 看运行与开放公告', items: [
+    { id: 'day-alert-toyosato', action: 'recheck', text: '12/3 查丰乡旧校舍临时开放和近江铁道运行' },
+    { id: 'day-alert-maizuru', action: 'recheck', text: '12/7 查丹铁运行，锁定能在15:45前到天桥立站的车' },
+    { id: 'day-alert-ine', action: 'recheck', text: '12/8 查丹海巴士、海况与返程方向' },
+    { id: 'day-alert-izushi', action: 'recheck', text: '12/10 查全但巴士，确认丰冈寄存与出石返程' },
+    { id: 'day-alert-iwami', action: 'recheck', text: '12/13 查岩美町营巴士与JR接续，再决定砂丘和美术馆' }
   ] }
 ];
 

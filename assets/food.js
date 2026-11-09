@@ -1,6 +1,6 @@
 import evidence from '../data/food-map-evidence.json';
 import { foodCheckedOn, foodRegions, restaurants, foodById, dailyMeals, omittedFood } from '../data/food.js';
-import { packingGroups, outingPlans } from '../data/preparation.js';
+import { packingGroups, outingPlans, decisionPoints, decisionSources } from '../data/preparation.js';
 import { stays, placesById, trip } from '../data/index.js';
 
 const esc = (s='') => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -19,7 +19,7 @@ export function renderMealNote(day) {
 export function renderOutingCard(day) {
  const stay=stays.find(s=>placesById[s.placeId].dates.includes(day.date)) || stays.at(-1);
  const p=placesById[stay.placeId], plan=outingPlans[day.date];
- return `<details class="outing-card" id="outing-${day.date}"><summary><span>当天出门卡 <small>酒店地址 · 返程 · 误车／雨雪简化</small></span><b aria-hidden="true">＋</b></summary><div class="outing-content"><div class="outing-heading"><strong>${esc(day.displayDate)} · ${esc(day.title)}</strong><span>${day.date==='2026-12-02'?'中国段北京时间，日本段当地时间':'日本段当地时间'}</span></div><dl><dt>${day.date==='2026-12-16'?'出发酒店':'今晚回哪里'}</dt><dd><strong>${esc(stay.name)}</strong><br>${esc(p.address)}<br>${link(maps(p.query),'酒店地图／联系入口')}</dd><dt>先守住的交通</dt><dd>${esc(plan[0])}</dd><dt>来不及时这样减</dt><dd>${esc(plan[1])}</dd></dl><p class="outing-note">“目标／预留”为规划余量，不是公布班次；参考时刻临行查运营方。提前存好离线截图，地图导航需自行选当天日期、出发时间和步行路径。</p><div class="outing-actions no-print"><button class="btn btn-light" data-print-outing="${day.date}">单独打印此卡／存 PDF</button><a href="#transport">页面交通参考表 ↗</a></div></div></details>`;
+ return `<details class="outing-card" id="outing-${day.date}"><summary><span>当天出门卡 <small>酒店地址 · 返程 · 误车／雨雪简化</small></span><b aria-hidden="true">＋</b></summary><div class="outing-content"><div class="outing-heading"><strong>${esc(day.displayDate)} · ${esc(day.title)}</strong><span>${day.date==='2026-12-02'?'中国段北京时间，日本段当地时间':'日本段当地时间'}</span></div><dl><dt>${day.date==='2026-12-16'?'出发酒店':'今晚回哪里'}</dt><dd><strong>${esc(stay.name)}</strong><br>${esc(p.address)}<br>${link(maps(p.query),'酒店地图／联系入口')}</dd><dt>先守住的交通</dt><dd>${esc(plan[0])}</dd>${decisionPoints[day.date] ? `<dt>几点决定改线</dt><dd>${esc(decisionPoints[day.date])}<br>${link(decisionSources[day.date][1], decisionSources[day.date][0])}</dd>` : ''}<dt>来不及时这样减</dt><dd>${esc(plan[1])}</dd></dl><p class="outing-note">“目标／预留”为规划余量，不是公布班次；参考时刻临行查运营方。提前存好离线截图，地图导航需自行选当天日期、出发时间和步行路径。</p><div class="outing-actions no-print"><button class="btn btn-light" data-print-outing="${day.date}">单独打印此卡／存 PDF</button><a href="#transport">页面交通参考表 ↗</a><a href="#offline-kit">离线急用页 ↗</a></div></div></details>`;
 }
 
 function restaurantHtml(r) {

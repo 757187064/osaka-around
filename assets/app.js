@@ -1,3 +1,4 @@
+import { renderOfflineKit } from './offline-kit.js';
 import { renderFood, renderMealNote, renderOutingCard, renderPacking, updateFoodBudget } from './food.js';
 import { renderDayGuide, renderResearch, photoHtml } from './guide.js';
 import {
@@ -465,6 +466,7 @@ async function bootstrap() {
   renderDays();
   renderResearch();
   renderFood();
+  renderOfflineKit();
   document.addEventListener('click', event => {
     const button=event.target.closest('[data-sight-date]'); if(!button)return;
     activateDay(button.dataset.sightDate,{open:true,scroll:false});
