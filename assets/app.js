@@ -1,6 +1,6 @@
 import { renderOfflineKit } from './offline-kit.js';
 import { renderFood, renderMealNote, renderOutingCard, renderPacking, updateFoodBudget } from './food.js';
-import { renderDayGuide, renderResearch, photoHtml } from './guide.js';
+import { renderDayGuide, renderResearch } from './guide.js';
 import {
   LngLatBounds,
   Map as MapLibreMap,
@@ -15,7 +15,6 @@ import {
   checklistGroups,
   dayRouteIds,
   days,
-  mainRouteSequence,
   officialLinks,
   places,
   placesById,
@@ -36,6 +35,8 @@ const daysByDate = Object.fromEntries(days.map((day) => [day.date, day]));
 const segmentsById = Object.fromEntries(routeSegments.map((segment) => [segment.id, segment]));
 let activeDate = days[0].date;
 let mapAdapter = null;
+let mapRequested = false;
+let mapDay = null;
 let sideTripsVisible = true;
 let resetArmed = false;
 let progress = readProgress();
@@ -83,24 +84,17 @@ function getContextDay(place) {
   return days.find((day) => place.dates.includes(day.date)) || days[0];
 }
 
-function nextTransportText(day) {
-  return day.timeline.find((entry) => entry.label === '交通')?.detail || '查看当天时间轴';
-}
-
 function popupHtml(place) {
   const day = getContextDay(place);
   return `<div class="popup-title">${escapeHtml(place.name)}</div>
     ${place.address ? `<div class="popup-line"><strong>地址：</strong>${escapeHtml(place.address)}</div>` : ''}
     <div class="popup-line"><strong>日期：</strong>${escapeHtml(day.displayDate)} ${escapeHtml(day.weekday)}</div>
-    <div class="popup-line"><strong>住宿：</strong>${escapeHtml(day.sleep)}</div>
-    <div class="popup-line"><strong>当天任务：</strong>${escapeHtml(day.title)}</div>
-    <div class="popup-line"><strong>下一段交通：</strong>${escapeHtml(nextTransportText(day))}</div>
     <div class="popup-actions"><a target="_blank" rel="noreferrer" href="${mapsSearchUrl(place.query)}">Google Maps ↗</a><button data-popup-day="${day.date}">查看当天行程</button></div>`;
 }
 
 function bindPopupActions() {
   document.querySelectorAll('[data-popup-day]').forEach((button) => {
-    button.addEventListener('click', () => activateDay(button.dataset.popupDay, { scroll: true, open: true }));
+    button.addEventListener('click', () => goTo('day-' + button.dataset.popupDay));
   });
 }
 
@@ -211,11 +205,8 @@ class MapLibreAdapter {
       const popup = new MapLibrePopup({ offset: 18, closeButton: true }).setHTML(popupHtml(place));
       popup.on('open', bindPopupActions);
       element.addEventListener('click', () => {
-        const day = getContextDay(place);
         popup.setHTML(popupHtml(place));
-        activateDay(day.date, { open: true, skipFly: true });
         window.setTimeout(bindPopupActions, 0);
-        document.getElementById(`day-${day.date}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
       const marker = new MapLibreMarker({ element, anchor: 'center' }).setLngLat([place.lng, place.lat]).setPopup(popup).addTo(this.map);
       this.markers.set(place.id, marker);
@@ -282,10 +273,15 @@ async function initializeOpenFreeMap() {
   try {
     const style = await loadOpenFreeMapStyle();
     const adapter = new MapLibreAdapter($('#map'), style);
-    await adapter.init();
+    try {
+      await adapter.init();
+    } catch (error) {
+      adapter.destroy();
+      throw error;
+    }
     mapAdapter = adapter;
     adapter.setSideVisible(sideTripsVisible);
-    adapter.fitAll();
+    if (mapDay) adapter.selectDay(daysByDate[mapDay]);
   } catch {
     setProvider('OpenFreeMap 行程总览');
     showMapMessage('OpenFreeMap 底图没有响应。请检查网络后重试；固定路线与外部 Google Maps 编辑按钮仍可使用。');
@@ -293,33 +289,19 @@ async function initializeOpenFreeMap() {
 }
 
 function renderHeader() {
-  $('#heroTitle').textContent = '在京都停留，\n向山阴出发。';
-  $('#heroSubtitle').textContent = '京都 · 丰乡 · 宇治 · 天桥立 · 伊根 · 城崎 · 鸟取';
-  $('#heroPills').innerHTML = '<span><b>12.02 — 12.16</b><small>2026 / 15天14晚</small></span><span><b>一个人</b><small>5座住宿城市</small></span><span><b>机票 · 酒店已订</b><small>公共交通环线</small></span>';
-  $('#heroVisual').innerHTML = photoHtml('gion','京都 · 祇园白川夜景（春季历史影像，非12月景色）').replace('loading="lazy"','loading="eager" fetchpriority="high"');
   $('#flightGrid').innerHTML = trip.flights.map(f=>`<article class="flight-ticket"><span class="card-kicker">${f.date.slice(5).replace('-','/')} · ${f.flight} · 已购</span><h4>${escapeHtml(f.route)}</h4><strong>${f.time}</strong><p>${escapeHtml(f.note)}</p></article>`).join('');
 }
 
-function renderDashboard() {
-  const firstOpen = checklistGroups.flatMap(group=>group.items).find(item=>!['completed','confirmed','rechecked','ticketed'].includes(progress[item.id]));
-  $('#nextTaskCard').innerHTML = `<div class="card-kicker">出发前 / NEXT STEP</div><h4>${firstOpen?escapeHtml(firstOpen.text):'待办已完成'}</h4><a href="#checklist" class="quiet-link">${firstOpen?'去处理待办':'查看复核记录'} ↗</a>`;
-  $('#alertCard').innerHTML = '<div class="card-kicker">行程底线 / KEEP IN MIND</div><h4>12/7，17:00前入住天桥立</h4><a class="quiet-link" href="#booking">查看前序航班衔接与购票提醒 ↗</a>';
-  const remaining=Math.ceil((new Date(trip.meta.departureDate)-new Date())/86400000);
-  $('#countdownCard').innerHTML=`<div class="card-kicker">距出发 / COUNTDOWN</div><h4 class="countdown-number">${remaining>=0?remaining:'—'}<small>天</small></h4><a class="quiet-link" href="#days">${remaining>=0?'还有时间，慢慢准备。':'翻开这段旅程。'} ↗</a>`;
-}
-
 function renderRouteControls() {
-  $('#routeGroupButtons').innerHTML = routeGroups.map((group) => `<a class="map-route-button" href="#planner-${group.id}">${group.label}：分段路线 ↓</a>`).join('');
-  const mainRoute = `<div class="route-summary-main"><span class="route-summary-title">主环线</span>${mainRouteSequence.map(([number, label], index) => `<span class="route-node"><span class="route-number">${number}</span>${label}</span>${index < mainRouteSequence.length - 1 ? '<span class="route-arrow">→</span>' : ''}`).join('')}</div>`;
   const planners = routeGroups.map((group) => {
     const legs = group.segmentIds.map((id) => segmentsById[id]).filter(Boolean).map((segment) => {
       const from = placesById[segment.points[0]];
       const to = placesById[segment.points.at(-1)];
       return `<div class="route-leg"><span>${escapeHtml(from.name)} → ${escapeHtml(to.name)}</span><a class="btn btn-light" href="${directionsUrl(from.query, to.query)}" target="_blank" rel="noreferrer">Google Maps 路线 ↗</a></div>`;
     }).join('');
-    return `<article class="route-planner-card" id="planner-${group.id}"><div class="card-kicker">分段导航</div><h4>${group.label}</h4><div class="route-leg-list">${legs}</div></article>`;
+    return `<details class="compact-fold" id="planner-${group.id}"><summary>${group.label} · 分段导航</summary><div class="route-leg-list">${legs}</div></details>`;
   }).join('');
-  $('#routeSummary').innerHTML = `${mainRoute}<div class="route-planner-note">选择一段路线，在 Google Maps 查看当前公共交通。</div><div class="route-planner-grid">${planners}</div>`;
+  $('#routeSummary').innerHTML = planners;
 }
 
 function renderStays() {
@@ -348,20 +330,62 @@ function dayGoogleMapsLinks(day) {
 }
 
 function renderDays() {
-  $('#dateNav').innerHTML=days.map(day=>`<button class="date-nav-button ${day.date===activeDate?'active':''}" data-day-nav="${day.date}">${day.displayDate}</button>`).join('');
-  $('#timeline').innerHTML=days.map((day,index)=>{
-    const transfers=day.timeline.filter(e=>/交通|机场|航班|入住|退房|行李|候车|值机/.test(e.label));
-    const slots=entries=>entries.map(e=>`<div class="slot"><div class="slot-time">${escapeHtml(e.time)}</div><div class="slot-title">${escapeHtml(e.label)}</div><div class="slot-detail">${escapeHtml(e.detail)}</div></div>`).join('');
-    return `<article class="day-card risk-${day.risk} ${index===0?'open':''}" id="day-${day.date}" data-day-card="${day.date}"><button class="day-toggle" aria-expanded="${index===0}" data-day-toggle="${day.date}"><div><div class="day-date">${day.displayDate}</div><div class="weekday">${day.weekday}</div></div><div><div class="day-title">${escapeHtml(day.title)}</div><div class="day-base">${escapeHtml(day.sleep)}</div></div><span class="day-expand" aria-hidden="true">＋</span></button><div class="day-body"><p class="day-lede">${escapeHtml(day.intro.text)}</p>${transfers.length?`<div class="transfer-summary"><div class="card-kicker">当日转场</div><div class="schedule">${slots(transfers)}</div></div>`:''}${renderOutingCard(day)}${renderDayGuide(day)}${renderMealNote(day)}<details class="day-schedule-fold"><summary>完整时间表 <span>含用餐、休息与所有规划窗口</span><b aria-hidden="true">＋</b></summary><div class="schedule">${slots(day.timeline)}</div></details><details class="day-weather-fold"><summary>天气变化时怎么调整 <b aria-hidden="true">＋</b></summary><div class="weather-plan"><div class="weather-item"><strong>正常天气</strong>${escapeHtml(day.weather.sun)}</div><div class="weather-item"><strong>雨天</strong>${escapeHtml(day.weather.rain)}</div><div class="weather-item"><strong>大雪 / 强风</strong>${escapeHtml(day.weather.snow)}</div></div></details><div class="day-map-action no-print"><button class="btn btn-light" data-day-map="${day.date}">在行程地图定位 ↗</button><div class="day-route-links"><span>当天交通</span>${dayGoogleMapsLinks(day)}</div></div></div></article>`;
+  $('#dateNav').innerHTML = days.map(day =>
+    `<option value="${day.date}">${day.displayDate} ${day.weekday} · ${escapeHtml(day.title)}</option>`
+  ).join('');
+
+  $('#timeline').innerHTML = days.map(day => {
+    const schedule = day.timeline.map(entry => `
+      <div class="slot">
+        <div class="slot-time">${escapeHtml(entry.time)}</div>
+        <div class="slot-title">${escapeHtml(entry.label)}</div>
+        <div class="slot-detail">${escapeHtml(entry.detail)}</div>
+      </div>`).join('');
+
+    return `<article class="day-card open" id="day-${day.date}" data-day-card="${day.date}" hidden>
+      <header class="day-heading">
+        <p>${day.displayDate} ${day.weekday}</p>
+        <h3>${escapeHtml(day.title)}</h3>
+        ${day.sleep !== '—' ? `<p>${escapeHtml(day.sleep)}</p>` : ''}
+      </header>
+      <div class="day-body">
+        ${renderOutingCard(day)}
+        <details class="compact-fold day-schedule-fold">
+          <summary>当天时间表</summary>
+          <div class="schedule">${schedule}</div>
+        </details>
+        ${renderDayGuide(day)}
+        ${renderMealNote(day)}
+        <details class="compact-fold day-weather-fold">
+          <summary>雨雪备选</summary>
+          <div class="weather-plan">
+            <div class="weather-item"><strong>雨天</strong>${escapeHtml(day.weather.rain)}</div>
+            <div class="weather-item"><strong>大雪 / 强风</strong>${escapeHtml(day.weather.snow)}</div>
+          </div>
+        </details>
+        <div class="day-map-action no-print">
+          <button class="btn btn-light" data-day-map="${day.date}">在行程地图定位 ↗</button>
+          <div class="day-route-links">${dayGoogleMapsLinks(day)}</div>
+        </div>
+      </div>
+    </article>`;
   }).join('');
-  document.querySelectorAll('[data-day-nav]').forEach(button=>button.addEventListener('click',()=>activateDay(button.dataset.dayNav,{scroll:true,open:true})));
-  document.querySelectorAll('[data-day-toggle]').forEach(button=>button.addEventListener('click',()=>{
-    const card=document.getElementById(`day-${button.dataset.dayToggle}`),open=!card.classList.contains('open');
-    card.classList.toggle('open',open);button.setAttribute('aria-expanded',String(open));activateDay(button.dataset.dayToggle,{open,skipFly:false});
-  }));
-  document.querySelectorAll('[data-day-map]').forEach(button=>button.addEventListener('click',()=>{
-    activateDay(button.dataset.dayMap,{open:true});document.getElementById('map-section').scrollIntoView({behavior:'smooth'});
-  }));
+
+  $('#dateNav').addEventListener('change', event => goTo('day-' + event.target.value));
+  $('#previousDay').addEventListener('click', () => changeDay(-1));
+  $('#nextDay').addEventListener('click', () => changeDay(1));
+  document.querySelectorAll('[data-day-map]').forEach(button => {
+    button.addEventListener('click', () => {
+      mapDay = button.dataset.dayMap;
+      goTo('map-section');
+    });
+  });
+}
+
+function changeDay(offset) {
+  const index = days.findIndex(day => day.date === activeDate);
+  const next = days[index + offset];
+  if (next) goTo('day-' + next.date);
 }
 
 function renderChecklist() {
@@ -372,7 +396,6 @@ function renderChecklist() {
   document.querySelectorAll('[data-progress-id]').forEach((select) => select.addEventListener('change', () => {
     progress[select.dataset.progressId] = select.value;
     saveProgress();
-    renderDashboard();
   }));
 }
 
@@ -394,24 +417,62 @@ function renderLinks() {
   $('#officialLinks').innerHTML = officialLinks.map((link) => `<a class="link-chip" target="_blank" rel="noreferrer" href="${link.url}">${link.label} <span class="link-badge ${link.type === 'third-party' ? 'third-party' : ''}">${link.type === 'official' ? '官方' : '第三方'}</span> ↗</a>`).join('');
 }
 
-function activateDay(date, { scroll = false, open = false, skipFly = false } = {}) {
-  const day = daysByDate[date];
-  if (!day) return;
+function activateDay(date) {
+  if (!daysByDate[date]) return;
   activeDate = date;
-  document.querySelectorAll('[data-day-nav]').forEach((button) => button.classList.toggle('active', button.dataset.dayNav === date));
-  document.querySelectorAll('[data-day-card]').forEach((card) => card.classList.toggle('is-active', card.dataset.dayCard === date));
-  if (open) {
-    const card = document.getElementById(`day-${date}`);
-    card.classList.add('open');
-    card.querySelector('.day-toggle').setAttribute('aria-expanded', 'true');
+  $('#dateNav').value = date;
+  $('#previousDay').disabled = date === days[0].date;
+  $('#nextDay').disabled = date === days.at(-1).date;
+  document.querySelectorAll('[data-day-card]').forEach(card => {
+    card.hidden = card.dataset.dayCard !== date;
+  });
+}
+
+function goTo(id) {
+  if (location.hash === '#' + id) revealHash();
+  else location.hash = id;
+}
+
+function revealHash() {
+  const id = location.hash.slice(1);
+  const target = document.getElementById(id);
+  const view = target?.closest('[data-view]')?.dataset.view || 'days';
+  document.querySelectorAll('[data-view]').forEach(panel => {
+    panel.hidden = panel.dataset.view !== view;
+  });
+  document.querySelectorAll('[data-view-link]').forEach(link => {
+    if (link.dataset.viewLink === view) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
+
+  if (view === 'days') {
+    const day = target?.closest('[data-day-card]');
+    activateDay(day?.dataset.dayCard || activeDate);
   }
-  if (!skipFly && mapAdapter) mapAdapter.selectDay(day);
-  if (scroll) document.getElementById(`day-${date}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  for (let element = target; element; element = element.parentElement) {
+    if (element.tagName === 'DETAILS') element.open = true;
+  }
+
+  if (view === 'map') {
+    if (!mapRequested) {
+      mapRequested = true;
+      void initializeMap();
+    } else if (mapAdapter) {
+      mapAdapter.map.resize();
+      if (mapDay) mapAdapter.selectDay(daysByDate[mapDay]);
+      else mapAdapter.fitAll();
+    }
+  }
+
+  const mainAnchor = ['overview', 'days', 'map-section', 'anime', 'food', 'checklist', 'offline-kit'];
+  if (!target || mainAnchor.includes(id)) window.scrollTo(0, 0);
+  else if (target.matches('[data-day-card]')) $('#days').scrollIntoView();
+  else target.scrollIntoView();
 }
 
 function bindUi() {
-  document.querySelector('#showAllRoute')?.addEventListener('click', () => mapAdapter?.fitAll());
-  document.querySelectorAll('[data-jump-day]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();activateDay(link.dataset.jumpDay,{open:true,scroll:true});}));
+  $('#showAllRoute').addEventListener('click', () => { mapDay = null; mapAdapter?.fitAll(); });
+  $('#sectionNav a[href="#map-section"]').addEventListener('click', () => { mapDay = null; });
   let printClosedDetails=[];
   window.addEventListener('beforeprint',()=>{if(document.body.classList.contains('print-outing'))return;printClosedDetails=[...document.querySelectorAll('details:not([open])')];printClosedDetails.forEach(detail=>{detail.open=true;});});
   window.addEventListener('afterprint',()=>{printClosedDetails.forEach(detail=>{detail.open=false;});printClosedDetails=[];});
@@ -439,27 +500,19 @@ function bindUi() {
     event.currentTarget.textContent = '重置进度';
     renderChecklist();
     renderPacking(progress, saveProgress);
-    renderDashboard();
   });
-  const menuButton = $('#mobileMenuButton');
-  const sidebar = $('#sidebar');
-  const scrim = $('#drawerScrim');
-  const closeMenu = () => { sidebar.classList.remove('open'); scrim.classList.remove('show'); document.body.classList.remove('menu-open'); menuButton.setAttribute('aria-expanded', 'false'); };
-  menuButton.addEventListener('click', () => { const isOpen = sidebar.classList.toggle('open'); scrim.classList.toggle('show', isOpen); document.body.classList.toggle('menu-open', isOpen); menuButton.setAttribute('aria-expanded', String(isOpen)); });
-  scrim.addEventListener('click', closeMenu);
-  document.querySelectorAll('.nav a, [data-day-nav]').forEach((link) => link.addEventListener('click', closeMenu));
-  const revealHash=()=>{const id=decodeURIComponent(location.hash.slice(1));const target=document.getElementById(id);if(target?.matches('details'))target.open=true;if(id.startsWith('day-')&&daysByDate[id.slice(4)])activateDay(id.slice(4),{open:true,skipFly:true});};
-  window.addEventListener('hashchange',revealHash);revealHash();
-  const links = [...document.querySelectorAll('.nav a')];
-  const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
-    if (entry.isIntersecting) links.forEach((link) => { const id=['booking','stays','transport','budget'].includes(entry.target.id)?'logistics':entry.target.id; link.classList.toggle('active',link.getAttribute('href')===`#${id}`); });
-  }), { rootMargin: '-30% 0px -60% 0px' });
-  document.querySelectorAll('main section[id], header[id]').forEach((section) => observer.observe(section));
+  window.addEventListener('hashchange', revealHash);
+  document.addEventListener('click', event => {
+    const anchor = event.target.closest('a[href^="#"]');
+    if (!anchor || event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    goTo(anchor.hash.slice(1));
+  });
+  revealHash();
 }
 
-async function bootstrap() {
+function bootstrap() {
   renderHeader();
-  renderDashboard();
   renderRouteControls();
   renderStays();
   renderTransport();
@@ -469,19 +522,13 @@ async function bootstrap() {
   renderOfflineKit();
   document.addEventListener('click', event => {
     const button=event.target.closest('[data-sight-date]'); if(!button)return;
-    activateDay(button.dataset.sightDate,{open:true,scroll:false});
-    document.getElementById('sight-'+button.dataset.sightId)?.scrollIntoView({behavior:'smooth',block:'start'});
+    goTo('sight-' + button.dataset.sightId);
   });
   renderChecklist();
   renderPacking(progress, saveProgress);
   renderBudget();
   renderLinks();
   bindUi();
-  activateDay(activeDate, { open: true, skipFly: true });
-  await initializeMap();
 }
 
-bootstrap().catch(() => {
-  setProvider('OpenFreeMap 行程总览');
-  showMapMessage('页面其余行程已载入，但地图初始化失败。请检查网络后重试。');
-});
+bootstrap();
