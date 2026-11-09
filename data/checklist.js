@@ -2,7 +2,7 @@ export const checklistGroups = [
   { when: '现在 · 确认与预约准备', items: [
     { id: 'bag-9c6987', action: 'confirm', text: '确认 9C6987 订单中的实际行李额度' },
     { id: 'bag-9c6988', action: 'confirm', text: '确认 9C6988 订单中的实际行李额度' },
-    { id: 'booking-contacts', action: 'confirm', text: '确认12/7酒店17:00入住限制，保存酒店与航司的订单联系方式' }
+    { id: 'booking-contacts', action: 'confirm', text: '确认12/7酒店17:00入住限制，保存订房消息入口、酒店邮件及航司在线客服入口（如有）' }
   ] },
   { when: '11/14 日本10:00（北京09:00）', items: [
     { id: 'hakuto-buy', action: 'ticket', text: '比较并预约12/14鸟取返程；Super Hakuto指定席开售' }
@@ -29,7 +29,7 @@ export const checklistGroups = [
     { id: 'flight-status', action: 'confirm', text: '确认航班状态' },
     { id: 'coast-weather', action: 'confirm', text: '确认日本海沿岸天气：大雪／强风' },
     { id: 'jr-status', action: 'confirm', text: '确认 JR 与巴士运行状态' },
-    { id: 'offline-kit-ready', action: 'confirm', text: '下载离线急用页，断网试开。保存已核主班、备选班与订单截图' }
+    { id: 'offline-kit-ready', action: 'confirm', text: '下载最新离线急用页，断网试开并截图保存日语代拨卡。另存已核主班、备选班与订单截图' }
   ] },
   { when: '当天早上 · 看运行与开放公告', items: [
     { id: 'day-alert-toyosato', action: 'recheck', text: '12/3 查丰乡旧校舍临时开放和近江铁道运行' },
