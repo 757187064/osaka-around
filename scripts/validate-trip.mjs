@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {days,places,placesById,stays,transport,routeSegments,dayRouteIds,checklistGroups,trip} from '../data/index.js';
 import {dailyGuides,sightsById,sources,animePlaces,auditRows} from '../data/guide.js';
+import {transitPhotos} from '../data/transit-photos.js';
 const photos=JSON.parse(fs.readFileSync(new URL('../data/photos.json',import.meta.url)));
 const dates=new Set(days.map(d=>d.date));
 assert.equal(dates.size,15);
@@ -34,15 +35,24 @@ assert.equal(auditRows.length,days.length);
 assert.ok(!JSON.stringify(days).includes('14:54'));
 console.log(`PASS: ${days.length} days, 14 nights, ${transport.length} transport items, ${Object.keys(sightsById).length} sights, ${Object.keys(photos).length} attributed photos, ${animePlaces.length} regional anime checks.`);
 
-// Every full illustrated card must have its own image, including revisits.
+// Every daily preview must have its own image, including revisits.
 const illustrated=[];
+function recordPhoto(date,key) {
+ const photo=photos[key];
+ assert.ok(photo?.path,`${date}: missing photo manifest for ${key}`);
+ illustrated.push({date,key,source:photo.source,hash:createHash('sha256').update(fs.readFileSync(photo.path)).digest('hex')});
+}
 for(const [date,guide] of Object.entries(dailyGuides)) for(const stop of guide.stops) {
  if(stop.brief)continue;
  const sight=sightsById[stop.id],key=stop.photo||sight.photo;
  assert.ok(key,`${date} ${stop.id}: missing precise image`);
- const photo=photos[key];assert.ok(photo?.path,`${stop.id}: missing photo manifest`);
- illustrated.push({id:stop.id,key,source:photo.source,hash:createHash('sha256').update(fs.readFileSync(photo.path)).digest('hex')});
+ recordPhoto(date,key);
 }
+for(const [date,previews] of Object.entries(transitPhotos)) {
+ assert.ok(dates.has(date),`Unknown photo preview date: ${date}`);
+ for(const {key} of previews) recordPhoto(date,key);
+}
+assert.deepEqual(new Set(illustrated.map(p=>p.date)),dates,'every day needs a preview photo');
 for(const property of ['key','source','hash']) assert.equal(new Set(illustrated.map(p=>p[property])).size,illustrated.length,`reused image ${property}`);
 const descriptions=Object.values(sightsById).map(s=>s.why);assert.equal(new Set(descriptions).size,descriptions.length,'repeated description');
 assert.ok(!routeSegments.some(s=>s.points.includes('miyama')),'Miyama must not remain an active route');

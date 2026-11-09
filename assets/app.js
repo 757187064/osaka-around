@@ -350,11 +350,11 @@ function renderDays() {
       </header>
       <div class="day-body">
         ${renderOutingCard(day)}
+        ${renderDayGuide(day)}
         <details class="compact-fold day-schedule-fold">
           <summary>当天时间表</summary>
           <div class="schedule">${schedule}</div>
         </details>
-        ${renderDayGuide(day)}
         ${renderMealNote(day)}
         <details class="compact-fold day-weather-fold">
           <summary>雨雪备选</summary>
@@ -449,6 +449,8 @@ function revealHash() {
     const day = target?.closest('[data-day-card]');
     activateDay(day?.dataset.dayCard || activeDate);
   }
+  const sightDetails = target?.querySelector(':scope > .sight-entry');
+  if (sightDetails) sightDetails.open = true;
   for (let element = target; element; element = element.parentElement) {
     if (element.tagName === 'DETAILS') element.open = true;
   }

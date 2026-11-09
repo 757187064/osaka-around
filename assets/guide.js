@@ -1,5 +1,6 @@
 import { checkedOn, sources, sightsById, dailyGuides, animePlaces, auditRows, reminders, regionalChoices } from '../data/guide.js';
 import photos from '../data/photos.json';
+import { transitPhotos } from '../data/transit-photos.js';
 const esc = (s='') => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const imageFiles = import.meta.glob('./images/*.{jpg,png}', { eager: true, query: '?url', import: 'default' });
 export const photoUrl = key => photos[key]?.path ? imageFiles['./images/' + photos[key].path.split('/').at(-1)] : ''; 
@@ -9,7 +10,7 @@ const refs = ids => `<details class="source-links"><summary>查询来源 · ${[.
 export function photoHtml(key,title) {
  const p=photos[key];
  if (!photoUrl(key)) return '';
- return `<figure class="guide-photo"><a href="${photoUrl(key)}" target="_blank" rel="noreferrer"><img src="${photoUrl(key)}" alt="${esc(title)} 实地摄影（历史照片，季节以原图为准）" loading="lazy" decoding="async" width="1000" height="650"></a><figcaption>${esc(title)} · 实景摄影 · 历史季节参考 · ${link(p.source,p.author)} · ${link(p.licenseUrl,p.license)}</figcaption></figure>`;
+ return `<figure class="guide-photo"><a href="${photoUrl(key)}" target="_blank" rel="noreferrer"><img src="${photoUrl(key)}" alt="${esc(title)} 实地摄影（历史照片，季节以原图为准）" loading="lazy" decoding="async" width="1000" height="650"></a><figcaption>${esc(title)} · ${p.year ? esc(p.year) + '年实景' : '实景摄影 · 历史季节参考'} · ${link(p.source,p.author)} · ${link(p.licenseUrl,p.license)}</figcaption></figure>`;
 }
 // First detail location is a navigation target for transport-only references.
 const owners = {};
@@ -18,20 +19,27 @@ for (const [date, guide] of Object.entries(dailyGuides)) for (const [index, stop
 }
 export function renderDayGuide(day) {
  const guide=dailyGuides[day.date]; if(!guide)return '';
- return `<section class="day-detail-guide" aria-label="${day.displayDate}景点攻略">${guide.stops.length ? '<div class="guide-heading"><h4>景点与走法</h4></div>' : ''}${guide.accessCheck?`<aside class="visit-check"><span class="visit-label">参观核实 · ${checkedOn}</span><h5>${esc(guide.accessCheck.title)}</h5><p>${esc(guide.accessCheck.text)}</p>${refs(guide.accessCheck.refs)}</aside>`:''}${guide.fallback?`<details class="campus-fallback"><summary><span>备选路线</span>${esc(guide.fallback.title)}<b aria-hidden="true">＋</b></summary><div class="fallback-body"><p>${esc(guide.fallback.text)}</p><ol>${guide.fallback.steps.map(([time,text])=>`<li><strong>${esc(time)}</strong><span>${esc(text)}</span></li>`).join('')}</ol>${link(maps(guide.fallback.mapQuery),'京都大学吉田校区地图','btn btn-light')}${refs(guide.fallback.refs)}</div></details>`:''}<div class="sight-grid">${guide.stops.map((s,index)=>{
+ const previews = transitPhotos[day.date] || [];
+ return `<section class="day-detail-guide" aria-label="${day.displayDate}景点攻略"><div class="guide-heading"><h4>沿途实景</h4></div>${guide.accessCheck?`<details class="compact-fold"><summary>${esc(guide.accessCheck.title)}</summary><p class="visit-label">核查于 ${checkedOn}</p><p>${esc(guide.accessCheck.text)}</p>${refs(guide.accessCheck.refs)}</details>`:''}${guide.fallback?`<details class="campus-fallback"><summary><span>备选路线</span>${esc(guide.fallback.title)}<b aria-hidden="true">＋</b></summary><div class="fallback-body"><p>${esc(guide.fallback.text)}</p><ol>${guide.fallback.steps.map(([time,text])=>`<li><strong>${esc(time)}</strong><span>${esc(text)}</span></li>`).join('')}</ol>${link(maps(guide.fallback.mapQuery),'京都大学吉田校区地图','btn btn-light')}${refs(guide.fallback.refs)}</div></details>`:''}<div class="sight-grid">${previews.map(({ key, caption }) => `<article class="sight-preview">${photoHtml(key, caption)}</article>`).join('')}${guide.stops.map(s=>{
  const p=sightsById[s.id], owner=owners[s.id];
  if(!p)return '';
  if(s.brief) return `<article class="sight-reference"><strong>${esc(s.time)} · ${esc(p.name)}</strong><p>${esc(s.how)}</p>${owner?`<button class="btn btn-light" data-sight-date="${owner.date}" data-sight-id="${esc(s.id)}">查看该地点完整攻略 ↗</button>`:''}</article>`;
- return `<details class="compact-fold sight-entry" id="sight-${esc(s.id)}">
-   <summary><span class="sight-time">${esc(s.time)}</span><span>${esc(p.name)}</span><small>${esc(s.priority)}</small></summary>
-   ${photoHtml(s.photo || p.photo,s.photoCaption || p.photoCaption || p.name)}
-   <div class="sight-content">
-     <p>${esc(p.why)}</p>
-     <p><strong>怎么走：</strong>${esc(s.how)}</p>
-     <p>${esc(p.practical)}</p>
-     ${link(maps(p.query),'景点地图','btn btn-light')}${refs(p.refs)}
+ return `<article class="sight-preview" id="sight-${esc(s.id)}">
+   ${photoHtml(s.photo || p.photo, s.photoCaption || p.photoCaption || p.name)}
+   <div class="sight-preview-heading">
+     <p>${esc(s.time)} · ${esc(s.priority)}</p>
+     <h5>${esc(p.name)}</h5>
    </div>
- </details>`;
+   <details class="sight-entry">
+     <summary>走法与详情</summary>
+     <div class="sight-content">
+       <p>${esc(p.why)}</p>
+       <p><strong>怎么走：</strong>${esc(s.how)}</p>
+       <p>${esc(p.practical)}</p>
+       ${link(maps(p.query),'景点地图','btn btn-light')}${refs(p.refs)}
+     </div>
+   </details>
+ </article>`;
  }).join('')}</div><details class="compact-fold"><summary>当天出行补充</summary><p>${esc(guide.tips)}</p></details></section>`;
 }
 export function renderResearch() {

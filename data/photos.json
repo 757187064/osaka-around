@@ -573,5 +573,71 @@
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
     "description": "At Kinosaki Onsen in Toyooka, Hyogo prefecture, Japan.",
     "bytes": 201990
+  },
+  "kix-airport-aerial": {
+    "path": "assets/images/kix-airport-aerial.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E9%96%A2%E8%A5%BF%E5%9B%BD%E9%9A%9B%E7%A9%BA%E6%B8%AF%E5%85%A8%E4%BD%93%E5%86%99%E7%9C%9F20220811.jpg",
+    "author": "Ankou1192",
+    "year": 2022,
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "description": "关西国际机场人工岛俯瞰",
+    "modified": "使用 Wikimedia Commons 缩放版",
+    "bytes": 86008
+  },
+  "kyoto-station-front": {
+    "path": "assets/images/kyoto-station-front.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kyoto-STA_Central.jpg",
+    "author": "MaedaAkihiko",
+    "year": 2025,
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "description": "JR 京都站中央口外观",
+    "modified": "使用 Wikimedia Commons 缩放版",
+    "bytes": 156006
+  },
+  "kyoto-station-interior": {
+    "path": "assets/images/kyoto-station-interior.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:JRW_Kyoto-STA_Central-Inside.jpg",
+    "author": "MaedaAkihiko",
+    "year": 2026,
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "description": "JR 京都站中央口附近",
+    "modified": "使用 Wikimedia Commons 缩放版",
+    "bytes": 238810
+  },
+  "tottori-station-gate": {
+    "path": "assets/images/tottori-station-gate.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:JRW_Tottori-STA_Gate_2025.jpg",
+    "author": "MaedaAkihiko",
+    "year": 2025,
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "description": "JR 鸟取站检票口",
+    "modified": "使用 Wikimedia Commons 缩放版",
+    "bytes": 202882
+  },
+  "osaka-station-transfer": {
+    "path": "assets/images/osaka-station-transfer.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:JR_Osaka_Station_20260305.jpg",
+    "author": "KishujiRapid",
+    "year": 2026,
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "description": "JR 大阪站站区俯瞰",
+    "modified": "使用 Wikimedia Commons 缩放版",
+    "bytes": 218942
+  },
+  "kix-station-gate": {
+    "path": "assets/images/kix-station-gate.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:JR%E8%A5%BF%E6%97%A5%E6%9C%AC%E9%96%A2%E8%A5%BF%E7%A9%BA%E6%B8%AF%E7%B7%9A%E9%96%A2%E8%A5%BF%E7%A9%BA%E6%B8%AF%E9%A7%85_2026%E5%B9%B49%E6%9C%885%E6%97%A5%E3%81%AE%E5%A4%A7%E9%98%AA%E5%BA%9C_202609052219_IMG_8019.jpg",
+    "author": "ウィ貴公子",
+    "year": 2026,
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "description": "关西机场站 JR 检票口",
+    "modified": "使用 Wikimedia Commons 缩放版",
+    "bytes": 169457
   }
 }
