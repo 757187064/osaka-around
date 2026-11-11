@@ -8,7 +8,7 @@ export const correctedSchedules = {
     {
       "time": "08:50–09:20目标",
       "label": "机场转场",
-      "detail": "规划出站及转场60–90分钟，非实时路况。目标09:15左右到机场；晚点时立即重新判断衔接。"
+      "detail": "出站及转场预留60–90分钟。目标09:15左右到机场；晚点时立即重新判断衔接。"
     },
     {
       "time": "11:40 中国时间",
@@ -302,7 +302,7 @@ export const correctedSchedules = {
       "detail": "出石城下町｜辰鼓楼与皿荞麦；丰冈站31/32/33系出石方向巴士，车程约30分钟；具体上下车班次待日期复核"
     },
     {
-      "time": "13:30–16:00",
+      "time": "14:15–16:00",
       "label": "游玩",
       "detail": "出石城下町｜辰鼓楼与皿荞麦；辰鼓楼→城下街巷→荞麦；16:00前走回巴士总站"
     },
@@ -349,7 +349,7 @@ export const correctedSchedules = {
       "detail": "城崎第二汤｜柳汤；河畔休息后步行去柳汤；当天营业和体力优先"
     },
     {
-      "time": "16:30–18:30",
+      "time": "16:30–18:00",
       "label": "游玩",
       "detail": "城崎夜景｜灯笼与大谿川；灯笼河岸散步→早吃晚饭→回JR站"
     },
@@ -437,7 +437,7 @@ export const correctedSchedules = {
     {
       "time": "08:00–10:00",
       "label": "早餐退房寄存",
-      "detail": "以Drop Inn订单退房时刻为准，不假设11:30才退。"
+      "detail": "按Drop Inn订单时间退房，在前台寄存行李。"
     },
     {
       "time": "09:00–10:30 可选",
@@ -462,12 +462,12 @@ export const correctedSchedules = {
     {
       "time": "17:00–18:00左右",
       "label": "交通入住",
-      "detail": "JR新快速至京都，再去Piece Hostel Sanjo；不是17:20已经入住。"
+      "detail": "JR新快速至京都，再前往Piece Hostel Sanjo入住。"
     },
     {
       "time": "18:30后",
       "label": "晚饭散步",
-      "detail": "三条/寺町/新京极，不把锦市场当作夜间主线。"
+      "detail": "三条、寺町与新京极散步购物。"
     }
   ],
   "2026-12-15": [

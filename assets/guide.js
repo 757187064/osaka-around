@@ -1,4 +1,8 @@
-import { checkedOn, sources, sightsById, dailyGuides, animePlaces, auditRows, reminders, regionalChoices } from '../data/guide.js';
+import { mealStops } from '../data/meal-stops.js';
+import { foodById } from '../data/food.js';
+import { mapPanel, routeUrl } from './navigation.js';
+import { placesById } from '../data/index.js';
+import { sources, sightsById, dailyGuides, animePlaces, reminders } from '../data/guide.js';
 import photos from '../data/photos.json';
 import { transitPhotos } from '../data/transit-photos.js';
 const esc = (s='') => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -10,7 +14,7 @@ const refs = ids => `<details class="source-links"><summary>查询来源 · ${[.
 export function photoHtml(key,title) {
  const p=photos[key];
  if (!photoUrl(key)) return '';
- return `<figure class="guide-photo"><a href="${photoUrl(key)}" target="_blank" rel="noreferrer"><img src="${photoUrl(key)}" alt="${esc(title)} 实地摄影（历史照片，季节以原图为准）" loading="lazy" decoding="async" width="1000" height="650"></a><figcaption>${esc(title)} · ${p.year ? esc(p.year) + '年实景' : '实景摄影 · 历史季节参考'} · ${link(p.source,p.author)} · ${link(p.licenseUrl,p.license)}</figcaption></figure>`;
+ return `<figure class="guide-photo"><a href="${photoUrl(key)}" target="_blank" rel="noreferrer"><img src="${photoUrl(key)}" alt="${esc(title)}" loading="lazy" decoding="async" width="1000" height="650"></a><figcaption>${esc(title)}${p.year ? ' · ' + esc(p.year) : ''} · ${link(p.source,p.author)} · ${link(p.licenseUrl,p.license)}</figcaption></figure>`;
 }
 // First detail location is a navigation target for transport-only references.
 const owners = {};
@@ -20,39 +24,42 @@ for (const [date, guide] of Object.entries(dailyGuides)) for (const [index, stop
 export function renderDayGuide(day) {
  const guide=dailyGuides[day.date]; if(!guide)return '';
  const previews = transitPhotos[day.date] || [];
- return `<section class="day-detail-guide" aria-label="${day.displayDate}景点攻略"><div class="guide-heading"><h4>沿途实景</h4></div>${guide.accessCheck?`<details class="compact-fold"><summary>${esc(guide.accessCheck.title)}</summary><p class="visit-label">核查于 ${checkedOn}</p><p>${esc(guide.accessCheck.text)}</p>${refs(guide.accessCheck.refs)}</details>`:''}${guide.fallback?`<details class="campus-fallback"><summary><span>备选路线</span>${esc(guide.fallback.title)}<b aria-hidden="true">＋</b></summary><div class="fallback-body"><p>${esc(guide.fallback.text)}</p><ol>${guide.fallback.steps.map(([time,text])=>`<li><strong>${esc(time)}</strong><span>${esc(text)}</span></li>`).join('')}</ol>${link(maps(guide.fallback.mapQuery),'京都大学吉田校区地图','btn btn-light')}${refs(guide.fallback.refs)}</div></details>`:''}<div class="sight-grid">${previews.map(({ key, caption }) => `<article class="sight-preview">${photoHtml(key, caption)}</article>`).join('')}${guide.stops.map(s=>{
+ return `<section class="day-detail-guide" aria-label="${day.displayDate}景点攻略"><div class="guide-heading"><h4>景点图文</h4></div>${guide.fallback?`<details class="campus-fallback"><summary><span>备选路线</span>${esc(guide.fallback.title)}<b aria-hidden="true">＋</b></summary><div class="fallback-body"><p>${esc(guide.fallback.text)}</p><ol>${guide.fallback.steps.map(([time,text])=>`<li><strong>${esc(time)}</strong><span>${esc(text)}</span></li>`).join('')}</ol>${mapPanel(guide.fallback.mapQuery,'京都大学吉田校区')}${refs(guide.fallback.refs)}</div></details>`:''}<div class="sight-grid">${previews.map(({ key, caption }) => `<article class="sight-preview">${photoHtml(key, caption)}</article>`).join('')}${guide.stops.map((s,index)=>{
  const p=sightsById[s.id], owner=owners[s.id];
+ const previous=guide.stops.slice(0,index).filter(stop=>!stop.brief && !/二选一|替换|可删|可选/.test(stop.priority)).at(-1);
+ const minute=time=>{const m=time.match(/(\d{1,2}):(\d{2})/);return m ? +m[1]*60 + +m[2] : -1;};
+ const meal=(mealStops[day.date] || []).filter(meal=>minute(meal.time)<minute(s.time) && minute(meal.time)>minute(previous?.time || '')).at(-1);
+ const origin=meal ? (meal.id ? foodById[meal.id].query : meal.query) : previous ? sightsById[previous.id].query : day.mapLegs?.[0]?.from || placesById[day.placeIds[0]].query;
  if(!p)return '';
- if(s.brief) return `<article class="sight-reference"><strong>${esc(s.time)} · ${esc(p.name)}</strong><p>${esc(s.how)}</p>${owner?`<button class="btn btn-light" data-sight-date="${owner.date}" data-sight-id="${esc(s.id)}">查看该地点完整攻略 ↗</button>`:''}</article>`;
+ if(s.brief) return `<article class="sight-reference"><strong>${esc(s.time)} · ${esc(p.name)}</strong><p>${esc(s.how)}</p>${link(maps(p.query),'地点地图','btn btn-light')}${owner?`<button class="btn btn-light" data-sight-date="${owner.date}" data-sight-id="${esc(s.id)}">查看该地点完整攻略 ↗</button>`:''}</article>`;
  return `<article class="sight-preview" id="sight-${esc(s.id)}">
    ${photoHtml(s.photo || p.photo, s.photoCaption || p.photoCaption || p.name)}
    <div class="sight-preview-heading">
      <p>${esc(s.time)} · ${esc(s.priority)}</p>
      <h5>${esc(p.name)}</h5>
    </div>
+   <p class="sight-how">${esc(s.how)}</p>
+   <div class="sight-route-links">${previous || meal ? link(routeUrl(origin,p.query,'walking'),'步行路线') : ''}${link(routeUrl(origin,p.query),'公共交通')}</div>
+   ${mapPanel(p.query,p.name)}
    <details class="sight-entry">
-     <summary>走法与详情</summary>
+     <summary>看点与开放时间</summary>
      <div class="sight-content">
        <p>${esc(p.why)}</p>
-       <p><strong>怎么走：</strong>${esc(s.how)}</p>
        <p>${esc(p.practical)}</p>
        ${link(maps(p.query),'景点地图','btn btn-light')}${refs(p.refs)}
      </div>
    </details>
  </article>`;
- }).join('')}</div><details class="compact-fold"><summary>当天出行补充</summary><p>${esc(guide.tips)}</p></details></section>`;
+ }).join('')}</div></section>`;
 }
 export function renderResearch() {
- document.querySelector('#auditSummary').innerHTML=`<div class="guide-alert">核查日期 ${checkedOn}。已逐日检查日期、星期、14晚覆盖、路线引用、时间冲突及主要景点公开规则。已购状态和个人入住限制沿用用户资料，未访问机酒订单；具体冬季班次与尚未核实票价不标成已确认。地图路线为示意连线，不能代表真实轨道或步行路径。</div><div class="audit-list">${auditRows.map(([date,state,text,source])=>`<article class="audit-row"><strong>${date}</strong><span class="audit-state ${state.includes('需')?'pending':''}">${state}</span><p>${esc(text)}</p>${refs([source])}</article>`).join('')}</div><details class="audit-extra"><summary>住宿、预算与地图核查边界</summary><p>6笔住宿覆盖14晚、5个不同住宿城市，京都分两段；没有夜晚断档或重叠。12/2–4、12/4–6两张HIVE订单需前台关联。所有已购状态来自行程记录，不代表核验了供应商订单。个人17:00前入住约束优先于Auberge通用官网最晚时间。</p><p>交通表为参考预算：不含全部京都市内交通、鸟取景点巴士、景点票、餐饮及未填住宿；¥3,000机场铁路预算不代表任何人都能买到该折扣价。新增攻略餐费为个人规划区间，非店家实时报价。实景使用授权历史照片，各图卡使用不同、对应地点或时段的照片，并标出作者与授权，不承诺当季景色。</p><p>天桥立站原坐标偏离实际车站，已修正；其余住宿坐标保留原值作为近似定位，未逐一取得官方精确坐标。导航使用完整地点名称。绫部、智头、上郡等为交通节点，不当作游玩停留。</p></details>`;
- document.querySelector('#regionalChoices').innerHTML=regionalChoices.map((p,i)=>`<article class="region-choice region-${esc(p.tone)}"><header class="region-header"><span class="region-icon" aria-hidden="true">${esc(p.icon)}</span><div><span class="region-area">${esc(p.shortArea)}</span><span class="region-date">${esc(p.dates)}</span></div><span class="region-status">${esc(p.status)}</span></header><h4>${esc(p.headline)}</h4><p class="region-summary">${esc(p.summary)}</p><div class="region-route"><span aria-hidden="true">↳</span>${esc(p.route)}</div><details class="region-details"><summary>比较方案与查询依据 <span aria-hidden="true">＋</span></summary><div class="region-detail-body"><p>${esc(p.reason)}</p><dl><dt>其他选择</dt><dd>${esc(p.alternatives)}</dd><dt>公共交通</dt><dd>${esc(p.access)}</dd></dl>${refs(p.refs)}</div></details></article>`).join('');
- document.querySelector('#animeGrid').innerHTML=animePlaces.map((p,i)=>{
- const date=Object.entries(dailyGuides).find(([date,guide])=>guide.stops.some(stop=>p.points.includes(stop.id)))?.[0];
- return `<article class="anime-card"><div class="anime-index">${String(i+1).padStart(2,'0')}</div><div class="anime-main"><div class="card-kicker">${esc(p.area)}</div><h4>${esc(p.title)}</h4><p>${esc(p.text)}</p>${date?`<a class="quiet-link" href="#day-${date}" data-jump-day="${date}">打开当天实景攻略 ↗</a>`:''}<details class="anime-more"><summary>关联依据与加入方法 <b aria-hidden="true">＋</b></summary><span class="evidence-tag">${esc(p.level)}</span><p>${esc(p.route)}</p><div class="anime-points">${p.points.map(id=>link(maps(sightsById[id].query),sightsById[id].name,'link-chip')).join('')}</div>${refs(p.refs)}</details></div></article>`;
+ document.querySelector('#animeGrid').innerHTML=animePlaces.filter(p=>p.points.length).map((p,i)=>{
+ const dates=Object.entries(dailyGuides).filter(([date,guide])=>guide.stops.some(stop=>p.points.includes(stop.id))).map(([date])=>date);
+ return `<article class="anime-card"><div class="anime-index">${String(i+1).padStart(2,'0')}</div><div class="anime-main"><div class="card-kicker">${esc(p.area)}</div><h4>${esc(p.title)}</h4><p>${esc(p.text)}</p>${dates.map(date=>`<a class="quiet-link" href="#day-${date}" data-jump-day="${date}">${date.slice(5).replace('-','/')} 行程 ↗</a>`).join(' · ')}<p>${esc(p.route)}</p><div class="anime-points">${p.points.map(id=>link(maps(sightsById[id].query),sightsById[id].name,'link-chip')).join('')}</div>${mapPanel(sightsById[p.points[0]].query,p.title)}${refs(p.refs)}</div></article>`;
  }).join('');
- document.querySelector('#bookingGuide').innerHTML=`<article class="card booking-card"><div class="card-kicker">鸟取 → 大阪 → 京都 · 12/14</div><h4>推荐保留列车，预算优先再选巴士</h4><div class="comparison-wrap"><table class="guide-comparison"><thead><tr><th>比较</th><th>Super Hakuto＋JR新快速</th><th>日本交通高速巴士＋京都接驳</th></tr></thead><tbody><tr><th>鸟取到大阪</th><td>当前14:21→16:48参考，约2小时27分，到大阪站</td><td>按班次约3–3.5小时，到难波OCAT；部分班次更久</td></tr><tr><th>费用参考</th><td>全程暂按约¥8,000级预算，非已核定报价；基本运费＋指定席特急费，折扣资格另核</td><td>官方宣传单普通价¥4,200，当前票价看运营商；再加难波→京都交通</td></tr><tr><th>去三条住宿</th><td>大阪站接新快速，京都站后继续市内交通；预计18:00左右入住</td><td>难波出站转地铁/私铁或JR，约再留1–1.5小时级</td></tr><tr><th>体验</th><td>可起身、车内厕所；换乘较直观，票价较高</td><td>省钱、行李放车腹；活动空间较小，可能晕车</td></tr><tr><th>冬季风险</th><td>大雪可限速或停运，出发当天仍要看公告</td><td>路面降雪、拥堵或封路均可能延误，不能视为铁路停运必有的替代</td></tr><tr><th>购票</th><td>全车指定席；通常前一个月同日日本10:00开售，12/14对应11/14北京09:00</td><td>需预约；开售窗口、班次与取消规则按运营商，不套用JR日期</td></tr></tbody></table></div><p><strong>建议：</strong>你12/14晚上住京都，先保留列车主方案。如果更看重节省约几千日元，并接受晚些到京都，再选中午或午后较早的巴士。鸟取出发不适用大阪往鸟取的外国游客¥1,000优惠。</p>${refs(['jr','reserve','bus','busOffer'])}</article><article class="card booking-card"><div class="card-kicker">北京 → 大连 → 大阪 · 前序关键衔接</div><h4>K681 硬卧接 11:40 国际航班</h4><div class="connection-flow"><span>12/1 20:10 北京站<br>近期时刻参考</span><b>→</b><span>12/2 07:51 大连站<br>须确认12月实际运行</span><b>→</b><span>目标08:50–09:20 到机场<br>估算出站及转场60–90分钟</span><b>→</b><span>11:40 9C6987<br>机票原行程时间</span></div><p>准点到站至起飞相隔3小时49分。扣除我建议预留的60–90分钟转场后，到机场距起飞约2小时20分至2小时50分；<strong>能衔接，但不是无风险联程</strong>。火车晚点60分钟后余量降为约1小时20分至1小时50分，会明显紧张。</p><p>大连站不是大连北站。建议出站后直接打车去周水子机场，早高峰/雪天以导航路况为准；地铁可经青泥洼桥或友好广场接2号线，具体步行与发车另查。上述60–90分钟为保守规划估算，不是实时地图结果。</p><p>目标09:15左右到机场。9C大连国际航班实际截载时间需按春秋订单短信/客服确认，本轮未获得该航班专属截载时刻，不能借用春秋日本IJ或其他航空公司数据。更稳妥的备选是12/1白天高铁到大连住一晚，是否更改由你决定，页面保留K681偏好。</p><p><strong>购票：</strong>按12306含当天15天预售，12/1对应11/17；当前北京站10:00起售参考，09:50提醒准备。席别硬卧、人民币票价及具体铺位以下单界面为准。</p>${refs(['k681','trainCN','saleCN','airline'])}</article>`;
+ document.querySelector('#bookingGuide').innerHTML=`<article class="card booking-card"><h4>12/14 鸟取 → 大阪 → 京都</h4><div class="comparison-wrap"><table class="guide-comparison"><thead><tr><th></th><th>Super Hakuto＋JR</th><th>高速巴士＋京都接驳</th></tr></thead><tbody><tr><th>耗时</th><td>鸟取→大阪约2小时27分，再换JR至京都</td><td>鸟取→难波约3–3.5小时，再留1–1.5小时到京都</td></tr><tr><th>预算</th><td>约8,000日元</td><td>巴士约4,200日元，另加难波→京都</td></tr><tr><th>到京都</th><td>14:21→16:48参考，到大阪接新快速，约18:00入住</td><td>选择中午或午后较早班次</td></tr><tr><th>购票</th><td>全车指定席，11/14北京时间09:00开售</td><td>按运营商开放日期预约</td></tr></tbody></table></div><p>优先列车，换乘大阪站较方便。巴士节约约几千日元，但难波接京都更费时，冬季可能受道路积雪与拥堵影响。</p>${refs(['jr','reserve','bus'])}</article><article class="card booking-card"><h4>12/1 K681 硬卧 → 12/2 大连机场</h4><p>12/1北京站20:10 → 12/2大连站07:51（参考）→ 直接打车至周水子机场，目标09:15到达 → 11:40乘9C6987。</p><p>出站及转场留60–90分钟。火车晚点60分钟后，机场余量约1小时20分至1小时50分，需立即按航班截载时间判断。更宽松的备选是12/1高铁到大连住宿。</p><p>11/17北京站10:00起售参考，09:50准备12306购票，选择硬卧。</p>${refs(['k681','trainCN','saleCN','airline'])}</article>`;
  const bookingLabels=[['12/14 · 鸟取返程：列车还是巴士','推荐列车；展开比较耗时、预算与冬季风险'],['12/2 · K681 接大连国际航班','准点可衔接；火车晚点会明显压缩机场余量']];
  document.querySelectorAll('#bookingGuide > article').forEach((card,i)=>{const detail=document.createElement('details');detail.className='booking-details';detail.innerHTML=`<summary><span>${esc(bookingLabels[i][0])}<small>${esc(bookingLabels[i][1])}</small></span><b aria-hidden="true">＋</b></summary>`;card.replaceWith(detail);detail.append(card);});
  document.querySelector('#reminderGrid').innerHTML=reminders.map(r=>`<article class="card reminder-card"><div class="card-kicker">购票提醒 / 已建立</div><h4>${esc(r.title)}</h4><strong>${esc(r.date)}</strong><small>${esc(r.zone)}</small><p>${esc(r.text)}</p></article>`).join('');
- document.querySelector('#reminderGrid').insertAdjacentHTML('afterend','<p class="reminder-footnote">提醒由Codex应用执行；本页仅记录创建时的计划，不会自行推送或同步后续修改。</p>');
  document.querySelector('#sourceIndex').innerHTML=`<div class="guide-refs">${Object.values(sources).map(([title,url])=>link(url,title)).join('')}</div>`;
 }

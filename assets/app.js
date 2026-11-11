@@ -1,3 +1,5 @@
+import { bindInlineMaps, loadOpenMaps } from './navigation.js';
+import { renderDailyRoute, renderDailySchedule } from './day-route.js';
 import { renderOfflineKit } from './offline-kit.js';
 import { renderFood, renderMealNote, renderOutingCard, renderPacking, updateFoodBudget } from './food.js';
 import { renderDayGuide, renderResearch } from './guide.js';
@@ -335,13 +337,6 @@ function renderDays() {
   ).join('');
 
   $('#timeline').innerHTML = days.map(day => {
-    const schedule = day.timeline.map(entry => `
-      <div class="slot">
-        <div class="slot-time">${escapeHtml(entry.time)}</div>
-        <div class="slot-title">${escapeHtml(entry.label)}</div>
-        <div class="slot-detail">${escapeHtml(entry.detail)}</div>
-      </div>`).join('');
-
     return `<article class="day-card open" id="day-${day.date}" data-day-card="${day.date}" hidden>
       <header class="day-heading">
         <p>${day.displayDate} ${day.weekday}</p>
@@ -350,12 +345,12 @@ function renderDays() {
       </header>
       <div class="day-body">
         ${renderOutingCard(day)}
-        ${renderDayGuide(day)}
-        <details class="compact-fold day-schedule-fold">
-          <summary>当天时间表</summary>
-          <div class="schedule">${schedule}</div>
-        </details>
+        <div class="day-plan-layout">
+          <div class="day-route-column">${renderDailyRoute(day)}<div class="day-route-links">${dayGoogleMapsLinks(day)}</div></div>
+          ${renderDailySchedule(day)}
+        </div>
         ${renderMealNote(day)}
+        ${renderDayGuide(day)}
         <details class="compact-fold day-weather-fold">
           <summary>雨雪备选</summary>
           <div class="weather-plan">
@@ -365,12 +360,12 @@ function renderDays() {
         </details>
         <div class="day-map-action no-print">
           <button class="btn btn-light" data-day-map="${day.date}">在行程地图定位 ↗</button>
-          <div class="day-route-links">${dayGoogleMapsLinks(day)}</div>
         </div>
       </div>
     </article>`;
   }).join('');
 
+  bindInlineMaps();
   $('#dateNav').addEventListener('change', event => goTo('day-' + event.target.value));
   $('#previousDay').addEventListener('click', () => changeDay(-1));
   $('#nextDay').addEventListener('click', () => changeDay(1));
@@ -403,11 +398,11 @@ function renderBudget() {
   const airfare = trip.flights.reduce((sum, flight) => sum + flight.amountRmb, 0);
   const transportJpy = transport.reduce((sum, item) => sum + item.budgetJPY, 0);
   const rateRaw = window.localStorage.getItem(trip.budget.exchangeRateStorageKey) || '';
-  const converted = Number(rateRaw) > 0 ? `按手填汇率约 ¥${(transportJpy * Number(rateRaw)).toFixed(2)} RMB` : '尚未填写 JPY/CNY 汇率，不自动换汇。';
-  $('#budgetGrid').innerHTML = `<article class="card budget-card"><h4>已购机票</h4><div class="budget-amount">¥${airfare.toLocaleString()} RMB</div><p>去程 ¥963 + 返程 ¥1314，状态：已付款。</p></article><article class="card budget-card"><h4>交通参考</h4><div class="budget-amount">¥${transportJpy.toLocaleString()} JPY</div><p>按交通表参考金额汇总；不含全部市内交通、景点巴士、门票与餐饮，实际票价须复核。</p></article><article class="card budget-card"><h4>手动汇率</h4><p>填写 1 JPY = ? CNY，仅作本地预算换算。</p><input class="rate-input" id="exchangeRate" type="number" min="0" step="0.0001" placeholder="例如 0.047" value="${rateRaw}"><p id="convertedBudget">${converted}</p></article><article class="card budget-card"><h4>住宿</h4><div class="budget-amount">待填写</div><p>${trip.budget.lodgingPriceState}。不根据网络数据自动估价。</p></article>`;
+  const converted = Number(rateRaw) > 0 ? `按手填汇率约 ¥${(transportJpy * Number(rateRaw)).toFixed(2)} RMB` : '填写汇率后换算交通预算。';
+  $('#budgetGrid').innerHTML = `<article class="card budget-card"><h4>已购机票</h4><div class="budget-amount">¥${airfare.toLocaleString()} RMB</div><p>去程 ¥963 + 返程 ¥1314，状态：已付款。</p></article><article class="card budget-card"><h4>交通参考</h4><div class="budget-amount">¥${transportJpy.toLocaleString()} JPY</div><p>按交通表参考金额汇总；不含全部市内交通、景点巴士、门票与餐饮，实际票价须复核。</p></article><article class="card budget-card"><h4>手动汇率</h4><p>填写 1 JPY = ? CNY，仅作本地预算换算。</p><input class="rate-input" id="exchangeRate" type="number" min="0" step="0.0001" placeholder="例如 0.047" value="${rateRaw}"><p id="convertedBudget">${converted}</p></article><article class="card budget-card"><h4>住宿</h4><div class="budget-amount">待填写</div><p>${trip.budget.lodgingPriceState}。</p></article>`;
   $('#exchangeRate').addEventListener('input', (event) => {
     window.localStorage.setItem(trip.budget.exchangeRateStorageKey, event.target.value);
-    const text = Number(event.target.value) > 0 ? `按手填汇率约 ¥${(transportJpy * Number(event.target.value)).toFixed(2)} RMB` : '尚未填写 JPY/CNY 汇率，不自动换汇。';
+    const text = Number(event.target.value) > 0 ? `按手填汇率约 ¥${(transportJpy * Number(event.target.value)).toFixed(2)} RMB` : '填写汇率后换算交通预算。';
     $('#convertedBudget').textContent = text;
     updateFoodBudget();
   });
@@ -425,6 +420,7 @@ function activateDay(date) {
   $('#nextDay').disabled = date === days.at(-1).date;
   document.querySelectorAll('[data-day-card]').forEach(card => {
     card.hidden = card.dataset.dayCard !== date;
+    if (!card.hidden) loadOpenMaps(card);
   });
 }
 

@@ -133,3 +133,57 @@ body { background: var(--page); color: var(--ink); }
   .sight-preview { break-inside: avoid; }
   body.print-outing [data-view]:not([data-view="days"]), body.print-outing .trip-intro { display: none !important; }
 }
+
+.day-route-overview, .daily-schedule, .day-dining { margin: 18px 0; }
+.day-route-overview h4, .daily-schedule h4, .day-dining h4 { margin: 0 0 10px; }
+.route-map-stops { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 10px; }
+.route-map-stops button { flex: 0 0 170px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); color: var(--ink); text-align: left; font: inherit; font-size: .8rem; cursor: pointer; }
+.route-map-stops button[aria-pressed="true"] { border-color: var(--accent); background: #e4ede2; }
+.place-map { margin: 8px 0; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); overflow: hidden; }
+.place-map > summary { padding: 10px 12px; cursor: pointer; color: var(--accent); font-size: .85rem; }
+.place-map iframe { display: block; width: 100%; height: 240px; border: 0; background: #ebeee7; }
+.day-route-overview .place-map iframe { height: 320px; }
+.place-map > a { display: inline-block; margin: 6px 12px; font-size: .8rem; }
+.day-plan-list { list-style: none; padding: 0; margin: 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+.day-plan-list li { display: grid; grid-template-columns: 165px 1fr; gap: 16px; padding: 12px 16px; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.day-plan-list li:last-child { border-bottom: 0; }
+.day-plan-list li.meal-slot { background: #edf3e9; }
+.day-plan-list time { color: var(--accent); font-size: .86rem; font-weight: 650; }
+.day-plan-list p { margin: 4px 0; font-size: .9rem; line-height: 1.65; }
+.day-plan-list a { font-size: .82rem; margin-right: 10px; }
+.day-dining-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+.day-restaurant { min-width: 0; padding: 14px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; }
+.day-restaurant h5 { margin: 4px 0 8px; font-size: 1rem; }
+.day-restaurant p { font-size: .86rem; margin: 8px 0; }
+.day-restaurant .meal-time { margin: 0; color: var(--accent); font-weight: 600; }
+.day-restaurant details > summary { cursor: pointer; font-size: .85rem; padding: 8px 0; }
+.day-restaurant .place-map > summary { padding: 10px; }
+.restaurant-days { display: flex; flex-wrap: wrap; gap: 8px; font-size: .85rem; margin: 8px 0; }
+.sight-how { margin: 4px 10px 8px; font-size: .82rem; line-height: 1.6; }
+.sight-route-links { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 10px; font-size: .8rem; }
+.sight-preview > .place-map { margin: 8px 10px; }
+@media (max-width: 640px) {
+ .day-plan-list li { grid-template-columns: 1fr; gap: 4px; padding: 12px; }
+ .day-dining-grid { grid-template-columns: 1fr; }
+ .day-route-overview .place-map iframe { height: 260px; }
+ .sight-grid .place-map iframe { height: 200px; }
+}
+@media print {
+ .place-map iframe, .route-map-stops { display: none; }
+ .day-plan-list li, .day-restaurant { break-inside: avoid; }
+}
+.compact-main .day-card, .compact-main .day-body, .day-route-overview, .day-dining, .daily-schedule { min-width: 0; max-width: 100%; }
+.compact-main .timeline { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+.day-plan-layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 20px; margin: 18px 0; align-items: start; }
+.day-route-column { min-width: 0; position: sticky; top: 90px; }
+.day-plan-layout .day-route-overview, .day-plan-layout .daily-schedule { margin: 0; }
+.day-plan-layout .day-plan-list li { grid-template-columns: 115px minmax(0, 1fr); gap: 10px; }
+.day-plan-layout .day-plan-list p { margin: 3px 0; }
+@media (max-width: 800px) {
+ .day-plan-layout { grid-template-columns: minmax(0, 1fr); }
+ .day-route-column { position: static; }
+}
+@media (max-width: 640px) {
+ .day-plan-layout .day-plan-list li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+@media print { .day-plan-layout { display: block; } .day-route-column { position: static; } }

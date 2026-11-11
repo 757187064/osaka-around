@@ -4,6 +4,8 @@ import {createHash} from 'node:crypto';
 import {days,places,placesById,stays,transport,routeSegments,dayRouteIds,checklistGroups,trip} from '../data/index.js';
 import {dailyGuides,sightsById,sources,animePlaces,auditRows} from '../data/guide.js';
 import {transitPhotos} from '../data/transit-photos.js';
+import {mealStops} from '../data/meal-stops.js';
+import {foodById, dailyMeals} from '../data/food.js';
 const photos=JSON.parse(fs.readFileSync(new URL('../data/photos.json',import.meta.url)));
 const dates=new Set(days.map(d=>d.date));
 assert.equal(dates.size,15);
@@ -18,6 +20,13 @@ for(let i=0;i<days.length;i++) {
  for(const id of d.placeIds)assert.ok(placesById[id],id);
  for(const id of dayRouteIds[d.date])assert.ok(routeSegments.some(s=>s.id===id),id);
  for(const stop of dailyGuides[d.date].stops)assert.ok(sightsById[stop.id],stop.id);
+ assert.ok(mealStops[d.date]?.length,`${d.date}: missing meal route`);
+ for(const meal of mealStops[d.date]) {
+  assert.ok(meal.time && meal.note,`${d.date}: meal needs a time and route`);
+  assert.ok(meal.id ? foodById[meal.id] : meal.name && meal.query,`${d.date}: missing meal location`);
+  if(meal.alternative)assert.ok(foodById[meal.alternative],meal.alternative);
+ }
+ assert.ok(dailyMeals[d.date].cost.reduce((a,b)=>a+b,0)<=4000,`${d.date}: daily meal budget exceeded`);
  if(i<14){const stay=stays.find(s=>s.name===d.sleep);assert.ok(stay,d.sleep);assert.ok(placesById[stay.placeId].dates.includes(d.date));}
 }
 for(const stay of stays)assert.equal(placesById[stay.placeId].dates.length,stay.nights);
