@@ -1,3 +1,4 @@
+import { confirmationRevision, confirmedProgress } from '../data/checklist.js';
 import { bindInlineMaps, loadOpenMaps } from './navigation.js';
 import { renderDailyRoute, renderDailySchedule } from './day-route.js';
 import { renderOfflineKit } from './offline-kit.js';
@@ -33,6 +34,7 @@ setWorkerUrl(workerUrl);
 
 const $ = (selector) => document.querySelector(selector);
 const progressKey = 'japan-trip-2026-progress-v1';
+const confirmationKey = 'japan-trip-2026-confirmation-revision';
 const daysByDate = Object.fromEntries(days.map((day) => [day.date, day]));
 const segmentsById = Object.fromEntries(routeSegments.map((segment) => [segment.id, segment]));
 let activeDate = days[0].date;
@@ -44,11 +46,18 @@ let resetArmed = false;
 let progress = readProgress();
 
 function readProgress() {
+  let saved = {};
   try {
-    return JSON.parse(window.localStorage.getItem(progressKey) || '{}');
+    const stored = JSON.parse(window.localStorage.getItem(progressKey) || '{}');
+    if (stored && typeof stored === 'object' && !Array.isArray(stored)) saved = stored;
+    if (window.localStorage.getItem(confirmationKey) === confirmationRevision) return saved;
+    saved = { ...saved, ...confirmedProgress };
+    window.localStorage.setItem(progressKey, JSON.stringify(saved));
+    window.localStorage.setItem(confirmationKey, confirmationRevision);
   } catch {
-    return {};
+    return { ...saved, ...confirmedProgress };
   }
+  return saved;
 }
 
 function saveProgress() {
@@ -387,10 +396,11 @@ function renderChecklist() {
   const progressOptions = [
     ['', '未处理'], ['ticketed', '已买票'], ['confirmed', '已确认'], ['rechecked', '已复核'], ['completed', '已完成']
   ];
-  $('#checklistGrid').innerHTML = checklistGroups.map((group) => `<article class="card checklist-group"><h4>${group.when}</h4><div class="checklist-items">${group.items.map((item) => `<div class="checklist-item"><label for="progress-${item.id}">□ ${item.text}</label><select class="progress-select" id="progress-${item.id}" data-progress-id="${item.id}">${progressOptions.map(([value, label]) => `<option value="${value}" ${progress[item.id] === value ? 'selected' : ''}>${label}</option>`).join('')}</select></div>`).join('')}</div></article>`).join('');
+  $('#checklistGrid').innerHTML = checklistGroups.map((group) => `<article class="card checklist-group"><h4>${group.when}</h4><div class="checklist-items">${group.items.map((item) => `<div class="checklist-item"><label for="progress-${item.id}">${progress[item.id] ? '✓' : '□'} ${item.text}</label><select class="progress-select" id="progress-${item.id}" data-progress-id="${item.id}">${progressOptions.map(([value, label]) => `<option value="${value}" ${progress[item.id] === value ? 'selected' : ''}>${label}</option>`).join('')}</select></div>`).join('')}</div></article>`).join('');
   document.querySelectorAll('[data-progress-id]').forEach((select) => select.addEventListener('change', () => {
     progress[select.dataset.progressId] = select.value;
     saveProgress();
+    renderChecklist();
   }));
 }
 
@@ -492,7 +502,7 @@ function bindUi() {
       window.setTimeout(() => { resetArmed = false; event.currentTarget.textContent = '重置进度'; }, 6000);
       return;
     }
-    progress = {};
+    progress = { ...confirmedProgress };
     saveProgress();
     resetArmed = false;
     event.currentTarget.textContent = '重置进度';

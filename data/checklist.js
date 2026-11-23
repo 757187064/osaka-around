@@ -1,13 +1,19 @@
 export const checklistGroups = [
-  { when: '现在 · 确认与预约准备', items: [
-    { id: 'bag-9c6987', action: 'confirm', text: '确认 9C6987 订单中的实际行李额度' },
-    { id: 'bag-9c6988', action: 'confirm', text: '确认 9C6988 订单中的实际行李额度' },
+  { when: '证件与资料', items: [
+    { id: 'passport-visa', action: 'confirm', text: '护照、签证已备齐' },
+    { id: 'flight-name', action: 'confirm', text: '两程机票姓名已核对无误' },
+    { id: 'stay-printouts', action: 'confirm', text: '住宿详情页已全部打印' },
+    { id: 'visit-japan-web', action: 'confirm', text: '填写Visit Japan Web入境及海关申报，保存二维码' }
+  ] },
+  { when: '行李与住宿', items: [
+    { id: 'bag-9c6987', action: 'confirm', text: '9C6987 去程：8kg随身行李，额度已确认' },
+    { id: 'bag-9c6988', action: 'confirm', text: '9C6988 回程：8kg随身＋5kg托运，额度已确认' },
     { id: 'booking-contacts', action: 'confirm', text: '确认12/7酒店17:00入住限制，保存订房消息入口、酒店邮件及航司在线客服入口（如有）' }
   ] },
   { when: '11/14 日本10:00（北京09:00）', items: [
     { id: 'hakuto-buy', action: 'ticket', text: '比较并预约12/14鸟取返程；Super Hakuto指定席开售' }
   ] },
-  { when: '11/17 北京时间09:50提醒 / 10:00起售参考', items: [{ id: 'k681-buy', action: 'ticket', text: '12306购买12/1北京站→大连站K681硬卧，核实次日07:51到站及机场衔接' }] },
+  { when: '北京→大连 · 已购车票', items: [{ id: 'k681-buy', action: 'ticket', text: '12/1北京站→大连站K681硬卧已购买' }] },
   { when: '临行复核 · 11/20–11/25', items: [
     {id:'kyoto-maizuru-rail',action:'recheck',text:'核实12/6京都→东舞鹤铁路，已取消美山串联'},
     {id:'toyosato-calendar',action:'recheck',text:'12/3丰乡旧校舍借馆日历、近江铁道班次'},
@@ -26,6 +32,7 @@ export const checklistGroups = [
   { when: '出发前 24–48 小时', items: [
     { id: 'kix-terminal', action: 'confirm', text: '确认 KIX 春秋实际航站楼' },
     { id: 'k681-airport-buffer', action: 'recheck', text: '用K681实际到站时间与春秋值机截止重算大连机场余量，保存转场路线' },
+    { id: 'bag-weighed', action: 'confirm', text: '出发前称重：去程8kg随身；回程8kg随身＋5kg托运' },
     { id: 'flight-status', action: 'confirm', text: '确认航班状态' },
     { id: 'coast-weather', action: 'confirm', text: '确认日本海沿岸天气：大雪／强风' },
     { id: 'jr-status', action: 'confirm', text: '确认 JR 与巴士运行状态' },
@@ -51,3 +58,14 @@ export const officialLinks = [
   { label: '春秋航空', url: 'https://www.ch.com/', type: 'official' },
   { label: 'Google Maps', url: 'https://www.google.com/maps', type: 'third-party' }
 ];
+
+// Confirmed by the traveller on 2026-11-23.
+export const confirmationRevision = '2026-11-23';
+export const confirmedProgress = {
+  'bag-9c6987': 'confirmed',
+  'bag-9c6988': 'confirmed',
+  'passport-visa': 'completed',
+  'flight-name': 'confirmed',
+  'stay-printouts': 'completed',
+  'k681-buy': 'ticketed'
+};

@@ -42,7 +42,7 @@ export const trip = {
       "time": "11:40 → 15:30",
       "amountRmb": 963,
       "status": "purchased",
-      "note": "近期春秋在 KIX 主要使用 T2；实际航站楼须在出发前 24–48 小时再次确认。"
+      "note": "已确认随身行李8kg。目标15:30抵达关西机场。"
     },
     {
       "id": "flight-9c6988",
@@ -53,7 +53,7 @@ export const trip = {
       "time": "16:30 → 18:15",
       "amountRmb": 1314,
       "status": "purchased",
-      "note": "目标约 13:00 已抵达 KIX T2；额外 5kg 托运行李目前未确认，不能视为已购买。"
+      "note": "已确认随身行李8kg＋托运行李5kg。目标13:00左右到关西机场航站楼。"
     }
   ],
   "budget": {
