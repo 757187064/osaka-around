@@ -130,8 +130,15 @@ button, a, select, input { -webkit-tap-highlight-color: transparent; }
 .compact-main .checklist-item { display: grid; grid-template-columns: minmax(0,1fr) 105px; gap: 12px; align-items: start; }
 .checklist-item label { min-width: 0; overflow-wrap: anywhere; font-size: .9rem; }
 .checklist-item select { min-width: 0; width: 100%; background: #f5f8fc; border: 1px solid var(--rule); border-radius: 5px; padding: 6px; font-size: .8rem; }
-.insurance-panel { padding: 24px; background: #fff; border: 1px solid var(--rule); border-radius: 10px; margin: 0 0 24px; }
-.insurance-name { font-size: 1.1rem; font-weight: 650; margin-bottom: 4px; }
+.insurance-panel { padding: 16px 20px; background: #fff; border: 1px solid var(--rule); border-radius: 10px; margin: 0 0 24px; }
+.insurance-summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.insurance-summary h2 { margin: 0; font-size: 1.1rem; }
+.insurance-summary h2 .status-badge { margin-left: 8px; vertical-align: middle; font-size: .72rem; }
+.insurance-summary p { margin: 3px 0 0; color: var(--muted); font-size: .86rem; }
+.insurance-summary .insurance-highlights { color: var(--ink); text-align: right; font-size: .88rem; }
+.insurance-highlights small { display: block; color: var(--muted); font-size: .76rem; }
+.insurance-details { margin-top: 10px; border-top: 1px solid var(--rule); }
+.insurance-details > summary { cursor: pointer; padding-top: 9px; font-size: .84rem; color: var(--accent); }
 .coverage-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; margin: 22px 0; }
 .coverage-grid article { min-width: 0; padding: 15px; border-radius: 8px; background: #f1f6fd; }
 .coverage-grid h3 { font-size: .88rem; margin: 0 0 8px; }
@@ -181,6 +188,8 @@ button, a, select, input { -webkit-tap-highlight-color: transparent; }
  .arrival-gallery { gap: 8px; }
  .compact-main .checklist-grid { grid-template-columns: minmax(0,1fr); }
  .preparation-panel, .insurance-panel { padding: 18px; }
+ .insurance-summary { align-items: flex-start; flex-direction: column; gap: 5px; }
+ .insurance-summary .insurance-highlights { text-align: left; }
  .coverage-grid { gap: 8px; }
  .coverage-grid article { padding: 12px; }
  .coverage-grid strong { font-size: 1.15rem; }
