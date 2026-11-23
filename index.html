@@ -46,13 +46,14 @@
       <div data-view="prepare" hidden>
         <section class="section" id="checklist">
           <div class="section-head"><div><h2>出发准备</h2><p>勾选进度保存在当前浏览器。</p></div></div>
-          <details class="compact-fold">
-            <summary>购票、临行复核与当天公告</summary>
+          <section class="preparation-panel">
+            <h3>购票与出发进度</h3>
             <div class="checklist-grid" id="checklistGrid"></div>
-            <button class="btn btn-light no-print" id="resetProgress">重置进度</button>
-          </details>
+            <button class="btn btn-light no-print" id="resetProgress">重置手动进度</button>
+          </section>
           <details class="compact-fold"><summary>打包清单</summary><div id="packingGrid"></div></details>
         </section>
+        <div id="insuranceContent"></div>
         <section class="section" id="logistics">
           <h2>机票、住宿与交通</h2>
           <details class="compact-fold"><summary>已购机票</summary><div id="flightGrid" class="flight-grid"></div></details>

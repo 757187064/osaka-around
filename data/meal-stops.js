@@ -12,7 +12,7 @@ export const mealStops = {
   {time:'18:30–19:30',label:'晚餐',name:'HIVE 周边定食',query:'Kyoto Guesthouse HIVE 近く 定食',note:'晚饭后洗衣、补给。'}
  ],
  '2026-12-05': [
-  {time:'11:50–12:20',label:'午餐',id:'saizeriya',origin:'宇治上神社',note:'11:30离开神社跨河，步行约20分钟；12:00未入座换便餐。12:20离店，留30分钟回登山口。'},
+  {time:'11:00–11:40',label:'午餐',id:'saizeriya',origin:'Kumiko Bench Uji',note:'西岸河畔散步后步行到店，吃完再经塔之岛、朝雾桥去东岸神社；13:00开始登山。'},
   {time:'18:00–19:00',label:'晚餐',name:'HIVE 周边简餐',query:'Kyoto Guesthouse HIVE 近く 食堂',note:'回京都后用餐，整理次日转场行李。'}
  ],
  '2026-12-06': [
@@ -44,7 +44,7 @@ export const mealStops = {
   {time:'18:00–19:00',label:'晚餐',name:'鸟取站周边定食',query:'鳥取駅 定食',note:'入住后在站前步行圈用餐。ベニ屋17:45结束营业，另作早到备选。',alternative:'beniya'}
  ],
  '2026-12-13': [
-  {time:'12:45–13:15',label:'午餐',id:'beniya',origin:'鳥取駅',note:'浦富12:01巴士→岩美12:10，接12:20参考JR回鸟取。13:15未吃上饭改便餐，随后乘砂丘线。'},
+  {time:'12:50–13:25',label:'午餐',id:'beniya',origin:'鳥取駅',note:'浦富12:01巴士→岩美12:10，接12:20参考JR回鸟取。13:10未入座改便餐，饭后乘砂丘线去美术馆，15:00看演出。'},
   {time:'18:00–19:00',label:'晚餐',name:'鸟取站周边定食',query:'鳥取駅 定食',note:'砂丘返回鸟取站后用餐。'}
  ],
  '2026-12-14': [

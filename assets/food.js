@@ -13,14 +13,10 @@ const score = r => Number(scores[r.id]?.rating || 0);
 const jpy = n => `${n.toLocaleString()} 日元`;
 let foodArea='all', foodOnly='all';
 
-export function renderMealNote(day) {
- const meals=mealStops[day.date] || [];
- return `<section class="day-dining"><h4>当天吃什么</h4><div class="day-dining-grid">${meals.map(meal=>{
-  const r=meal.id ? foodById[meal.id] : meal;
-  const alternative=meal.alternative ? foodById[meal.alternative] : null;
-  const rating=meal.id ? scores[meal.id] : null;
-  return `<article class="day-restaurant"><p class="meal-time">${esc(meal.time)} · ${esc(meal.label)}</p><h5>${esc(r.name)}</h5>${meal.id?`<p class="meal-price">${jpy(r.price[0])}–${jpy(r.price[1])} / 人 · Google ${esc(rating.rating)} <small>（${foodCheckedOn}）</small></p><p>${esc(r.dish)}</p>${r.anime?`<p>${esc(r.anime)} ${link(r.animeSource,'取景对照')}</p>`:''}<details><summary>菜单与营业时间</summary><p>${esc(r.hours)}</p><p>${esc(r.priceNote)}</p>${link(r.source,r.sourceLabel)}</details>`:''}${mapPanel(r.query,r.name)}${alternative?`<details class="meal-alternative"><summary>替换餐厅 · ${esc(alternative.name)}</summary><p>${esc(alternative.when)}</p><p>${esc(alternative.access)}</p><p>${esc(alternative.cutoff)}</p>${link(maps(alternative.query),'餐厅地图')}<a href="#food-${alternative.id}" data-food-open="${alternative.id}">菜单与详情 ↗</a></details>`:''}</article>`;
- }).join('')}</div></section>`;
+export function renderMealDetails(meal) {
+ const restaurant = meal.id ? foodById[meal.id] : null;
+ const alternative = meal.alternative ? foodById[meal.alternative] : null;
+ return `${restaurant ? `<p class="meal-price">预算 ${jpy(restaurant.price[0])}–${jpy(restaurant.price[1])} / 人 <span>Google ${esc(scores[meal.id].rating)}</span></p><p>${esc(restaurant.dish)}</p><p class="meal-hours">${esc(restaurant.hours)}</p>${restaurant.anime ? `<p>${esc(restaurant.anime)} ${link(restaurant.animeSource,'取景对照')}</p>` : ''}<a class="source-shortcut" href="#food-${restaurant.id}" data-food-open="${restaurant.id}">菜单与店铺详情 ↗</a>` : ''}${alternative ? `<details class="meal-alternative"><summary>替换餐厅 · ${esc(alternative.name)}</summary><p>${esc(alternative.when)}</p><p>${esc(alternative.access)}</p>${link(maps(alternative.query),'餐厅地图')}</details>` : ''}`;
 }
 
 export function renderOutingCard(day) {

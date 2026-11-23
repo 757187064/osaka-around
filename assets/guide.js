@@ -1,10 +1,6 @@
-import { mealStops } from '../data/meal-stops.js';
-import { foodById } from '../data/food.js';
-import { mapPanel, routeUrl } from './navigation.js';
-import { placesById } from '../data/index.js';
+import { mapPanel } from './navigation.js';
 import { sources, sightsById, dailyGuides, animePlaces, reminders } from '../data/guide.js';
 import photos from '../data/photos.json';
-import { transitPhotos } from '../data/transit-photos.js';
 const esc = (s='') => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const imageFiles = import.meta.glob('./images/*.{jpg,png}', { eager: true, query: '?url', import: 'default' });
 export const photoUrl = key => photos[key]?.path ? imageFiles['./images/' + photos[key].path.split('/').at(-1)] : ''; 
@@ -14,43 +10,7 @@ const refs = ids => `<details class="source-links"><summary>查询来源 · ${[.
 export function photoHtml(key,title) {
  const p=photos[key];
  if (!photoUrl(key)) return '';
- return `<figure class="guide-photo"><a href="${photoUrl(key)}" target="_blank" rel="noreferrer"><img src="${photoUrl(key)}" alt="${esc(title)}" loading="lazy" decoding="async" width="1000" height="650"></a><figcaption>${esc(title)}${p.year ? ' · ' + esc(p.year) : ''} · ${link(p.source,p.author)} · ${link(p.licenseUrl,p.license)}</figcaption></figure>`;
-}
-// First detail location is a navigation target for transport-only references.
-const owners = {};
-for (const [date, guide] of Object.entries(dailyGuides)) for (const [index, stop] of guide.stops.entries()) {
- if (!stop.brief && !owners[stop.id]) owners[stop.id] = {date,index};
-}
-export function renderDayGuide(day) {
- const guide=dailyGuides[day.date]; if(!guide)return '';
- const previews = transitPhotos[day.date] || [];
- return `<section class="day-detail-guide" aria-label="${day.displayDate}景点攻略"><div class="guide-heading"><h4>景点图文</h4></div>${guide.fallback?`<details class="campus-fallback"><summary><span>备选路线</span>${esc(guide.fallback.title)}<b aria-hidden="true">＋</b></summary><div class="fallback-body"><p>${esc(guide.fallback.text)}</p><ol>${guide.fallback.steps.map(([time,text])=>`<li><strong>${esc(time)}</strong><span>${esc(text)}</span></li>`).join('')}</ol>${mapPanel(guide.fallback.mapQuery,'京都大学吉田校区')}${refs(guide.fallback.refs)}</div></details>`:''}<div class="sight-grid">${previews.map(({ key, caption }) => `<article class="sight-preview">${photoHtml(key, caption)}</article>`).join('')}${guide.stops.map((s,index)=>{
- const p=sightsById[s.id], owner=owners[s.id];
- const previous=guide.stops.slice(0,index).filter(stop=>!stop.brief && !/二选一|替换|可删|可选/.test(stop.priority)).at(-1);
- const minute=time=>{const m=time.match(/(\d{1,2}):(\d{2})/);return m ? +m[1]*60 + +m[2] : -1;};
- const meal=(mealStops[day.date] || []).filter(meal=>minute(meal.time)<minute(s.time) && minute(meal.time)>minute(previous?.time || '')).at(-1);
- const origin=meal ? (meal.id ? foodById[meal.id].query : meal.query) : previous ? sightsById[previous.id].query : day.mapLegs?.[0]?.from || placesById[day.placeIds[0]].query;
- if(!p)return '';
- if(s.brief) return `<article class="sight-reference"><strong>${esc(s.time)} · ${esc(p.name)}</strong><p>${esc(s.how)}</p>${link(maps(p.query),'地点地图','btn btn-light')}${owner?`<button class="btn btn-light" data-sight-date="${owner.date}" data-sight-id="${esc(s.id)}">查看该地点完整攻略 ↗</button>`:''}</article>`;
- return `<article class="sight-preview" id="sight-${esc(s.id)}">
-   ${photoHtml(s.photo || p.photo, s.photoCaption || p.photoCaption || p.name)}
-   <div class="sight-preview-heading">
-     <p>${esc(s.time)} · ${esc(s.priority)}</p>
-     <h5>${esc(p.name)}</h5>
-   </div>
-   <p class="sight-how">${esc(s.how)}</p>
-   <div class="sight-route-links">${previous || meal ? link(routeUrl(origin,p.query,'walking'),'步行路线') : ''}${link(routeUrl(origin,p.query),'公共交通')}</div>
-   ${mapPanel(p.query,p.name)}
-   <details class="sight-entry">
-     <summary>看点与开放时间</summary>
-     <div class="sight-content">
-       <p>${esc(p.why)}</p>
-       <p>${esc(p.practical)}</p>
-       ${link(maps(p.query),'景点地图','btn btn-light')}${refs(p.refs)}
-     </div>
-   </details>
- </article>`;
- }).join('')}</div></section>`;
+ return `<figure class="guide-photo"><a href="${photoUrl(key)}" target="_blank" rel="noreferrer"><img src="${photoUrl(key)}" alt="${esc(title)}" loading="lazy" decoding="async" width="1000" height="650"></a><figcaption><details class="photo-credit"><summary>摄影署名与授权${p.year ? ' · ' + esc(p.year) : ''}</summary>${link(p.source,p.author)} · ${link(p.licenseUrl,p.license)}</details></figcaption></figure>`;
 }
 export function renderResearch() {
  document.querySelector('#animeGrid').innerHTML=animePlaces.filter(p=>p.points.length).map((p,i)=>{

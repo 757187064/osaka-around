@@ -1,9 +1,10 @@
+import { renderInsurance } from './insurance.js';
 import { confirmationRevision, confirmedProgress } from '../data/checklist.js';
 import { bindInlineMaps, loadOpenMaps } from './navigation.js';
 import { renderDailyRoute, renderDailySchedule } from './day-route.js';
 import { renderOfflineKit } from './offline-kit.js';
-import { renderFood, renderMealNote, renderOutingCard, renderPacking, updateFoodBudget } from './food.js';
-import { renderDayGuide, renderResearch } from './guide.js';
+import { renderFood, renderOutingCard, renderPacking, updateFoodBudget } from './food.js';
+import { renderResearch } from './guide.js';
 import {
   LngLatBounds,
   Map as MapLibreMap,
@@ -354,12 +355,11 @@ function renderDays() {
       </header>
       <div class="day-body">
         ${renderOutingCard(day)}
+        <nav class="day-content-nav"><a href="#plan-${day.date}">图文行程</a><a href="#meals-${day.date}">吃什么</a><a href="#route-${day.date}">当天地图</a></nav>
         <div class="day-plan-layout">
-          <div class="day-route-column">${renderDailyRoute(day)}<div class="day-route-links">${dayGoogleMapsLinks(day)}</div></div>
           ${renderDailySchedule(day)}
+          <aside class="day-route-column">${renderDailyRoute(day)}<div class="day-route-links">${dayGoogleMapsLinks(day)}</div></aside>
         </div>
-        ${renderMealNote(day)}
-        ${renderDayGuide(day)}
         <details class="compact-fold day-weather-fold">
           <summary>雨雪备选</summary>
           <div class="weather-plan">
@@ -455,8 +455,6 @@ function revealHash() {
     const day = target?.closest('[data-day-card]');
     activateDay(day?.dataset.dayCard || activeDate);
   }
-  const sightDetails = target?.querySelector(':scope > .sight-entry');
-  if (sightDetails) sightDetails.open = true;
   for (let element = target; element; element = element.parentElement) {
     if (element.tagName === 'DETAILS') element.open = true;
   }
@@ -528,6 +526,7 @@ function bootstrap() {
   renderResearch();
   renderFood();
   renderOfflineKit();
+  renderInsurance();
   document.addEventListener('click', event => {
     const button=event.target.closest('[data-sight-date]'); if(!button)return;
     goTo('sight-' + button.dataset.sightId);

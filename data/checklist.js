@@ -3,6 +3,8 @@ export const checklistGroups = [
     { id: 'passport-visa', action: 'confirm', text: '护照、签证已备齐' },
     { id: 'flight-name', action: 'confirm', text: '两程机票姓名已核对无误' },
     { id: 'stay-printouts', action: 'confirm', text: '住宿详情页已全部打印' },
+    { id: 'travel-insurance', action: 'confirm', text: '泰康在线无忧保·境外旅意险已购买，目的地日本' },
+    { id: 'insurance-start', action: 'confirm', text: '已确认沿用12/2起保、12/16结束的保险期间' },
     { id: 'visit-japan-web', action: 'confirm', text: '填写Visit Japan Web入境及海关申报，保存二维码' }
   ] },
   { when: '行李与住宿', items: [
@@ -60,12 +62,14 @@ export const officialLinks = [
 ];
 
 // Confirmed by the traveller on 2026-11-23.
-export const confirmationRevision = '2026-11-23';
+export const confirmationRevision = '2026-11-23-insurance';
 export const confirmedProgress = {
   'bag-9c6987': 'confirmed',
   'bag-9c6988': 'confirmed',
   'passport-visa': 'completed',
   'flight-name': 'confirmed',
   'stay-printouts': 'completed',
-  'k681-buy': 'ticketed'
+  'k681-buy': 'ticketed',
+  'travel-insurance': 'confirmed',
+  'insurance-start': 'confirmed'
 };

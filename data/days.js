@@ -356,7 +356,7 @@ const dayDetails=[
     "date": "2026-12-13",
     "displayDate": "12/13",
     "weekday": "周日",
-    "title": "岩美Free!巡礼＋砂丘取舍",
+    "title": "岩美Free!巡礼＋砂雕与现场演出",
     "base": "鸟取 · Drop Inn Tottori",
     "sleep": "Drop Inn Tottori",
     "theme": "京阿尼巡礼",
@@ -368,7 +368,7 @@ const dayDetails=[
     "mapLegs": [
       {
         "to": "Iwami Station",
-        "label": "岩美Free!巡礼＋砂丘取舍",
+        "label": "岩美Free!巡礼＋砂雕与现场演出",
         "from": "Tottori Station"
       }
     ],
