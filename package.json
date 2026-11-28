@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite --host localhost --port 5173 --strictPort",
     "build": "vite build",
-    "preview": "vite preview --host localhost --port 5173 --strictPort"
+    "preview": "vite preview --host localhost --port 5173 --strictPort",
+    "handoff": "node scripts/export-handoff.mjs",
+    "android:prepare": "node scripts/prepare-android.mjs",
+    "android:build": "bash scripts/build-android.sh"
   },
   "dependencies": {
     "maplibre-gl": "6.11.2"

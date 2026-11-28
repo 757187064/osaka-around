@@ -1,0 +1,31 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'top.styletrip.japan'
+    compileSdk 36
+    buildToolsVersion '36.0.0'
+    defaultConfig {
+        applicationId 'top.styletrip.japan'
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName '1.0.0'
+    }
+    signingConfigs {
+        release {
+            storeFile file(System.getenv('TRIP_KEYSTORE') ?: '../unused-signing-key')
+            storePassword System.getenv('TRIP_KEYSTORE_PASSWORD')
+            keyAlias 'japan-trip'
+            keyPassword System.getenv('TRIP_KEYSTORE_PASSWORD')
+        }
+    }
+    buildTypes {
+        release { signingConfig signingConfigs.release; minifyEnabled false }
+    }
+    flavorDimensions += 'privacy'
+    productFlavors {
+        standard { dimension 'privacy' }
+        personal { dimension 'privacy'; applicationIdSuffix '.personal'; versionNameSuffix '-personal' }
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+dependencies { implementation 'androidx.webkit:webkit:1.14.0' }

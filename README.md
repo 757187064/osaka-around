@@ -1,84 +1,32 @@
-# 2026 日本关西—北近畿—山阴 14晚独旅行程控制台
+# 冬日旅行手帖 · 2026年12月
 
-Vanilla HTML/CSS/JavaScript + Vite 的旅行控制台。在线版本可直接访问：
+网页：https://757187064.github.io/osaka-around/
 
-<https://757187064.github.io/osaka-around/>
+完整交接：[docs/AI-HANDOFF.md](docs/AI-HANDOFF.md)；Android构建：[docs/ANDROID.md](docs/ANDROID.md)。
 
-## 地图与 Google Maps 跳转
+## 常用命令
 
-- 页面内的固定总览使用 MapLibre GL JS + OpenFreeMap，不使用 Google Maps API，也不会请求 `tile.openstreetmap.org`。
-- 四个区域与每日行程均按真实交通段拆成独立的“起点 → 终点”按钮；每次只提交一段给 Google Maps，以便获得公共交通方案，并可在网页或 App 内继续编辑。
-- 住宿、景点、车站的 Google Maps 按钮同样只打开普通 Google Maps 搜索页。
-- 项目不包含 Google Cloud Billing、API key、Google Maps JavaScript API、Routes API 或 Places API 配置，不会产生 Google Maps Platform 的 API 调用费用。
-
-## 在线发布
-
-推送到 `main` 会由 `.github/workflows/deploy-pages.yml` 自动构建并发布 GitHub Pages。工作流使用 `/osaka-around/` 作为 Vite 资源前缀，不应手动提交 `dist/`。
-
-## macOS 启动
-
-1. 双击 `start.command`。
-2. 首次运行会安装依赖，并打开 <http://localhost:5173>。
-3. 保持终端窗口开启；按 `Control + C` 停止服务。
-
-若 macOS 阻止双击，在 Terminal 执行：
-
-```bash
-cd /Users/sakiko/Downloads/japan_trip_web
-chmod +x start.command start.sh
-./start.command
-```
-
-若没有 Node.js，`start.sh` 会尝试用 Python 提供已经构建好的 `dist/`；首次构建仍需要 Node.js。
-
-## Windows 启动
-
-安装 Node.js LTS 后，在 PowerShell 执行：
-
-```powershell
-cd C:\path\to\japan_trip_web
-npm install
+```sh
+npm ci
 npm run dev
+node scripts/validate-trip.mjs
+npm run build
+npm run handoff
+npm run android:prepare
+npm run android:build
 ```
 
-打开 <http://localhost:5173>。生产构建使用 `npm run build`，本地预览使用 `npm run preview`。
+- 网页与APK均使用同一组旅行数据和实景图片。
+- `npm run handoff`在`dist/handoff/`生成手机阅读入口、完整旅行内容TXT/Markdown、结构化JSON和完整源码目录。主文本只含旅行内容。
+- APK包含离线攻略、独立急用页、外部Google Maps和AI翻译入口，以及交接阅读页。标准版不含个人二维码；私人版通过`TRIP_PRIVATE_QR`注入。
+- 发布网页由main推送自动完成，Vite基路径为`/osaka-around/`；Android构建基路径为`./`，不可混用。
+- 私人二维码、私人APK、签名密钥和原始保单不提交到公开仓库。
+- SDK与Java仅为本机工具，不属于源码。APK构建成功和用户Android17实机验证是不同的检查。
 
-## 行程数据在哪里改
+## 已确认事项
 
-- `data/days.js`：每日时间轴、天气 Plan B、地图联动地点，以及每天独立的 Google Maps 起点 → 终点链接。
-- `data/stays.js`：已购住宿与入住硬约束。
-- `data/transport.js`：交通分类、当前参考状态、JPY 预算。
-- `data/routes.js`：主环线交通走廊、三条当天往返与区域分段路线。
-- `data/checklist.js`：复核中心与官方入口。
-- `data/places.js`：坐标、marker 类型与 Google Maps 搜索名称。
+K681硬卧已买；护照签证、机票姓名、住宿打印、保险、电子签现场展示方式、VJW均已确认。去程8kg随身，回程8kg随身＋5kg托运。
 
-## 图片
+## 当前数据入口
 
-`assets/images/` 预留 `kyoto.jpg`、`nara.jpg`、`miyama.jpg`、`maizuru.jpg`、`amanohashidate.jpg`、`ine.jpg`、`kinosaki.jpg`、`tottori.jpg`。没有图片时显示 CSS 占位卡，不会发出缺图请求；要启用图片，在 `data/trip.js` 对应体验项填写 `imagePath`。
-
-## 重要约定
-
-- 已购机票与住宿均为硬约束，页面不会替换或推荐其他住宿。
-- 返程额外 5kg 托运行李未确认，绝不显示为已购买。
-- 12 月冬季班次不是最终时刻；新增丰乡、出石、岩美与 12/7–12/16 参考交通仍须按复核中心安排确认。
-- 进度勾选与手动汇率只保存在当前浏览器的 LocalStorage；“重置进度”需要连续点击两次确认。
-
-## 2026/10/26 攻略补充与核查
-
-- `data/guide.js`：40个游玩条目、15天时段建议、11组地区动漫检索结论、来源及核查状态。
-- `data/schedules.js`：纠正后的每日概览时间轴；`data/days.js`保留日期、住宿和天气等基础信息。
-- `assets/guide.js`：景点卡、来源、照片署名、动漫卡与交通方案比较。
-- `data/photos.json`：审核后的Commons实景图片来源和授权，不以历史照片承诺出行当季景色。
-- `node scripts/validate-trip.mjs`：日期/星期连续性、14晚住宿、地点/路线/攻略引用、图片文件与授权完整性检查。
-
-核查不等于访问或确认个人机酒订单。岩美周日巴士及部分JR冬季衔接及未获得报价的交通仍需复核。
-预算仅汇总已列交通参考金额，未覆盖全部市内交通、景点门票和餐饮。
-
-应用内已建立两项一次性提醒（北京时间）：11/14 08:50鸟取返程交通比较与预约；11/17 09:50北京→大连K681硬卧购票。
-页面的提醒卡是静态记录；实际提醒由Codex应用安排，网页本身不会发送推送，也不会自动同步提醒修改。
-
-本轮重构：机酒保持，奈良日改丰乡，宇治重访，京都北部轻音与鸭川，取消美山串联改铁路舞鹤；出石半日、城崎全天、岩美周日接驳。图卡按具体场景独立配图，不限制同一景点的多角度介绍。
-
-## 2026/10/30 视觉整理
-
-参考 [StyleKit Editorial](https://www.stylekit.top/styles/editorial/showcase) 改为暖纸色旅行手帖。目录收拢为7个入口，时间表、天气备选、核查历史和来源可展开阅读；保留景点内容和待办存储。审查记录见 `docs/design-review-2026-10-30.md`。
+`data/index.js`导出15天14晚主行程；`data/schedules.js`覆盖原始时间轴。餐厅与时段联动由`data/meal-stops.js`和`assets/day-route.js`实现；图片授权在`data/photos.json`。更多文件职责和用户偏好见交接说明。

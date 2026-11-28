@@ -1,0 +1,24 @@
+{
+  "checkedOn": "2026-11-28",
+  "comparisonBaseline": {"place":"北京昌平","date":"2026-11-28","weather":"晴","minC":-3,"maxC":9,"wind":"小于3级","source":"https://www.weather.com.cn/weather/101010700.shtml"},
+  "note":"这是11月28日查询快照，后续日期需重新查询。12月6日后为延伸预报，机构分歧明显；12月13–16日尚无本次可查的逐日预报。未提供衣物建议。",
+  "days": [
+    {"date":"2026-12-01","place":"北京出发","weather":"晴","minC":-2,"maxC":9,"source":"https://www.weather.com.cn/weather/101010700.shtml"},
+    {"date":"2026-12-02","place":"大连","weather":"多云转小雨","minC":5,"maxC":12,"wind":"4–5级","source":"https://www.weather.com.cn/weather/101070201.shtml"},
+    {"date":"2026-12-02","place":"京都","weather":"多云转晴","minC":8,"maxC":20,"rainProbabilityPct":30,"source":"https://tenki.jp/forecast/6/29/6110/26100/10days.html"},
+    {"date":"2026-12-03","place":"丰乡，参考邻近彦根","weather":"阴","minC":8,"maxC":15,"rainProbabilityPct":40,"source":"https://www.jma.go.jp/bosai/forecast/data/forecast/250000.json"},
+    {"date":"2026-12-04","place":"京都市北部","weather":"多云转晴","minC":11,"maxC":19,"rainProbabilityPct":30,"source":"https://tenki.jp/forecast/6/29/6110/26100/10days.html"},
+    {"date":"2026-12-05","place":"宇治","weather":"多云转雨；当次预报雨主要在傍晚以后","minC":10,"maxC":19,"rainProbabilityPct":70,"source":"https://tenki.jp/forecast/6/29/6110/26204/10days.html"},
+    {"date":"2026-12-06","place":"舞鹤","weather":"雨","minC":14,"maxC":17,"rainProbabilityPct":90,"source":"https://tenki.jp/forecast/6/29/6120/26202/10days.html"},
+    {"date":"2026-12-07","place":"宫津／天桥立","weather":"雨","minC":13,"maxC":19,"rainProbabilityPct":90,"source":"https://tenki.jp/forecast/6/29/6120/26205/10days.html"},
+    {"date":"2026-12-08","place":"伊根","weather":"雨间多云","minC":15,"maxC":18,"rainProbabilityPct":80,"source":"https://tenki.jp/forecast/6/29/6120/26463/10days.html"},
+    {"date":"2026-12-09","place":"天桥立","weather":"雨转阴","minC":11,"maxC":15,"rainProbabilityPct":80,"source":"https://tenki.jp/forecast/6/29/6120/26205/10days.html"},
+    {"date":"2026-12-10","place":"丰冈／出石","weather":"多云间晴","minC":9,"maxC":13,"rainProbabilityPct":40,"source":"https://tenki.jp/forecast/6/31/6320/28209/10days.html"},
+    {"date":"2026-12-11","place":"城崎，参考丰冈","weather":"雨转阴","minC":8,"maxC":14,"rainProbabilityPct":70,"source":"https://tenki.jp/forecast/6/31/6320/28209/10days.html"},
+    {"date":"2026-12-12","place":"鸟取","weather":null,"minC":6,"maxC":13,"rainProbabilityPct":30,"confidence":"低","source":"https://weathernews.jp/onebox/tenki/tottori/31201/week.html"},
+    {"date":"2026-12-13","place":"岩美／鸟取","weather":null,"note":"尚未进入可查逐日预报范围"},
+    {"date":"2026-12-14","place":"鸟取→大阪→京都","weather":null,"note":"尚未进入可查逐日预报范围"},
+    {"date":"2026-12-15","place":"京都／岚山","weather":null,"note":"尚未进入可查逐日预报范围"},
+    {"date":"2026-12-16","place":"京都→关西机场→大连","weather":null,"note":"尚未进入可查逐日预报范围"}
+  ]
+}
