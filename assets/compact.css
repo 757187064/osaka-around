@@ -147,9 +147,9 @@ button, a, select, input { -webkit-tap-highlight-color: transparent; }
 .insurance-actions { padding-left: 24px; }
 .insurance-actions li { margin: 12px 0; }
 .insurance-actions p { margin: 3px 0 0; color: #425b74; }
-#offline-kit-content { max-width: 78ch; background: #fff; border: 1px solid var(--rule); border-radius: 10px; padding: 26px; }
+#offline-kit-content { max-width: 1040px; background: transparent; border: 0; padding: 0; }
 #offline-kit-content li { margin-bottom: .8rem; }
-#offline-kit-content h3 { margin-top: 1.6rem; }
+#offline-kit-content h3 { margin-top: 0; }
 .compact-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-top: 1px solid var(--rule); padding: 20px 0 30px; margin-top: 24px; color: var(--muted); font-size: .82rem; }
 @media (max-width: 1080px) {
  .day-plan-layout { grid-template-columns: minmax(0,1fr); }
@@ -196,7 +196,7 @@ button, a, select, input { -webkit-tap-highlight-color: transparent; }
  .compact-main .anime-grid, .compact-main .food-grid { grid-template-columns: minmax(0,1fr); }
  .route-map-stops { grid-template-columns: minmax(0,1fr); max-height: 220px; }
  .day-route-overview .place-map iframe { height: 280px; }
- #offline-kit-content { padding: 18px; }
+ #offline-kit-content { padding: 0; }
  .compact-footer { align-items: flex-start; }
 }
 @media print {
