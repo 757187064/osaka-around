@@ -5,7 +5,8 @@ export const checklistGroups = [
     { id: 'stay-printouts', action: 'confirm', text: '住宿详情页已全部打印' },
     { id: 'travel-insurance', action: 'confirm', text: '泰康在线无忧保·境外旅意险已购买，目的地日本' },
     { id: 'insurance-start', action: 'confirm', text: '已确认沿用12/2起保、12/16结束的保险期间' },
-    { id: 'visit-japan-web', action: 'confirm', text: '填写Visit Japan Web入境及海关申报，保存二维码' }
+    { id: 'evisa-display', action: 'confirm', text: '电子签Visa issuance notice已成功打开，展示方式已验证' },
+    { id: 'visit-japan-web', action: 'confirm', text: 'Visit Japan Web入境及海关申报已完成，二维码已生成' }
   ] },
   { when: '行李与住宿', items: [
     { id: 'bag-9c6987', action: 'confirm', text: '9C6987 去程：8kg随身行李，额度已确认' },
@@ -61,8 +62,8 @@ export const officialLinks = [
   { label: 'Google Maps', url: 'https://www.google.com/maps', type: 'third-party' }
 ];
 
-// Confirmed by the traveller on 2026-11-23.
-export const confirmationRevision = '2026-11-23-insurance';
+// Confirmed by the traveller, most recently on 2026-11-28.
+export const confirmationRevision = '2026-11-28-entry';
 export const confirmedProgress = {
   'bag-9c6987': 'confirmed',
   'bag-9c6988': 'confirmed',
@@ -71,5 +72,7 @@ export const confirmedProgress = {
   'stay-printouts': 'completed',
   'k681-buy': 'ticketed',
   'travel-insurance': 'confirmed',
-  'insurance-start': 'confirmed'
+  'insurance-start': 'confirmed',
+  'evisa-display': 'confirmed',
+  'visit-japan-web': 'completed'
 };
